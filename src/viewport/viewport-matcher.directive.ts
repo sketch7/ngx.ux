@@ -107,14 +107,15 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy() {
+
 		if (this.cssClass$$) {
 			this.cssClass$$.unsubscribe();
 		}
 		if (this.sizeType$$) {
 			this.sizeType$$.unsubscribe();
 		}
-		if (this.update$$) {
-			this.update$$.unsubscribe();
+		if (this.update$) {
+			this.update$.complete();
 		}
 	}
 
