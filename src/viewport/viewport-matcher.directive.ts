@@ -117,6 +117,9 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 		if (this.update$) {
 			this.update$.complete();
 		}
+		if (this.update$$) {
+			this.update$.unsubscribe();
+		}
 	}
 
 	@Input()
