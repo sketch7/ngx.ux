@@ -32,3 +32,10 @@ export enum DeviceType {
 	mobile = "mobile",
 	tablet = "tablet"
 }
+
+export interface UxViewportOptions {
+	/** Polling speed on resizing (in milliseconds). */
+	resizePollingSpeed: number;
+
+	serverDeviceType: DeviceType;
+}
