@@ -34,7 +34,7 @@ export enum DeviceType {
 }
 
 export interface UxViewportOptions {
-	/** Polling speed on resizing (in milliseconds). */
+	/** Polling speed on resizing (in milliseconds). e.g. the higher the number the longer it takes to recalculate. */
 	resizePollingSpeed: number;
 
 	serverDeviceType: DeviceType;

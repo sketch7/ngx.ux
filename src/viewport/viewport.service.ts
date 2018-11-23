@@ -15,6 +15,7 @@ import { UxOptions, UX_CONFIG } from "../config";
 import { ViewportSizeTypeInfo, ViewportSize, ViewportSizeType } from "./viewport.model";
 import { WindowRef } from "../platform/window";
 import { ViewportServerSizeService } from "./viewport-server-size.service";
+import { UX_VIEWPORT_DEFAULT_CONFIG } from "./viewport.const";
 
 // todo: make this configurable
 /** Viewport sizes config, by upper bound. e.g. given width '1000' and `medium` is set to '992' => `large`. */
@@ -80,7 +81,7 @@ export class ViewportService {
 		if (windowRef.hasNative) {
 			this.resize$ = fromEvent<Event>(window, "resize").pipe(
 				map(() => this.getViewportSize()),
-				debounceTime(config.viewport.resizePollingSpeed),
+				debounceTime(config.viewport.resizePollingSpeed || UX_VIEWPORT_DEFAULT_CONFIG.resizePollingSpeed),
 				share(),
 			);
 		} else {
@@ -102,6 +103,8 @@ export class ViewportService {
 	}
 
 	private calculateViewportSize(width: number): ViewportSizeTypeInfo {
+		// todo: make this more dynamic
+		// todo: cache last width value
 		if (_.inRange(width, viewportSizesConfig.xsmall)) {
 			return viewportSizeRefs[ViewportSizeType.xsmall];
 		} else if (_.inRange(width, viewportSizesConfig.xsmall, viewportSizesConfig.small)) {

@@ -2,7 +2,7 @@ import { InjectionToken } from "@angular/core";
 import { DeviceType, UxViewportOptions } from "./viewport/viewport.model";
 
 export interface UxOptions {
-	viewport: UxViewportOptions;
+	viewport: Partial<UxViewportOptions>;
 }
 
 export const UX_DEFAULT_CONFIG: UxOptions = {

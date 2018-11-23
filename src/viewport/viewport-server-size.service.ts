@@ -3,6 +3,7 @@ import { Injectable, Inject } from "@angular/core";
 import { Dictionary } from "../internal/internal.model";
 import { DeviceType, ViewportSize } from "./viewport.model";
 import { UX_CONFIG, UxOptions } from "../config";
+import { UX_VIEWPORT_DEFAULT_CONFIG } from "./viewport.const";
 
 // todo: make this configurable
 /** Viewport size for SSR. */
@@ -31,6 +32,6 @@ export class ViewportServerSizeService {
 	}
 
 	get(): ViewportSize {
-		return viewportSizeSSR[this.config.viewport.serverDeviceType];
+		return viewportSizeSSR[this.config.viewport.serverDeviceType || UX_VIEWPORT_DEFAULT_CONFIG.serverDeviceType];
 	}
 }

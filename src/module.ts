@@ -23,7 +23,7 @@ export const _MODULE_CONFIG = new InjectionToken<UxOptions | (() => UxOptions)>(
 	exports: [SsvViewportMatcherDirective],
 })
 export class SsvUxModule {
-	static forRoot(config?: UxOptions | (() => UxOptions)): ModuleWithProviders {
+	static forRoot(config?: Partial<UxOptions> | (() => Partial<UxOptions>)): ModuleWithProviders {
 		return {
 			ngModule: SsvUxModule,
 			providers: [
