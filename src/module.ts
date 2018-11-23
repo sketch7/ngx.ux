@@ -1,8 +1,8 @@
 import { NgModule, ModuleWithProviders, InjectionToken } from "@angular/core";
 
-import { CommandDirective } from "./command.directive";
-import { CommandRefDirective } from "./command-ref.directive";
+import { SsvViewportMatcherDirective, ViewportService, ViewportServerSizeService } from "./viewport/index";
 import { UxOptions, UX_DEFAULT_CONFIG, UX_CONFIG } from "./config";
+import { WindowRef, WINDOW } from "./platform/window";
 
 /** @internal */
 export const _MODULE_CONFIG = new InjectionToken<UxOptions | (() => UxOptions)>(
@@ -10,9 +10,17 @@ export const _MODULE_CONFIG = new InjectionToken<UxOptions | (() => UxOptions)>(
 );
 
 @NgModule({
-	declarations: [CommandDirective, CommandRefDirective],
-	providers: [{ provide: UX_CONFIG, useValue: UX_DEFAULT_CONFIG }],
-	exports: [CommandDirective, CommandRefDirective],
+	declarations: [SsvViewportMatcherDirective],
+	providers: [
+		{ provide: UX_CONFIG, useValue: UX_DEFAULT_CONFIG },
+
+		WindowRef,
+		{ provide: WINDOW, useFactory: _window },
+
+		ViewportService,
+		ViewportServerSizeService,
+	],
+	exports: [SsvViewportMatcherDirective],
 })
 export class SsvUxModule {
 	static forRoot(config?: UxOptions | (() => UxOptions)): ModuleWithProviders {
@@ -24,7 +32,7 @@ export class SsvUxModule {
 					useFactory: _moduleConfigFactory,
 					deps: [_MODULE_CONFIG],
 				},
-				{ provide: _MODULE_CONFIG, useValue: config },
+				{ provide: _MODULE_CONFIG, useValue: config || UX_DEFAULT_CONFIG },
 			],
 		};
 	}
@@ -33,4 +41,12 @@ export class SsvUxModule {
 /** @internal */
 export function _moduleConfigFactory(config: UxOptions | (() => UxOptions)) {
 	return typeof config === "function" ? config() : config;
+}
+
+/** @internal */
+export function _window(): any {
+	if (typeof window !== "undefined") {
+		return window;
+	}
+	return {};
 }

@@ -1,14 +1,16 @@
 import { InjectionToken } from "@angular/core";
+import { UxViewportOptions } from "./viewport/viewport.config";
+import { DeviceType } from "./viewport/viewport.model";
 
 export interface UxOptions {
-	/**
-	 * Css Class which gets added/removed on the Command element's host while Command `isExecuting$`.
-	 */
-	viewportResizePollingSpeed: number;
+	viewport: UxViewportOptions;
 }
 
 export const UX_DEFAULT_CONFIG: UxOptions = {
-	viewportResizePollingSpeed: 30,
+	viewport: {
+		resizePollingSpeed: 33,
+		serverDeviceType: DeviceType.desktop
+	}
 };
 
 export const UX_CONFIG = new InjectionToken<UxOptions>("@ssv/ngx.ux-config");

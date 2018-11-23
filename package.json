@@ -1,6 +1,6 @@
 {
   "name": "@ssv/ngx.ux",
-  "version": "1.1.1",
+  "version": "0.1.0",
   "description": "UX essentials for building apps, utilities which enables you writing richer apps easier.",
   "keywords": [
     "sketch7",
@@ -36,6 +36,7 @@
   "dependencies": {},
   "peerDependencies": {
     "@angular/core": ">=6.0.0",
+    "lodash": "^4.0.0",
     "rxjs": "^6.0.0"
   },
   "devDependencies": {
@@ -47,11 +48,13 @@
     "@angular/platform-browser-dynamic": "^7.0.0",
     "@ssv/tools": "^0.8.1",
     "@types/jest": "^23.3.9",
+    "@types/lodash": "^4.14.118",
     "gulp": "^4.0.0",
     "gulp-bump": "^3.1.1",
     "gulp-conventional-changelog": "^2.0.3",
     "jest": "^23.6.0",
     "jest-environment-node-debug": "^2.0.0",
+    "lodash": "^4.17.11",
     "ng-packagr": "^4.4.0",
     "reflect-metadata": "^0.1.12",
     "require-dir": "^1.1.0",
