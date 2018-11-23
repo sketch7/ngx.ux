@@ -40,7 +40,29 @@ export class AppModule {
 ```
 
 ## Viewport
-Provides utilities to handle responsiveness easier
+Provides utilities to handle responsiveness easier based on the viewport (view size)
+
+### Comparsion Operands
+| Operand | Description           |
+|---------|-----------------------|
+| =       | Equals                |
+| <>      | Not equals            |
+| <       | Less than             |
+| <=      | Less than or equal    |
+| >       | Greater than          |
+| >=      | Greater Than or equal |
+
+<br>
+
+### Size Types
+| Size Type | Size Range |
+|-----------|------------|
+| xsmall    | <=450      |
+| small     | 450-767    |
+| medium    | 767-992    |
+| large     | 992-1200   |
+| xlarge    | 1200-1500  |
+| xxlarge   | 1500-2000  |
 
 
 ### Viewport Matcher Attribute (directive)
@@ -50,17 +72,44 @@ Structural directive which loads components based on a viewport sizing condition
 #### Examples
 
 ```html
-
 <!-- simple -->
+<div *ssvViewportMatcher="'large'">
+  show only when large
+</div>
+
+<!-- expression based - tuple (shorthand) *recommended usage* -->
+<div *ssvViewportMatcher="['>=', 'xlarge']"> (see all operands and sizes)
+  show when >= xlarge
+</div>
+
+<!-- expression based - object -->
+<div *ssvViewportMatcher="{size: 'xlarge', operation: '<='}"> (see all operands and sizes)
+  show when >= xlarge
+</div>
 
 <!-- includes -->
+<div *ssvViewportMatcher="['large', 'xlarge']">
+  show only when large, xlarge
+</div>
 
 <!-- excludes -->
+<div *ssvViewportMatcher="''; exclude ['xsmall', 'small']">
+  hide only when xsmall, small
+</div>
 
-<!-- else -->
+<!-- match/else -->
+<div *ssvViewportMatcher="['>=', 'xlarge']; else otherwise">
+  show when >= xlarge
+</div>
+
+<ng-template #otherwise>
+  show when expression is falsy (< xlarge)
+</ng-template>
 
 <!-- non structure syntax -->
-
+<ng-template ssvViewportMatcher [ssvViewportMatcherExclude]="'xsmall'">
+    (exclude xsmall)
+</ng-template>
 ```
 
 ### Viewport Service
@@ -72,6 +121,9 @@ this.viewport.sizeType$
   )
   .subscribe();
 ```
+
+### Viewport for SSR
+// todo
 
 
 ## Configure

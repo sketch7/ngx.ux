@@ -33,7 +33,6 @@ export function isViewportSizeMatcherTupleExpression(arg: unknown): arg is [Comp
 
 const operations = Object.values(ComparisonOperation);
 
-
 export const COMPARISON_OPERATION_FUNC_MAPPING: Dictionary<(a: number, b: number) => boolean> = {
 	[ComparisonOperation.equals]: (a: number, b: number) => a === b,
 	[ComparisonOperation.notEquals]: (a: number, b: number) => a !== b,

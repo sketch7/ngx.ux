@@ -27,11 +27,7 @@ export class SsvViewportMatcherContext {
 	expresson?: ViewportSizeMatcherExpression;
 }
 
-function match(
-	value: string | string[] | null,
-	targetValue: string,
-	defaultValue: boolean,
-) {
+function match(value: string | string[] | null, targetValue: string, defaultValue: boolean) {
 	if (!value) {
 		return defaultValue;
 	}
@@ -122,8 +118,7 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 		}
 	}
 
-	@Input()
-	set ssvViewportMatcher(value: string | string[] | ViewportSizeMatcherExpression) {
+	@Input() set ssvViewportMatcher(value: string | string[] | ViewportSizeMatcherExpression) {
 		console.log(">>> ssvViewportMatcher set", value);
 		if (isViewportSizeMatcherExpression(value)) {
 			this._context.expresson = value;
@@ -142,8 +137,7 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 		}
 	}
 
-	@Input()
-	set ssvViewportMatcherExclude(value: string | string[]) {
+	@Input() set ssvViewportMatcherExclude(value: string | string[]) {
 		console.log(">>> ssvViewportMatcherExclude set", value);
 
 		this._context.sizeTypeExclude = value;
@@ -153,8 +147,7 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 		}
 	}
 
-	@Input()
-	set ssvViewportMatcherElse(templateRef: TemplateRef<SsvViewportMatcherContext> | null) {
+	@Input() set ssvViewportMatcherElse(templateRef: TemplateRef<SsvViewportMatcherContext> | null) {
 		this._elseTemplateRef = templateRef;
 		this._elseViewRef = null; // clear previous view if any.
 		if (this.sizeInfo) {
@@ -190,10 +183,7 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 		}
 	}
 
-	private shouldRender(
-		sizeInfo: ViewportSizeTypeInfo,
-		context: SsvViewportMatcherContext,
-	) {
+	private shouldRender(sizeInfo: ViewportSizeTypeInfo, context: SsvViewportMatcherContext) {
 		const isExcluded = match(context.sizeTypeExclude, sizeInfo.name, false);
 		let isIncluded;
 		let isExpressionTruthy;
