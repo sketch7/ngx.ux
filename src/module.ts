@@ -2,7 +2,7 @@ import { NgModule, ModuleWithProviders, InjectionToken } from "@angular/core";
 
 import { CommandDirective } from "./command.directive";
 import { CommandRefDirective } from "./command-ref.directive";
-import { UxOptions, COMMAND_DEFAULT_CONFIG, UX_CONFIG } from "./config";
+import { UxOptions, UX_DEFAULT_CONFIG, UX_CONFIG } from "./config";
 
 /** @internal */
 export const _MODULE_CONFIG = new InjectionToken<UxOptions | (() => UxOptions)>(
@@ -11,7 +11,7 @@ export const _MODULE_CONFIG = new InjectionToken<UxOptions | (() => UxOptions)>(
 
 @NgModule({
 	declarations: [CommandDirective, CommandRefDirective],
-	providers: [{ provide: UX_CONFIG, useValue: COMMAND_DEFAULT_CONFIG }],
+	providers: [{ provide: UX_CONFIG, useValue: UX_DEFAULT_CONFIG }],
 	exports: [CommandDirective, CommandRefDirective],
 })
 export class SsvUxModule {
