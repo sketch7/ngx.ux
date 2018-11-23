@@ -62,7 +62,6 @@ const viewportSizeRefs: Dictionary<Readonly<ViewportSizeTypeInfo>> = {
 	} as ViewportSizeTypeInfo),
 };
 
-
 // todo: change to providedIn
 @Injectable()
 export class ViewportService {
@@ -71,6 +70,9 @@ export class ViewportService {
 
 	/** Observable when viewport size type changes. */
 	sizeType$: Observable<ViewportSizeTypeInfo>;
+
+	private lastWidthCheck: number | undefined;
+	private lastWidthSizeInfo: ViewportSizeTypeInfo | undefined;
 
 	constructor(
 		@Inject(UX_CONFIG) config: UxOptions,
@@ -103,20 +105,25 @@ export class ViewportService {
 	}
 
 	private calculateViewportSize(width: number): ViewportSizeTypeInfo {
-		// todo: make this more dynamic
-		// todo: cache last width value
-		if (_.inRange(width, viewportSizesConfig.xsmall)) {
-			return viewportSizeRefs[ViewportSizeType.xsmall];
-		} else if (_.inRange(width, viewportSizesConfig.xsmall, viewportSizesConfig.small)) {
-			return viewportSizeRefs[ViewportSizeType.small];
-		} else if (_.inRange(width, viewportSizesConfig.small, viewportSizesConfig.medium)) {
-			return viewportSizeRefs[ViewportSizeType.medium];
-		} else if (_.inRange(width, viewportSizesConfig.medium, viewportSizesConfig.large)) {
-			return viewportSizeRefs[ViewportSizeType.large];
-		} else if (_.inRange(width, viewportSizesConfig.large, viewportSizesConfig.xlarge)) {
-			return viewportSizeRefs[ViewportSizeType.xlarge];
-		} else {
-			return viewportSizeRefs[ViewportSizeType.xxlarge];
+		if (width === this.lastWidthCheck && this.lastWidthSizeInfo) {
+			return this.lastWidthSizeInfo;
 		}
+		this.lastWidthCheck = width;
+
+		// todo: make this more dynamic
+		if (_.inRange(width, viewportSizesConfig.xsmall)) {
+			this.lastWidthSizeInfo = viewportSizeRefs[ViewportSizeType.xsmall];
+		} else if (_.inRange(width, viewportSizesConfig.xsmall, viewportSizesConfig.small)) {
+			this.lastWidthSizeInfo = viewportSizeRefs[ViewportSizeType.small];
+		} else if (_.inRange(width, viewportSizesConfig.small, viewportSizesConfig.medium)) {
+			this.lastWidthSizeInfo = viewportSizeRefs[ViewportSizeType.medium];
+		} else if (_.inRange(width, viewportSizesConfig.medium, viewportSizesConfig.large)) {
+			this.lastWidthSizeInfo = viewportSizeRefs[ViewportSizeType.large];
+		} else if (_.inRange(width, viewportSizesConfig.large, viewportSizesConfig.xlarge)) {
+			this.lastWidthSizeInfo = viewportSizeRefs[ViewportSizeType.xlarge];
+		} else {
+			this.lastWidthSizeInfo = viewportSizeRefs[ViewportSizeType.xxlarge];
+		}
+		return this.lastWidthSizeInfo;
 	}
 }
