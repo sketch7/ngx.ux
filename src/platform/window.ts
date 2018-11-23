@@ -2,7 +2,9 @@ import { InjectionToken, Injectable, Inject } from "@angular/core";
 
 export const WINDOW = new InjectionToken<Window>("Window");
 
-@Injectable()
+@Injectable({
+	providedIn: "root",
+})
 export class WindowRef {
 
 	constructor(

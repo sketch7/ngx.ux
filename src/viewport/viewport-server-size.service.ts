@@ -23,8 +23,9 @@ const viewportSizeSSR: Dictionary<ViewportSize> = {
 
 export const UX_VIEWPORT_SSR_DEVICE = new InjectionToken<UxOptions>("@ssv/ngx.ux-config/viewport/ssr-device");
 
-// todo: change to providedIn
-@Injectable()
+@Injectable({
+	providedIn: "root",
+})
 export class ViewportServerSizeService {
 
 	constructor(

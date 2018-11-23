@@ -62,8 +62,9 @@ const viewportSizeRefs: Dictionary<Readonly<ViewportSizeTypeInfo>> = {
 	} as ViewportSizeTypeInfo),
 };
 
-// todo: change to providedIn
-@Injectable()
+@Injectable({
+	providedIn: "root",
+})
 export class ViewportService {
 	/** Observable when window is resized (which is also throttled). */
 	resize$: Observable<ViewportSize>;

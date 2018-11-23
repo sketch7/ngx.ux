@@ -1,8 +1,8 @@
 import { NgModule, ModuleWithProviders, InjectionToken } from "@angular/core";
 
-import { SsvViewportMatcherDirective, ViewportService, ViewportServerSizeService } from "./viewport/index";
+import { SsvViewportMatcherDirective } from "./viewport/index";
 import { UxOptions, UX_DEFAULT_CONFIG, UX_CONFIG } from "./config";
-import { WindowRef, WINDOW } from "./platform/window";
+import { WINDOW } from "./platform/window";
 
 /** @internal */
 export const _MODULE_CONFIG = new InjectionToken<UxOptions | (() => UxOptions)>(
@@ -14,11 +14,7 @@ export const _MODULE_CONFIG = new InjectionToken<UxOptions | (() => UxOptions)>(
 	providers: [
 		{ provide: UX_CONFIG, useValue: UX_DEFAULT_CONFIG },
 
-		WindowRef,
 		{ provide: WINDOW, useFactory: _window },
-
-		ViewportService,
-		ViewportServerSizeService,
 	],
 	exports: [SsvViewportMatcherDirective],
 })
