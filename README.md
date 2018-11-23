@@ -123,7 +123,38 @@ this.viewport.sizeType$
 ```
 
 ### Viewport for SSR
-// todo
+Since in SSR there is no way to know the client viewport size, we should at least determine device type and handle provide
+3 different sizes based on device type e.g. `mobile`, `tablet` or `desktop` so the initial rendering will be closer based on device type.
+
+The basic implemention allows to provide a device type `mobile`, `tablet` or `desktop` and there are static sizes for those.
+
+```ts
+import { UX_VIEWPORT_SSR_DEVICE } from "@ssv/ngx.ux";
+
+const deviceType = deviceTypeFromServer;
+{ provide: UX_VIEWPORT_SSR_DEVICE, useValue: deviceType },
+```
+
+The default implementation can also be replaced by implementing a small class as following:
+
+```ts
+
+export class SuperViewportServerSizeService {
+  get(): ViewportSize {
+    // do your magic..
+    return size;
+  }
+}
+
+import { ViewportServerSizeService } from "@ssv/ngx.ux";
+
+@NgModule( {
+  providers: [
+    { provide: ViewportServerSizeService, useClass: SuperViewportServerSizeService }
+  ]
+}) export class AppModule {
+}
+```
 
 
 ## Configure

@@ -1,5 +1,5 @@
 import { InjectionToken } from "@angular/core";
-import { DeviceType, UxViewportOptions } from "./viewport/viewport.model";
+import { UxViewportOptions } from "./viewport/viewport.model";
 
 export interface UxOptions {
 	viewport: Partial<UxViewportOptions>;
@@ -8,7 +8,6 @@ export interface UxOptions {
 export const UX_DEFAULT_CONFIG: UxOptions = {
 	viewport: {
 		resizePollingSpeed: 33,
-		serverDeviceType: DeviceType.desktop
 	}
 };
 
