@@ -1,6 +1,5 @@
 import { InjectionToken } from "@angular/core";
-import { UxViewportOptions } from "./viewport/viewport.config";
-import { DeviceType } from "./viewport/viewport.model";
+import { DeviceType, UxViewportOptions } from "./viewport/viewport.model";
 
 export interface UxOptions {
 	viewport: UxViewportOptions;
