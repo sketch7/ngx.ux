@@ -22,7 +22,7 @@ jobs:
           command: npm run lint
       - run:
           name: Prebuild
-          command: gulp prebuild:rel
+          command: ./node_modules/gulp/bin/gulp prebuild:rel
       - run:
           name: Build
           command: npm run build
