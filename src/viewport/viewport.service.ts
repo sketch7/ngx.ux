@@ -111,7 +111,7 @@ export class ViewportService {
 		}
 		this.lastWidthCheck = width;
 
-		// todo: make this more dynamic
+		// todo: make this more dynamic + decouple from lodash
 		if (_.inRange(width, viewportSizesConfig.xsmall)) {
 			this.lastWidthSizeInfo = viewportSizeRefs[ViewportSizeType.xsmall];
 		} else if (_.inRange(width, viewportSizesConfig.xsmall, viewportSizesConfig.small)) {

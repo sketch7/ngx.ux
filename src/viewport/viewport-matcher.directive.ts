@@ -53,7 +53,7 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		console.log("ssvViewportMatcher init");
+		// console.log("ssvViewportMatcher init");
 
 		this.update$$ = this.update$
 			.pipe(
@@ -66,7 +66,7 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 
 		this.sizeType$$ = this.viewport.sizeType$
 			.pipe(
-				tap(x => console.log("ssvViewportMatcher - sizeType changed x2", x)),
+				// tap(x => console.log("ssvViewportMatcher - sizeType changed", x)),
 				tap(x => (this.sizeInfo = x)),
 				tap(() => this.update$.next(this._context)),
 			)
@@ -82,9 +82,9 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 						? this._thenViewRef.rootNodes[0]
 						: this._elseViewRef!.rootNodes[0];
 					if (prev) {
-						this.renderer.removeClass(el, `vp-size--${prev.name}`);
+						this.renderer.removeClass(el, `ssv-vp-size--${prev.name}`);
 					}
-					this.renderer.addClass(el, `vp-size--${curr!.name}`);
+					this.renderer.addClass(el, `ssv-vp-size--${curr!.name}`);
 				}),
 			)
 			.subscribe();
@@ -107,7 +107,6 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 	}
 
 	@Input() set ssvViewportMatcher(value: string | string[] | ViewportSizeMatcherExpression) {
-		console.log(">>> ssvViewportMatcher set", value);
 		if (isViewportSizeMatcherExpression(value)) {
 			this._context.expresson = value;
 		} else if (isViewportSizeMatcherTupleExpression(value)) {
@@ -126,8 +125,6 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 	}
 
 	@Input() set ssvViewportMatcherExclude(value: string | string[]) {
-		console.log(">>> ssvViewportMatcherExclude set", value);
-
 		this._context.sizeTypeExclude = value;
 
 		if (this.sizeInfo) {
