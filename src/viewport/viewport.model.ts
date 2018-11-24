@@ -37,3 +37,14 @@ export interface UxViewportOptions {
 	/** Polling speed on resizing (in milliseconds). e.g. the higher the number the longer it takes to recalculate. */
 	resizePollingSpeed: number;
 }
+
+export interface ViewportMatchConditions {
+	sizeType?: string | string[] | null;
+	sizeTypeExclude?: string | string[] | null;
+	expresson?: ViewportSizeMatcherExpression;
+}
+
+export interface ViewportSizeMatcherExpression {
+	size: string;
+	operation: ComparisonOperation;
+}

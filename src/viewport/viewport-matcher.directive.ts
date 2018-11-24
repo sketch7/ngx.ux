@@ -1,4 +1,3 @@
-import * as _ from "lodash";
 import {
 	OnInit,
 	OnDestroy,
@@ -14,27 +13,16 @@ import { tap, filter, pairwise, startWith } from "rxjs/operators";
 
 import { ViewportService } from "./viewport.service";
 import {
-	ViewportSizeMatcherExpression,
 	isViewportSizeMatcherExpression,
-	COMPARISON_OPERATION_FUNC_MAPPING,
-	isViewportSizeMatcherTupleExpression
+	isViewportSizeMatcherTupleExpression,
+	isViewportConditionMatch
 } from "./viewport.util";
-import { ViewportSizeTypeInfo, ViewportSizeType } from "./viewport.model";
+import { ViewportSizeTypeInfo, ViewportMatchConditions, ViewportSizeMatcherExpression } from "./viewport.model";
 
-export class SsvViewportMatcherContext {
+export class SsvViewportMatcherContext implements ViewportMatchConditions {
 	sizeType: string | string[] | null = null;
 	sizeTypeExclude: string | string[] | null = null;
 	expresson?: ViewportSizeMatcherExpression;
-}
-
-function match(value: string | string[] | null, targetValue: string, defaultValue: boolean) {
-	if (!value) {
-		return defaultValue;
-	}
-
-	return _.isArray(value)
-		? _.includes(value, targetValue)
-		: value === targetValue;
 }
 
 @Directive({
@@ -156,7 +144,7 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 	}
 
 	private _updateView(sizeInfo: ViewportSizeTypeInfo) {
-		if (this.shouldRender(sizeInfo, this._context)) {
+		if (isViewportConditionMatch(sizeInfo, this._context)) {
 			if (!this._thenViewRef) {
 				this._viewContainer.clear();
 				this._elseViewRef = null;
@@ -181,31 +169,6 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 				}
 			}
 		}
-	}
-
-	private shouldRender(sizeInfo: ViewportSizeTypeInfo, context: SsvViewportMatcherContext) {
-		const isExcluded = match(context.sizeTypeExclude, sizeInfo.name, false);
-		let isIncluded;
-		let isExpressionTruthy;
-
-		if (!isExcluded && context.expresson) {
-			const expressionSizeTypeValue: number = ViewportSizeType[
-				context.expresson.size as any
-			] as any;
-			const expMatcher = COMPARISON_OPERATION_FUNC_MAPPING[context.expresson.operation];
-
-			isExpressionTruthy = expMatcher(sizeInfo.type, expressionSizeTypeValue);
-			console.warn(">>> expression", {
-				expressionSizeTypeValue,
-				isExpressionTruthy,
-			});
-		} else {
-			isIncluded = match(context.sizeType, sizeInfo.name, true);
-		}
-
-		const shouldRender = (isExpressionTruthy || isIncluded) && !isExcluded;
-		console.warn(">>> shouldRender", { sizeInfo, context, shouldRender });
-		return shouldRender;
 	}
 
 }
