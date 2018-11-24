@@ -1,7 +1,6 @@
 const gulp = require("gulp");
 const ssvTools = require("@ssv/tools");
 
-require("./clean");
 require("./lint");
 
 
