@@ -1,0 +1,48 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:10.4
+    steps:
+      - run:
+          name: Print environment versions
+          command: |
+            NPM_V=$(npm -v)
+            echo npm version':' $NPM_V
+      - checkout
+      - run:
+          name: NPM Auth
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
+      - run:
+          name: Install Packages
+          command: npm ci
+      - run:
+          name: Lint
+          command: npm run lint
+      - run:
+          name: Prebuild
+          command: ./node_modules/.bin/gulp prebuild:rel
+      - run:
+          name: Build
+          command: npm run build
+      - run:
+          name: Test
+          command: npm test
+      - deploy:
+          name: Publish NPM
+          command: |
+            if [ "$CIRCLE_BRANCH" != "master" ]; then
+              echo -e "\e[33m Branch does not publish -- exit!"
+              exit
+            fi
+            . ./.circleci/utils.sh
+           
+            PACKAGE_VERSION=$(node -p "require('./package.json').version")
+            
+            print_title "publish..."
+            npm run publish:rel
+
+            print_title "git tag"
+            git tag $PACKAGE_VERSION
+            git push --tags

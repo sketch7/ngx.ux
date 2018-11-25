@@ -1,0 +1,9 @@
+node_modules
+.idea
+*.log
+*.tgz
+
+_artifact
+dist
+.rpt2_*
+.rts2_* 
