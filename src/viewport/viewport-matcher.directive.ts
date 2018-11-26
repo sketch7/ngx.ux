@@ -7,6 +7,7 @@ import {
 	Input,
 	EmbeddedViewRef,
 	TemplateRef,
+	ChangeDetectorRef,
 } from "@angular/core";
 import { Subscription, Subject } from "rxjs";
 import { tap, filter, pairwise, startWith } from "rxjs/operators";
@@ -47,6 +48,7 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 		private viewport: ViewportService,
 		private renderer: Renderer2,
 		private _viewContainer: ViewContainerRef,
+		private cdr: ChangeDetectorRef,
 		templateRef: TemplateRef<SsvViewportMatcherContext>,
 	) {
 		this._thenTemplateRef = templateRef;
@@ -61,6 +63,7 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 				filter(() => !!this.sizeInfo),
 				// tap(x => console.log(">>> ssvViewportMatcher - updating...", x)),
 				tap(() => this._updateView(this.sizeInfo!)),
+				tap(() => this.cdr.markForCheck())
 			)
 			.subscribe();
 
@@ -91,7 +94,6 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy() {
-
 		if (this.cssClass$$) {
 			this.cssClass$$.unsubscribe();
 		}
