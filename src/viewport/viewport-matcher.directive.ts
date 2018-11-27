@@ -75,22 +75,26 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 			)
 			.subscribe();
 
-		this.cssClass$$ = this.viewport.sizeType$
-			.pipe(
-				startWith<ViewportSizeTypeInfo | undefined>(undefined),
-				filter(() => !!(this._thenViewRef || this._elseViewRef)),
-				pairwise(),
-				tap(([prev, curr]) => {
-					const el = this._thenViewRef
-						? this._thenViewRef.rootNodes[0]
-						: this._elseViewRef!.rootNodes[0];
-					if (prev) {
-						this.renderer.removeClass(el, `ssv-vp-size--${prev.name}`);
-					}
-					this.renderer.addClass(el, `ssv-vp-size--${curr!.name}`);
-				}),
-			)
-			.subscribe();
+			this.cssClass$$ = this.viewport.sizeType$
+				.pipe(
+					startWith<ViewportSizeTypeInfo | undefined>(undefined),
+					filter(() => !!(this._thenViewRef || this._elseViewRef)),
+					pairwise(),
+					tap(([prev, curr]) => {
+						const el: Element = this._thenViewRef
+							? this._thenViewRef.rootNodes[0]
+							: this._elseViewRef!.rootNodes[0];
+
+						if (!el.classList) {
+							return;
+						}
+						if (prev) {
+							this.renderer.removeClass(el, `ssv-vp-size--${prev.name}`);
+						}
+						this.renderer.addClass(el, `ssv-vp-size--${curr!.name}`);
+					}),
+				)
+				.subscribe();
 	}
 
 	ngOnDestroy() {
