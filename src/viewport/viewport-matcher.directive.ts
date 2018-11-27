@@ -81,9 +81,13 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 				filter(() => !!(this._thenViewRef || this._elseViewRef)),
 				pairwise(),
 				tap(([prev, curr]) => {
-					const el = this._thenViewRef
+					const el: Element = this._thenViewRef
 						? this._thenViewRef.rootNodes[0]
 						: this._elseViewRef!.rootNodes[0];
+
+					if (!el.classList) {
+						return;
+					}
 					if (prev) {
 						this.renderer.removeClass(el, `ssv-vp-size--${prev.name}`);
 					}
