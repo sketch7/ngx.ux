@@ -1,3 +1,10 @@
+## [0.1.3](https://github.com/sketch7/ngx.ux/compare/0.1.2...0.1.3) (2018-01-31)
+
+### Bug Fixes
+
+- **viewport:** fix `sizeType$` was returning the initial `sizeType` on subscribe until resizing instead of the last value
+
+
 ## [0.1.2](https://github.com/sketch7/ngx.ux/compare/0.1.1...0.1.2) (2018-11-27)
 
 ### Bug Fixes
