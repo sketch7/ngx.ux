@@ -8,6 +8,8 @@ import {
 	distinctUntilChanged,
 	startWith,
 	share,
+	tap,
+	shareReplay,
 } from "rxjs/operators";
 
 import { Dictionary } from "../internal/internal.model";
@@ -95,6 +97,7 @@ export class ViewportService {
 			startWith(this.getViewportSize()),
 			map(x => this.calculateViewportSize(x.width)),
 			distinctUntilChanged(),
+			shareReplay(1),
 		);
 	}
 
