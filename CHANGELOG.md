@@ -1,3 +1,10 @@
+## [0.1.4](https://github.com/sketch7/ngx.ux/compare/0.1.3...0.1.4) (2018-02-21)
+
+### Chore
+
+update tooling
+
+
 ## [0.1.3](https://github.com/sketch7/ngx.ux/compare/0.1.2...0.1.3) (2018-01-31)
 
 ### Bug Fixes
