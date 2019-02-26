@@ -1,4 +1,3 @@
-import * as _ from "lodash";
 import { DOCUMENT } from "@angular/common";
 import { Injectable, Inject } from "@angular/core";
 import { Observable, fromEvent, of } from "rxjs";
@@ -107,9 +106,15 @@ export class ViewportService {
 	 * @returns
 	 */
 	calculateItemsPerRow(containerWidth: number, itemWidth: number): number {
-		if (_.isNil(containerWidth) && !this.windowRef.hasNative) {
+		if (containerWidth === 0) {
+			return 0;
+		}
+
+		if (!containerWidth && !this.windowRef.hasNative) {
+			// todo: find a way to get container width for ssr
 			containerWidth = this.viewportServerSize.get().width;
 		}
+
 		return containerWidth / itemWidth;
 	}
 

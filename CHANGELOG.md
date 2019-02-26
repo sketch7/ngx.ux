@@ -1,3 +1,10 @@
+## [0.1.5](https://github.com/sketch7/ngx.ux/compare/0.1.4...0.1.5) (2018-02-26)
+
+### Feature
+
+- **viewport:** implemented `calculateItemsPerRow` in service
+
+
 ## [0.1.4](https://github.com/sketch7/ngx.ux/compare/0.1.3...0.1.4) (2018-02-21)
 
 ### Chore
