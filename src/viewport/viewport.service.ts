@@ -79,8 +79,8 @@ export class ViewportService {
 	constructor(
 		@Inject(UX_CONFIG) config: UxOptions,
 		@Inject(DOCUMENT) private document: any,
-		windowRef: WindowRef,
-		viewportServerSize: ViewportServerSizeService,
+		private windowRef: WindowRef,
+		private viewportServerSize: ViewportServerSizeService,
 	) {
 		if (windowRef.hasNative) {
 			this.resize$ = fromEvent<Event>(window, "resize").pipe(
@@ -98,6 +98,25 @@ export class ViewportService {
 			distinctUntilChanged(),
 			shareReplay(1),
 		);
+	}
+
+	/**
+	 * Calculates amount of items that fits into container's width.
+	 * @param containerWidth
+	 * @param itemWidth
+	 * @returns
+	 */
+	calculateItemsPerRow(containerWidth: number, itemWidth: number): number {
+		if (containerWidth === 0) {
+			return 0;
+		}
+
+		if (!containerWidth && !this.windowRef.hasNative) {
+			// todo: find a way to get container width for ssr
+			containerWidth = this.viewportServerSize.get().width;
+		}
+
+		return containerWidth / itemWidth;
 	}
 
 	private getViewportSize(): ViewportSize {
