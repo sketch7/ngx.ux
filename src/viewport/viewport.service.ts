@@ -107,11 +107,10 @@ export class ViewportService {
 	 * @returns
 	 */
 	calculateItemsPerRow(containerWidth: number, itemWidth: number): number {
-		if (containerWidth === undefined && !this.windowRef.hasNative) {
+		if (_.isNil(containerWidth) && !this.windowRef.hasNative) {
 			containerWidth = this.viewportServerSize.get().width;
 		}
-		const itemsPerRow = containerWidth / itemWidth;
-		return Math.floor(itemsPerRow);
+		return containerWidth / itemWidth;
 	}
 
 	private getViewportSize(): ViewportSize {
