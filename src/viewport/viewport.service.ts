@@ -1,14 +1,13 @@
 import * as _ from "lodash";
-import { DOCUMENT } from "@angular/common";
 import { Injectable, Inject } from "@angular/core";
 import { Observable, fromEvent, of } from "rxjs";
 import {
-	debounceTime,
 	map,
 	distinctUntilChanged,
 	startWith,
 	share,
 	shareReplay,
+	auditTime,
 } from "rxjs/operators";
 
 import { Dictionary } from "../internal/internal.model";
@@ -78,14 +77,13 @@ export class ViewportService {
 
 	constructor(
 		@Inject(UX_CONFIG) config: UxOptions,
-		@Inject(DOCUMENT) private document: any,
 		private windowRef: WindowRef,
 		private viewportServerSize: ViewportServerSizeService,
 	) {
 		if (windowRef.hasNative) {
 			this.resize$ = fromEvent<Event>(window, "resize").pipe(
 				map(() => this.getViewportSize()),
-				debounceTime(config.viewport.resizePollingSpeed || UX_VIEWPORT_DEFAULT_CONFIG.resizePollingSpeed),
+				auditTime(config.viewport.resizePollingSpeed || UX_VIEWPORT_DEFAULT_CONFIG.resizePollingSpeed),
 				share(),
 			);
 		} else {
@@ -121,8 +119,8 @@ export class ViewportService {
 
 	private getViewportSize(): ViewportSize {
 		return {
-			width: this.document.documentElement.clientWidth,
-			height: this.document.documentElement.clientHeight,
+			width: this.windowRef.native.innerWidth,
+			height: this.windowRef.native.innerHeight,
 		};
 	}
 
