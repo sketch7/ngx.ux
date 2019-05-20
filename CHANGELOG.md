@@ -1,3 +1,14 @@
+## [0.2.0](https://github.com/sketch7/ngx.ux/compare/0.1.5...0.2.0) (2019-05-20)
+
+- **viewport:** width now includes scrollbar to be more inline with css media queries e.g. `window.innerWidth` instead of `documentElement.clientWidth` (same for height)
+- **viewport:** resize now emits more frequently, not only after stopping resizing for a duration of time e.g. use `auditTime` instead of `debounceTime`
+
+
+### BREAKING CHANGES
+
+- **viewport:** viewport size matching (including viewport matcher) size ranges now change according to the viewport size instead of the viewport container (e.g. scrollbar size is included)
+
+
 ## [0.1.5](https://github.com/sketch7/ngx.ux/compare/0.1.4...0.1.5) (2018-02-26)
 
 ### Feature
