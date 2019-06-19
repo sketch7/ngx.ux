@@ -1,3 +1,12 @@
+## [1.0.0](https://github.com/sketch7/ngx.ux/compare/0.2.0...1.0.0) (2019-06-11)
+
+### Chore
+
+*No new fixes/features in this release*
+
+- **deps:** update dev dependencies
+- **ci:** update node version
+
 ## [0.2.0](https://github.com/sketch7/ngx.ux/compare/0.1.5...0.2.0) (2019-05-20)
 
 - **viewport:** width now includes scrollbar to be more inline with css media queries e.g. `window.innerWidth` instead of `documentElement.clientWidth` (same for height)
