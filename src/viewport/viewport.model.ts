@@ -10,6 +10,7 @@ export enum ViewportSizeType {
 	large = 3,
 	xlarge = 4,
 	xxlarge = 5,
+	xxlarge1 = 6
 }
 
 export interface ViewportSizeTypeInfo {

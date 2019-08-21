@@ -26,6 +26,7 @@ const viewportSizesConfig = {
 	large: 1200,
 	xlarge: 1500,
 	xxlarge: 2000,
+	xxlarge1: 2500
 };
 
 // todo: autogenereate
@@ -60,6 +61,11 @@ const viewportSizeRefs: Dictionary<Readonly<ViewportSizeTypeInfo>> = {
 		type: ViewportSizeType.xxlarge,
 		widthThreshold: viewportSizesConfig.xxlarge,
 	} as ViewportSizeTypeInfo),
+	[ViewportSizeType.xxlarge1]: Object.freeze({
+		name: "xxlarge1",
+		type: ViewportSizeType.xxlarge1,
+		widthThreshold: viewportSizesConfig.xxlarge1,
+	} as ViewportSizeTypeInfo)
 };
 
 @Injectable({
@@ -141,8 +147,10 @@ export class ViewportService {
 			this.lastWidthSizeInfo = viewportSizeRefs[ViewportSizeType.large];
 		} else if (_.inRange(width, viewportSizesConfig.large, viewportSizesConfig.xlarge)) {
 			this.lastWidthSizeInfo = viewportSizeRefs[ViewportSizeType.xlarge];
-		} else {
+		} else if (_.inRange(width, viewportSizesConfig.xlarge, viewportSizesConfig.xxlarge)) {
 			this.lastWidthSizeInfo = viewportSizeRefs[ViewportSizeType.xxlarge];
+		} else {
+			this.lastWidthSizeInfo = viewportSizeRefs[ViewportSizeType.xxlarge1];
 		}
 		return this.lastWidthSizeInfo;
 	}
