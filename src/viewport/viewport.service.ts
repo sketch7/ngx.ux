@@ -25,8 +25,8 @@ const viewportSizesConfig = {
 	medium: 992,
 	large: 1200,
 	xlarge: 1500,
-	xxlarge1: 2000,
-	xxlarge2: 2500
+	xxlarge: 2000,
+	xxlarge1: 2500
 };
 
 // todo: autogenereate
@@ -56,15 +56,15 @@ const viewportSizeRefs: Dictionary<Readonly<ViewportSizeTypeInfo>> = {
 		type: ViewportSizeType.xlarge,
 		widthThreshold: viewportSizesConfig.xlarge,
 	} as ViewportSizeTypeInfo),
+	[ViewportSizeType.xxlarge]: Object.freeze({
+		name: "xxlarge",
+		type: ViewportSizeType.xxlarge,
+		widthThreshold: viewportSizesConfig.xxlarge,
+	} as ViewportSizeTypeInfo),
 	[ViewportSizeType.xxlarge1]: Object.freeze({
 		name: "xxlarge1",
 		type: ViewportSizeType.xxlarge1,
 		widthThreshold: viewportSizesConfig.xxlarge1,
-	} as ViewportSizeTypeInfo),
-	[ViewportSizeType.xxlarge2]: Object.freeze({
-		name: "xxlarge2",
-		type: ViewportSizeType.xxlarge2,
-		widthThreshold: viewportSizesConfig.xxlarge2,
 	} as ViewportSizeTypeInfo)
 };
 
@@ -147,10 +147,10 @@ export class ViewportService {
 			this.lastWidthSizeInfo = viewportSizeRefs[ViewportSizeType.large];
 		} else if (_.inRange(width, viewportSizesConfig.large, viewportSizesConfig.xlarge)) {
 			this.lastWidthSizeInfo = viewportSizeRefs[ViewportSizeType.xlarge];
-		} else if (_.inRange(width, viewportSizesConfig.xlarge, viewportSizesConfig.xxlarge1)) {
-			this.lastWidthSizeInfo = viewportSizeRefs[ViewportSizeType.xxlarge1];
+		} else if (_.inRange(width, viewportSizesConfig.xlarge, viewportSizesConfig.xxlarge)) {
+			this.lastWidthSizeInfo = viewportSizeRefs[ViewportSizeType.xxlarge];
 		} else {
-			this.lastWidthSizeInfo = viewportSizeRefs[ViewportSizeType.xxlarge2];
+			this.lastWidthSizeInfo = viewportSizeRefs[ViewportSizeType.xxlarge1];
 		}
 		return this.lastWidthSizeInfo;
 	}
