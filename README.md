@@ -43,7 +43,7 @@ Provides utilities to handle responsiveness easier based on the viewport (view s
 
 ### Comparsion Operands
 | Operand | Description           |
-|---------|-----------------------|
+| ------- | --------------------- |
 | =       | Equals                |
 | <>      | Not equals            |
 | <       | Less than             |
@@ -55,13 +55,14 @@ Provides utilities to handle responsiveness easier based on the viewport (view s
 
 ### Size Types
 | Size Type | Size Range |
-|-----------|------------|
-| xsmall    | <=450      |
-| small     | 450-767    |
-| medium    | 767-992    |
-| large     | 992-1200   |
-| xlarge    | 1200-1500  |
-| xxlarge   | 1500-2000  |
+| --------- | ---------- |
+| xsmall    | <=449      |
+| small     | 450-766    |
+| medium    | 767-991    |
+| large     | 992-1199   |
+| xlarge    | 1200-1499  |
+| xxlarge   | 1500-1999  |
+| xxlarge1  | >=2000     |
 
 
 ### Viewport Matcher Attribute (directive)

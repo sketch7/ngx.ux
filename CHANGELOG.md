@@ -1,3 +1,9 @@
+## [1.1.0](https://github.com/sketch7/ngx.ux/compare/1.0.0...1.1.0) (2019-08-21)
+
+### Features
+
+- **viewport:** add additional viewport breakpoint size `xxlarge1 >=2000`
+
 ## [1.0.0](https://github.com/sketch7/ngx.ux/compare/0.2.0...1.0.0) (2019-06-11)
 
 ### Chore
@@ -20,7 +26,7 @@
 
 ## [0.1.5](https://github.com/sketch7/ngx.ux/compare/0.1.4...0.1.5) (2018-02-26)
 
-### Feature
+### Features
 
 - **viewport:** implemented `calculateItemsPerRow` in service
 
