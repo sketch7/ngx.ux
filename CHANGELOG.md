@@ -1,8 +1,8 @@
-## [1.1.0](https://github.com/sketch7/ngx.ux/compare/1.0.0...1.1.0) (2019-08-21)
+## [1.1.0](https://github.com/sketch7/ngx.ux/compare/1.0.0...1.1.0) (2019-08-22)
 
 ### Features
 
-- **viewport:** add additional viewport breakpoint size `xxlarge1 >=2000`
+- **viewport:** add additional viewport breakpoint size `xxlarge1 >=1920`
 
 ## [1.0.0](https://github.com/sketch7/ngx.ux/compare/0.2.0...1.0.0) (2019-06-11)
 

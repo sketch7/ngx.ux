@@ -25,8 +25,8 @@ const viewportSizesConfig = {
 	medium: 992,
 	large: 1200,
 	xlarge: 1500,
-	xxlarge: 2000,
-	xxlarge1: 2500
+	xxlarge: 1920,
+	xxlarge1: 2100
 };
 
 // todo: autogenereate

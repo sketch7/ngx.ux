@@ -61,8 +61,8 @@ Provides utilities to handle responsiveness easier based on the viewport (view s
 | medium    | 767-991    |
 | large     | 992-1199   |
 | xlarge    | 1200-1499  |
-| xxlarge   | 1500-1999  |
-| xxlarge1  | >=2000     |
+| xxlarge   | 1500-1919  |
+| xxlarge1  | >=1920     |
 
 
 ### Viewport Matcher Attribute (directive)
