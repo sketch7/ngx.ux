@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/sketch7/ngx.ux/compare/1.1.0...1.1.1) (2020-05-29)
+
+### Bug Fixes
+
+- **viewport:** use `documentElement.clientWidth` to check viewport width on Safari only
+- **viewport:** `getViewportSize` not being called on SSR
+
 ## [1.1.0](https://github.com/sketch7/ngx.ux/compare/1.0.0...1.1.0) (2019-08-22)
 
 ### Features

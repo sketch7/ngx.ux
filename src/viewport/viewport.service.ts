@@ -1,5 +1,6 @@
 import * as _ from "lodash";
 import { Injectable, Inject } from "@angular/core";
+import { DOCUMENT } from "@angular/common";
 import { Observable, fromEvent, of } from "rxjs";
 import {
 	map,
@@ -83,6 +84,7 @@ export class ViewportService {
 
 	constructor(
 		@Inject(UX_CONFIG) config: UxOptions,
+		@Inject(DOCUMENT) private document: any,
 		private windowRef: WindowRef,
 		private viewportServerSize: ViewportServerSizeService,
 	) {
@@ -124,6 +126,18 @@ export class ViewportService {
 	}
 
 	private getViewportSize(): ViewportSize {
+		if (!this.windowRef.hasNative) {
+			return this.viewportServerSize.get();
+		}
+
+		const ua = navigator.userAgent.toLowerCase();
+		// safari subtracts the scrollbar width
+		if (ua.indexOf("safari") !== -1 && ua.indexOf("chrome") === -1) {
+			return {
+				width: this.document.documentElement.clientWidth,
+				height: this.document.documentElement.clientHeight,
+			};
+		}
 		return {
 			width: this.windowRef.native.innerWidth,
 			height: this.windowRef.native.innerHeight,
