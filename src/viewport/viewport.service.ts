@@ -83,6 +83,7 @@ export class ViewportService {
 
 	constructor(
 		@Inject(UX_CONFIG) config: UxOptions,
+		@Inject(Document) private document: Document,
 		private windowRef: WindowRef,
 		private viewportServerSize: ViewportServerSizeService,
 	) {
@@ -124,6 +125,14 @@ export class ViewportService {
 	}
 
 	private getViewportSize(): ViewportSize {
+		const ua = navigator.userAgent.toLowerCase();
+		// safari subtracts the scrollbar width
+		if (ua.indexOf("safari") !== -1) {
+			return {
+				width: this.document.documentElement.clientWidth,
+				height: this.document.documentElement.clientHeight,
+			};
+		}
 		return {
 			width: this.windowRef.native.innerWidth,
 			height: this.windowRef.native.innerHeight,
