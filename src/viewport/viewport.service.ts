@@ -1,5 +1,6 @@
 import * as _ from "lodash";
 import { Injectable, Inject } from "@angular/core";
+import { DOCUMENT } from "@angular/common";
 import { Observable, fromEvent, of } from "rxjs";
 import {
 	map,
@@ -83,7 +84,7 @@ export class ViewportService {
 
 	constructor(
 		@Inject(UX_CONFIG) config: UxOptions,
-		@Inject(Document) private document: Document,
+		@Inject(DOCUMENT) private document: any,
 		private windowRef: WindowRef,
 		private viewportServerSize: ViewportServerSizeService,
 	) {
