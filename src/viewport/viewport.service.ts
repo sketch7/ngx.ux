@@ -92,6 +92,7 @@ export class ViewportService {
 			this.resize$ = fromEvent<Event>(window, "resize").pipe(
 				map(() => this.getViewportSize()),
 				auditTime(config.viewport.resizePollingSpeed || UX_VIEWPORT_DEFAULT_CONFIG.resizePollingSpeed),
+				startWith(this.getViewportSize()),
 				share(),
 			);
 		} else {
@@ -99,7 +100,6 @@ export class ViewportService {
 		}
 
 		this.sizeType$ = this.resize$.pipe(
-			startWith(this.getViewportSize()),
 			map(x => this.calculateViewportSize(x.width)),
 			distinctUntilChanged(),
 			shareReplay(1),
