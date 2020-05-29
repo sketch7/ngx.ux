@@ -128,7 +128,7 @@ export class ViewportService {
 	private getViewportSize(): ViewportSize {
 		const ua = navigator.userAgent.toLowerCase();
 		// safari subtracts the scrollbar width
-		if (ua.indexOf("safari") !== -1) {
+		if (ua.indexOf("safari") !== -1 && ua.indexOf("chrome") === -1) {
 			return {
 				width: this.document.documentElement.clientWidth,
 				height: this.document.documentElement.clientHeight,
