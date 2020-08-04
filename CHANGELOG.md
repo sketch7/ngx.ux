@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/sketch7/ngx.ux/compare/1.1.1...1.1.2) (2020-08-04)
+
+### Features
+
+- **viewport:** changes to `ViewportService` to be overriden by changing `getViewportSize` and `calculateViewportSize` to protected
+- **viewport:** export `WindowRef`
+
 ## [1.1.1](https://github.com/sketch7/ngx.ux/compare/1.1.0...1.1.1) (2020-05-29)
 
 ### Bug Fixes

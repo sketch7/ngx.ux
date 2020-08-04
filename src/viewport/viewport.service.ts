@@ -79,6 +79,8 @@ export class ViewportService {
 	/** Observable when viewport size type changes. */
 	sizeType$: Observable<ViewportSizeTypeInfo>;
 
+	pollingSpeed: number;
+
 	private lastWidthCheck: number | undefined;
 	private lastWidthSizeInfo: ViewportSizeTypeInfo | undefined;
 
@@ -88,10 +90,12 @@ export class ViewportService {
 		private windowRef: WindowRef,
 		private viewportServerSize: ViewportServerSizeService,
 	) {
+		this.pollingSpeed = config.viewport.resizePollingSpeed || UX_VIEWPORT_DEFAULT_CONFIG.resizePollingSpeed;
+
 		if (windowRef.hasNative) {
 			this.resize$ = fromEvent<Event>(window, "resize").pipe(
 				map(() => this.getViewportSize()),
-				auditTime(config.viewport.resizePollingSpeed || UX_VIEWPORT_DEFAULT_CONFIG.resizePollingSpeed),
+				auditTime(this.pollingSpeed),
 				share(),
 			);
 		} else {
@@ -125,7 +129,7 @@ export class ViewportService {
 		return containerWidth / itemWidth;
 	}
 
-	private getViewportSize(): ViewportSize {
+	protected getViewportSize(): ViewportSize {
 		if (!this.windowRef.hasNative) {
 			return this.viewportServerSize.get();
 		}
@@ -144,7 +148,7 @@ export class ViewportService {
 		};
 	}
 
-	private calculateViewportSize(width: number): ViewportSizeTypeInfo {
+	protected calculateViewportSize(width: number): ViewportSizeTypeInfo {
 		if (width === this.lastWidthCheck && this.lastWidthSizeInfo) {
 			return this.lastWidthSizeInfo;
 		}
