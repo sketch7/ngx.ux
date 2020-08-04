@@ -129,7 +129,7 @@ export class ViewportService {
 		return containerWidth / itemWidth;
 	}
 
-	protected getViewportSize(): ViewportSize {
+	getViewportSize(): ViewportSize {
 		if (!this.windowRef.hasNative) {
 			return this.viewportServerSize.get();
 		}
