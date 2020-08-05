@@ -8,7 +8,7 @@ import {
 	startWith,
 	share,
 	shareReplay,
-	auditTime
+	auditTime,
 } from "rxjs/operators";
 
 import { Dictionary } from "../internal/internal.model";
@@ -88,7 +88,6 @@ export class ViewportService {
 		private windowRef: WindowRef,
 		private viewportServerSize: ViewportServerSizeService,
 	) {
-
 		if (windowRef.hasNative) {
 			this.resize$ = fromEvent<Event>(window, "resize").pipe(
 				map(() => this.getViewportSize()),
