@@ -2,8 +2,7 @@
 
 ### Features
 
-- **viewport:** changes to `ViewportService` to be overriden by changing `pollingSpeed` & `getViewportSize` to public and `calculateViewportSize` to protected
-- **viewport:** export `WindowRef`
+- **viewport:** changes to `ViewportService` to be overriden by changing `getViewportSize` to public and `calculateViewportSize` to protected
 
 ## [1.1.1](https://github.com/sketch7/ngx.ux/compare/1.1.0...1.1.1) (2020-05-29)
 

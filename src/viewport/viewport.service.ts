@@ -9,6 +9,7 @@ import {
 	share,
 	shareReplay,
 	auditTime,
+	tap
 } from "rxjs/operators";
 
 import { Dictionary } from "../internal/internal.model";
@@ -79,8 +80,6 @@ export class ViewportService {
 	/** Observable when viewport size type changes. */
 	sizeType$: Observable<ViewportSizeTypeInfo>;
 
-	pollingSpeed: number;
-
 	private lastWidthCheck: number | undefined;
 	private lastWidthSizeInfo: ViewportSizeTypeInfo | undefined;
 
@@ -90,12 +89,11 @@ export class ViewportService {
 		private windowRef: WindowRef,
 		private viewportServerSize: ViewportServerSizeService,
 	) {
-		this.pollingSpeed = config.viewport.resizePollingSpeed || UX_VIEWPORT_DEFAULT_CONFIG.resizePollingSpeed;
 
 		if (windowRef.hasNative) {
 			this.resize$ = fromEvent<Event>(window, "resize").pipe(
 				map(() => this.getViewportSize()),
-				auditTime(this.pollingSpeed),
+				auditTime(config.viewport.resizePollingSpeed || UX_VIEWPORT_DEFAULT_CONFIG.resizePollingSpeed),
 				share(),
 			);
 		} else {
@@ -106,7 +104,7 @@ export class ViewportService {
 			startWith(this.getViewportSize()),
 			map(x => this.calculateViewportSize(x.width)),
 			distinctUntilChanged(),
-			shareReplay(1),
+			shareReplay(1)
 		);
 	}
 
