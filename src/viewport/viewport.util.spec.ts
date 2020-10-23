@@ -1,5 +1,5 @@
 import { isViewportConditionMatch, generateViewportDictionary } from "./viewport.util";
-import { ViewportSizeType, ViewportSizeTypeInfo, ComparisonOperation, } from "./viewport.model";
+import { ViewportSizeType, ComparisonOperation, } from "./viewport.model";
 
 export const sizeRefs = generateViewportDictionary({
 	xsmall: 450,
