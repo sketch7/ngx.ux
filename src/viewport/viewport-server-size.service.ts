@@ -34,10 +34,6 @@ export class ViewportServerSizeService {
 	}
 
 	get(): ViewportSize {
-		let size = viewportSizeSSR[this.deviceType];
-		if (!size) {
-			size = viewportSizeSSR[DeviceType.desktop];
-		}
-		return size;
+		return viewportSizeSSR[this.deviceType] || viewportSizeSSR[DeviceType.desktop];
 	}
 }

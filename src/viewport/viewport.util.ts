@@ -44,24 +44,24 @@ export const COMPARISON_OPERATION_FUNC_MAPPING: Dictionary<(a: number, b: number
 	[ComparisonOperation.greaterOrEqualThan]: (a: number, b: number) => a >= b,
 };
 
-export function isViewportConditionMatch(evaluteSize: ViewportSizeTypeInfo, conditions: ViewportMatchConditions) {
-	const isExcluded = match(conditions.sizeTypeExclude, evaluteSize.name, false);
+export function isViewportConditionMatch(evaluateSize: ViewportSizeTypeInfo, conditions: ViewportMatchConditions) {
+	const isExcluded = match(conditions.sizeTypeExclude, evaluateSize.name, false);
 	let isIncluded;
 	let isExpressionTruthy;
 
-	if (!isExcluded && conditions.expresson) {
+	if (!isExcluded && conditions.expression) {
 		const expressionSizeTypeValue: number = ViewportSizeType[
-			conditions.expresson.size as any
+			conditions.expression.size as any
 		] as any;
-		const expMatcher = COMPARISON_OPERATION_FUNC_MAPPING[conditions.expresson.operation];
+		const expMatcher = COMPARISON_OPERATION_FUNC_MAPPING[conditions.expression.operation];
 
-		isExpressionTruthy = expMatcher(evaluteSize.type, expressionSizeTypeValue);
+		isExpressionTruthy = expMatcher(evaluateSize.type, expressionSizeTypeValue);
 	} else {
-		isIncluded = match(conditions.sizeType, evaluteSize.name, true);
+		isIncluded = match(conditions.sizeType, evaluateSize.name, true);
 	}
 
 	const shouldRender = (isExpressionTruthy || isIncluded) && !isExcluded;
-	// console.warn(">>> shouldRender", { evaluteSize, conditions, shouldRender });
+	// console.warn(">>> shouldRender", { evaluateSize, conditions, shouldRender });
 	return !!shouldRender;
 }
 

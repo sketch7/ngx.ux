@@ -109,7 +109,7 @@ describe("Viewport utils", () => {
 
 					for (const data of dataSet) {
 						const result = isViewportConditionMatch(data.size, {
-							expresson: data.expression
+							expression: data.expression
 						});
 						expect(result).toBe(data.expectedResult);
 					}

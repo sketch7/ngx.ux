@@ -42,7 +42,7 @@ export interface UxViewportOptions {
 export interface ViewportMatchConditions {
 	sizeType?: string | string[] | null;
 	sizeTypeExclude?: string | string[] | null;
-	expresson?: ViewportSizeMatcherExpression;
+	expression?: ViewportSizeMatcherExpression;
 }
 
 export interface ViewportSizeMatcherExpression {
