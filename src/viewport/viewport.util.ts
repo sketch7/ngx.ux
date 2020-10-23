@@ -131,5 +131,5 @@ export function generateViewportInternalConfig(value: UxViewportOptions): UxView
 	return {
 		...value,
 		viewportDictionary: generateViewportDictionary(value.breakpoints)
-	}
+	};
 }

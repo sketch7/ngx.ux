@@ -92,11 +92,12 @@ export class ViewportService {
 	}
 
 	private calculateViewportSize(width: number): ViewportSizeTypeInfo {
-		if (width !== this.lastWidthCheck) {
-			this.lastWidthCheck = width;
-			this.lastWidthSizeInfo = this.getWidthSizeInfo(width);
+		if (width === this.lastWidthCheck && this.lastWidthSizeInfo) {
+			return this.lastWidthSizeInfo;
 		}
 
+		this.lastWidthCheck = width;
+		this.lastWidthSizeInfo = this.getWidthSizeInfo(width);
 		return this.lastWidthSizeInfo;
 	}
 

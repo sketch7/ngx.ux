@@ -34,7 +34,7 @@ export interface UxViewportBreakpoints {
 }
 
 export interface UxViewportOptions {
-	breakpoints: UxViewportBreakpoints
+	breakpoints: UxViewportBreakpoints;
 	resizePollingSpeed: number; // Polling speed on resizing (in milliseconds). e.g. the higher the number the longer it takes to recalculate.
 }
 
@@ -66,4 +66,4 @@ export interface ViewportSizeMatcherExpression {
 
 export type ViewportDictionary = {
 	[key in ViewportSizeType]: ViewportSizeTypeInfo;
-}
+};
