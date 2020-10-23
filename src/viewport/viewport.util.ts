@@ -4,9 +4,12 @@ import {
 	ViewportSizeMatcherExpression,
 	ViewportSizeTypeInfo,
 	ViewportMatchConditions,
-	ViewportSizeType
+	ViewportSizeType,
+	UxViewportBreakpoints,
+	UxViewportOptions,
+	UxViewportOptionsInternal,
+	ViewportDictionary
 } from "./viewport.model";
-
 
 export function isViewportSizeMatcherExpression(value: unknown): value is ViewportSizeMatcherExpression {
 	if (typeof value !== "object" || !value) {
@@ -73,4 +76,60 @@ function match(value: string | string[] | null | undefined, targetValue: string,
 	return Array.isArray(value)
 		? value.includes(targetValue)
 		: value === targetValue;
+}
+
+/**
+ * Generate a dictionary with all the information on every viewport available
+ * @param breakpoints the breakpoints obtained from the config
+ */
+function generateViewportDictionary(breakpoints: UxViewportBreakpoints): Readonly<ViewportDictionary> {
+	return Object.freeze<ViewportDictionary>({
+		[ViewportSizeType.xsmall]: Object.freeze<ViewportSizeTypeInfo>({
+			name: "xsmall",
+			type: ViewportSizeType.xsmall,
+			widthThreshold: breakpoints.xsmall,
+		}),
+		[ViewportSizeType.small]: Object.freeze<ViewportSizeTypeInfo>({
+			name: "small",
+			type: ViewportSizeType.small,
+			widthThreshold: breakpoints.small,
+		}),
+		[ViewportSizeType.medium]: Object.freeze<ViewportSizeTypeInfo>({
+			name: "medium",
+			type: ViewportSizeType.medium,
+			widthThreshold: breakpoints.medium,
+		}),
+		[ViewportSizeType.large]: Object.freeze<ViewportSizeTypeInfo>({
+			name: "large",
+			type: ViewportSizeType.large,
+			widthThreshold: breakpoints.large,
+		}),
+		[ViewportSizeType.xlarge]: Object.freeze<ViewportSizeTypeInfo>({
+			name: "xlarge",
+			type: ViewportSizeType.xlarge,
+			widthThreshold: breakpoints.xlarge,
+		}),
+		[ViewportSizeType.xxlarge]: Object.freeze<ViewportSizeTypeInfo>({
+			name: "xxlarge",
+			type: ViewportSizeType.xxlarge,
+			widthThreshold: breakpoints.xxlarge,
+		}),
+		[ViewportSizeType.xxlarge1]: Object.freeze<ViewportSizeTypeInfo>({
+			name: "xxlarge1",
+			type: ViewportSizeType.xxlarge1,
+			widthThreshold: breakpoints.xxlarge1,
+		}),
+	});
+}
+
+/**
+ * Generates the internal config by using the module config to generate the
+ *  viewport dictionary.
+ * @param value the module config
+ */
+export function generateViewportInternalConfig(value: UxViewportOptions): UxViewportOptionsInternal {
+	return {
+		...value,
+		viewportDictionary: generateViewportDictionary(value.breakpoints)
+	}
 }

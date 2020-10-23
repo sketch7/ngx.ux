@@ -1,8 +1,3 @@
-export interface ViewportSize {
-	width: number;
-	height: number;
-}
-
 export enum ViewportSizeType {
 	xsmall = 0,
 	small = 1,
@@ -11,12 +6,6 @@ export enum ViewportSizeType {
 	xlarge = 4,
 	xxlarge = 5,
 	xxlarge1 = 6
-}
-
-export interface ViewportSizeTypeInfo {
-	type: ViewportSizeType;
-	name: string;
-	widthThreshold: number;
 }
 
 export enum ComparisonOperation {
@@ -34,9 +23,34 @@ export enum DeviceType {
 	tablet = "tablet"
 }
 
+export interface UxViewportBreakpoints {
+	xsmall: number;
+	small: number;
+	medium: number;
+	large: number;
+	xlarge: number;
+	xxlarge: number;
+	xxlarge1: number;
+}
+
 export interface UxViewportOptions {
-	/** Polling speed on resizing (in milliseconds). e.g. the higher the number the longer it takes to recalculate. */
-	resizePollingSpeed: number;
+	breakpoints: UxViewportBreakpoints
+	resizePollingSpeed: number; // Polling speed on resizing (in milliseconds). e.g. the higher the number the longer it takes to recalculate.
+}
+
+export interface UxViewportOptionsInternal extends UxViewportOptions {
+	viewportDictionary: Readonly<ViewportDictionary>;
+}
+
+export interface ViewportSize {
+	width: number;
+	height: number;
+}
+
+export interface ViewportSizeTypeInfo {
+	type: ViewportSizeType;
+	name: string;
+	widthThreshold: number;
 }
 
 export interface ViewportMatchConditions {
@@ -48,4 +62,8 @@ export interface ViewportMatchConditions {
 export interface ViewportSizeMatcherExpression {
 	size: string;
 	operation: ComparisonOperation;
+}
+
+export type ViewportDictionary = {
+	[key in ViewportSizeType]: ViewportSizeTypeInfo;
 }
