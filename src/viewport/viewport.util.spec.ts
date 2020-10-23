@@ -1,29 +1,15 @@
-import { isViewportConditionMatch } from "./viewport.util";
+import { isViewportConditionMatch, generateViewportDictionary } from "./viewport.util";
 import { ViewportSizeType, ViewportSizeTypeInfo, ComparisonOperation, } from "./viewport.model";
 
-export const sizeRefs = {
-	xsmall: Object.freeze({
-		name: "xsmall",
-		type: ViewportSizeType.xsmall,
-		widthThreshold: 450,
-	} as ViewportSizeTypeInfo),
-	small: Object.freeze({
-		name: "small",
-		type: ViewportSizeType.small,
-		widthThreshold: 767,
-	} as ViewportSizeTypeInfo),
-	medium: Object.freeze({
-		name: "medium",
-		type: ViewportSizeType.medium,
-		widthThreshold: 992,
-	} as ViewportSizeTypeInfo),
-	large: Object.freeze({
-		name: "large",
-		type: ViewportSizeType.large,
-		widthThreshold: 1200,
-	} as ViewportSizeTypeInfo),
-};
-
+export const sizeRefs = generateViewportDictionary({
+	xsmall: 450,
+	small: 767,
+	medium: 992,
+	large: 1200,
+	xlarge: 1500,
+	xxlarge: 1920,
+	xxlarge1: 2100
+});
 
 describe("Viewport utils", () => {
 
@@ -32,7 +18,7 @@ describe("Viewport utils", () => {
 		describe("given only size include is used", () => {
 
 			describe("when single matching value is passed", () => {
-				const result = isViewportConditionMatch(sizeRefs.small, {
+				const result = isViewportConditionMatch(sizeRefs[ViewportSizeType.small], {
 					sizeType: "small"
 				});
 
@@ -42,7 +28,7 @@ describe("Viewport utils", () => {
 			});
 
 			describe("when single not matching value is passed", () => {
-				const result = isViewportConditionMatch(sizeRefs.small, {
+				const result = isViewportConditionMatch(sizeRefs[ViewportSizeType.small], {
 					sizeType: "xsmall"
 				});
 
@@ -52,7 +38,7 @@ describe("Viewport utils", () => {
 			});
 
 			describe("when multi values are passed with a matching value", () => {
-				const result = isViewportConditionMatch(sizeRefs.small, {
+				const result = isViewportConditionMatch(sizeRefs[ViewportSizeType.small], {
 					sizeType: ["small", "medium"]
 				});
 				it("should return true", () => {
@@ -61,7 +47,7 @@ describe("Viewport utils", () => {
 			});
 
 			describe("when multi values are passed with a non matching value", () => {
-				const result = isViewportConditionMatch(sizeRefs.large, {
+				const result = isViewportConditionMatch(sizeRefs[ViewportSizeType.large], {
 					sizeType: ["small", "medium"]
 				});
 				it("should return false", () => {
@@ -76,32 +62,32 @@ describe("Viewport utils", () => {
 				it("should match", () => {
 					const dataSet = [
 						{
-							size: sizeRefs.small,
+							size: sizeRefs[ViewportSizeType.small],
 							expression: { operation: ComparisonOperation.equals, size: "small" },
 							expectedResult: true
 						},
 						{
-							size: sizeRefs.xsmall,
+							size: sizeRefs[ViewportSizeType.xsmall],
 							expression: { operation: ComparisonOperation.notEquals, size: "small" },
 							expectedResult: true
 						},
 						{
-							size: sizeRefs.small,
+							size: sizeRefs[ViewportSizeType.small],
 							expression: { operation: ComparisonOperation.notEquals, size: "small" },
 							expectedResult: false
 						},
 						{
-							size: sizeRefs.small,
+							size: sizeRefs[ViewportSizeType.small],
 							expression: { operation: ComparisonOperation.lessThan, size: "medium" },
 							expectedResult: true
 						},
 						{
-							size: sizeRefs.medium,
+							size: sizeRefs[ViewportSizeType.medium],
 							expression: { operation: ComparisonOperation.lessThan, size: "medium" },
 							expectedResult: false
 						},
 						{
-							size: sizeRefs.medium,
+							size: sizeRefs[ViewportSizeType.medium],
 							expression: { operation: ComparisonOperation.lessOrEqualThan, size: "medium" },
 							expectedResult: true
 						},
@@ -121,7 +107,3 @@ describe("Viewport utils", () => {
 	});
 
 });
-
-
-
-// todo - generateViewportSizeRefs tests

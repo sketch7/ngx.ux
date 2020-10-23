@@ -82,7 +82,7 @@ function match(value: string | string[] | null | undefined, targetValue: string,
  * Generate a dictionary with all the information on every viewport available
  * @param breakpoints the breakpoints obtained from the config
  */
-function generateViewportDictionary(breakpoints: UxViewportBreakpoints): Readonly<ViewportDictionary> {
+export function generateViewportDictionary(breakpoints: UxViewportBreakpoints): Readonly<ViewportDictionary> {
 	return Object.freeze<ViewportDictionary>({
 		[ViewportSizeType.xsmall]: Object.freeze<ViewportSizeTypeInfo>({
 			name: "xsmall",
