@@ -42,7 +42,7 @@ export class ViewportService {
 		if (windowRef.hasNative) {
 			this.resize$ = fromEvent<Event>(window, "resize").pipe(
 				map(() => this.getViewportSize()),
-				auditTime(this.config.viewport.resizePollingSpeed),
+				auditTime(config.viewport.resizePollingSpeed),
 				share(),
 			);
 		} else {
