@@ -63,3 +63,5 @@ export interface ViewportSizeMatcherExpression {
 export type ViewportDictionary = {
 	[key in ViewportSizeType]: ViewportSizeTypeInfo;
 };
+
+export type ViewportSizeTypeLiteral = keyof typeof ViewportSizeType;

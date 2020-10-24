@@ -6,7 +6,8 @@ import {
 	ViewportMatchConditions,
 	ViewportSizeType,
 	UxViewportBreakpoints,
-	ViewportDictionary
+	ViewportDictionary,
+	ViewportSizeTypeLiteral
 } from "./viewport.model";
 
 export function isViewportSizeMatcherExpression(value: unknown): value is ViewportSizeMatcherExpression {
@@ -77,45 +78,39 @@ function match(value: string | string[] | null | undefined, targetValue: string,
 }
 
 /**
+ * Generates the viewport information based on the given key and value. Used to generate the
+ *  viewport dictionary
+ * @param breakpointKey the breakpoint key e.g small or medium
+ * @param breakpoint the breakpoint value e.g 500
+ */
+function generateViewportSizeInformation(
+		breakpointKey: ViewportSizeTypeLiteral,
+		breakpoint: number
+	): Partial<ViewportDictionary> {
+
+	return {
+		[ViewportSizeType[breakpointKey]]: Object.freeze<ViewportSizeTypeInfo>({
+			name: breakpointKey,
+			type: ViewportSizeType[breakpointKey],
+			widthThreshold: breakpoint
+		})
+	};
+}
+
+/**
  * Generate a dictionary with all the information on every viewport available
  * @param breakpoints the breakpoints obtained from the config
  */
 export function generateViewportDictionary(breakpoints: UxViewportBreakpoints): Readonly<ViewportDictionary> {
-	return Object.freeze<ViewportDictionary>({
-		[ViewportSizeType.xsmall]: Object.freeze<ViewportSizeTypeInfo>({
-			name: "xsmall",
-			type: ViewportSizeType.xsmall,
-			widthThreshold: breakpoints.xsmall,
-		}),
-		[ViewportSizeType.small]: Object.freeze<ViewportSizeTypeInfo>({
-			name: "small",
-			type: ViewportSizeType.small,
-			widthThreshold: breakpoints.small,
-		}),
-		[ViewportSizeType.medium]: Object.freeze<ViewportSizeTypeInfo>({
-			name: "medium",
-			type: ViewportSizeType.medium,
-			widthThreshold: breakpoints.medium,
-		}),
-		[ViewportSizeType.large]: Object.freeze<ViewportSizeTypeInfo>({
-			name: "large",
-			type: ViewportSizeType.large,
-			widthThreshold: breakpoints.large,
-		}),
-		[ViewportSizeType.xlarge]: Object.freeze<ViewportSizeTypeInfo>({
-			name: "xlarge",
-			type: ViewportSizeType.xlarge,
-			widthThreshold: breakpoints.xlarge,
-		}),
-		[ViewportSizeType.xxlarge]: Object.freeze<ViewportSizeTypeInfo>({
-			name: "xxlarge",
-			type: ViewportSizeType.xxlarge,
-			widthThreshold: breakpoints.xxlarge,
-		}),
-		[ViewportSizeType.xxlarge1]: Object.freeze<ViewportSizeTypeInfo>({
-			name: "xxlarge1",
-			type: ViewportSizeType.xxlarge1,
-			widthThreshold: breakpoints.xxlarge1,
-		}),
-	});
+	return Object.freeze<ViewportDictionary>(
+		Object.keys(breakpoints)
+		.map<Partial<ViewportDictionary>>(
+			breakpointKey => generateViewportSizeInformation(
+				breakpointKey as ViewportSizeTypeLiteral,
+				breakpoints[breakpointKey as keyof UxViewportBreakpoints])
+		).reduce<Partial<ViewportDictionary>>(
+			(previous, current) => ({ ...previous, ...current }),
+			{}
+		) as ViewportDictionary
+	);
 }
