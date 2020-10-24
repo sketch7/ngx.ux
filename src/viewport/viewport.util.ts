@@ -104,13 +104,13 @@ function generateViewportSizeInformation(
 export function generateViewportDictionary(breakpoints: UxViewportBreakpoints): Readonly<ViewportDictionary> {
 	return Object.freeze<ViewportDictionary>(
 		Object.keys(breakpoints)
-		.map<Partial<ViewportDictionary>>(
-			breakpointKey => generateViewportSizeInformation(
-				breakpointKey as ViewportSizeTypeLiteral,
-				breakpoints[breakpointKey as keyof UxViewportBreakpoints])
-		).reduce<Partial<ViewportDictionary>>(
-			(previous, current) => ({ ...previous, ...current }),
-			{}
-		) as ViewportDictionary
+			.map<Partial<ViewportDictionary>>(
+				breakpointKey => generateViewportSizeInformation(
+					breakpointKey as ViewportSizeTypeLiteral,
+					breakpoints[breakpointKey as keyof UxViewportBreakpoints])
+			).reduce<Partial<ViewportDictionary>>(
+				(previous, current) => ({ ...previous, ...current }),
+				{}
+			) as ViewportDictionary
 	);
 }
