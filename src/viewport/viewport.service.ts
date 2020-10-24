@@ -1,4 +1,3 @@
-import * as _ from "lodash";
 import { Injectable, Inject } from "@angular/core";
 import { DOCUMENT } from "@angular/common";
 import { Observable, fromEvent, of } from "rxjs";
@@ -11,10 +10,11 @@ import {
 	auditTime,
 } from "rxjs/operators";
 
-import { UxOptionsInternal, UX_CONFIG } from "../config";
-import { ViewportSizeTypeInfo, ViewportSize, ViewportSizeType } from "./viewport.model";
+import { UxOptions, UX_CONFIG } from "../config";
+import { ViewportSizeTypeInfo, ViewportSize, ViewportSizeType, ViewportDictionary } from "./viewport.model";
 import { WindowRef } from "../platform/window";
 import { ViewportServerSizeService } from "./viewport-server-size.service";
+import { generateViewportDictionary } from "./viewport.util";
 
 @Injectable({
 	providedIn: "root",
@@ -29,12 +29,16 @@ export class ViewportService {
 	private lastWidthCheck: number | undefined;
 	private lastWidthSizeInfo: ViewportSizeTypeInfo | undefined;
 
+	private readonly viewportDictionary: ViewportDictionary;
+
 	constructor(
-		@Inject(UX_CONFIG) private config: UxOptionsInternal,
+		@Inject(UX_CONFIG) private config: UxOptions,
 		@Inject(DOCUMENT) private document: any,
 		private windowRef: WindowRef,
 		private viewportServerSize: ViewportServerSizeService,
 	) {
+		this.viewportDictionary = generateViewportDictionary(config.viewport.breakpoints);
+
 		if (windowRef.hasNative) {
 			this.resize$ = fromEvent<Event>(window, "resize").pipe(
 				map(() => this.getViewportSize()),
@@ -106,21 +110,21 @@ export class ViewportService {
 	 * @param width the viewport width
 	 */
 	private getWidthSizeInfo(width: number): ViewportSizeTypeInfo {
-		// todo: make this more dynamic + decouple from lodash
-		if (_.inRange(width, this.config.viewport.breakpoints.small)) {
-			return this.config.viewport.viewportDictionary[ViewportSizeType.xsmall];
-		} else if (_.inRange(width, this.config.viewport.breakpoints.xsmall, this.config.viewport.breakpoints.small)) {
-			return this.config.viewport.viewportDictionary[ViewportSizeType.small];
-		} else if (_.inRange(width, this.config.viewport.breakpoints.small, this.config.viewport.breakpoints.medium)) {
-			return this.config.viewport.viewportDictionary[ViewportSizeType.medium];
-		} else if (_.inRange(width, this.config.viewport.breakpoints.medium, this.config.viewport.breakpoints.large)) {
-			return this.config.viewport.viewportDictionary[ViewportSizeType.large];
-		} else if (_.inRange(width, this.config.viewport.breakpoints.large, this.config.viewport.breakpoints.xlarge)) {
-			return this.config.viewport.viewportDictionary[ViewportSizeType.xlarge];
-		} else if (_.inRange(width, this.config.viewport.breakpoints.xlarge, this.config.viewport.breakpoints.xxlarge)) {
-			return this.config.viewport.viewportDictionary[ViewportSizeType.xxlarge];
+		// todo: make this more dynamic
+		if (width <= this.config.viewport.breakpoints.xsmall) {
+			return this.viewportDictionary[ViewportSizeType.xsmall];
+		} else if (width <= this.config.viewport.breakpoints.small) {
+			return this.viewportDictionary[ViewportSizeType.small];
+		} else if (width <= this.config.viewport.breakpoints.medium) {
+			return this.viewportDictionary[ViewportSizeType.medium];
+		} else if (width <= this.config.viewport.breakpoints.large) {
+			return this.viewportDictionary[ViewportSizeType.large];
+		} else if (width <= this.config.viewport.breakpoints.xlarge) {
+			return this.viewportDictionary[ViewportSizeType.xlarge];
+		} else if (width <= this.config.viewport.breakpoints.xxlarge) {
+			return this.viewportDictionary[ViewportSizeType.xxlarge];
 		}
 
-		return this.config.viewport.viewportDictionary[ViewportSizeType.xxlarge1];
+		return this.viewportDictionary[ViewportSizeType.xxlarge1];
 	}
 }

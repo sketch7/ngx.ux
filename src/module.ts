@@ -1,8 +1,8 @@
 import * as _ from "lodash";
 import { NgModule, ModuleWithProviders, InjectionToken } from "@angular/core";
 
-import { generateViewportInternalConfig, SsvViewportMatcherDirective } from "./viewport/index";
-import { UxOptions, UX_DEFAULT_CONFIG, UX_CONFIG, UxOptionsInternal } from "./config";
+import { SsvViewportMatcherDirective } from "./viewport/index";
+import { UxOptions, UX_DEFAULT_CONFIG, UX_CONFIG } from "./config";
 import { WINDOW } from "./platform/window";
 
 /** @internal */
@@ -28,21 +28,15 @@ export class SsvUxModule {
 					useFactory: _moduleConfigFactory,
 					deps: [_MODULE_CONFIG],
 				},
-				{ provide: _MODULE_CONFIG, useValue: config },
+				{ provide: _MODULE_CONFIG, useValue: config || UX_DEFAULT_CONFIG },
 			],
 		};
 	}
 }
 
 /** @internal */
-export function _moduleConfigFactory(config: UxOptions | (() => UxOptions)): UxOptionsInternal {
-	const value = typeof config === "function" ? config() : config;
-	const mergedValue = _.merge(UX_DEFAULT_CONFIG, value);
-	const viewport = generateViewportInternalConfig(mergedValue.viewport);
-
-	return {
-		viewport
-	};
+export function _moduleConfigFactory(config: UxOptions | (() => UxOptions)): UxOptions {
+	return typeof config === "function" ? config() : config;
 }
 
 /** @internal */

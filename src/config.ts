@@ -1,6 +1,6 @@
 import { InjectionToken } from "@angular/core";
 import { UX_VIEWPORT_DEFAULT_CONFIG } from "./viewport/viewport.const";
-import { UxViewportOptions, UxViewportOptionsInternal } from "./viewport/viewport.model";
+import { UxViewportOptions } from "./viewport/viewport.model";
 
 export interface UxOptions {
 	viewport: UxViewportOptions;
@@ -9,9 +9,5 @@ export interface UxOptions {
 export const UX_DEFAULT_CONFIG: UxOptions = {
 	viewport: UX_VIEWPORT_DEFAULT_CONFIG,
 };
-
-export interface UxOptionsInternal {
-	viewport: UxViewportOptionsInternal;
-}
 
 export const UX_CONFIG = new InjectionToken<UxOptions>("@ssv/ngx.ux-config");

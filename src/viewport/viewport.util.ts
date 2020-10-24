@@ -6,8 +6,6 @@ import {
 	ViewportMatchConditions,
 	ViewportSizeType,
 	UxViewportBreakpoints,
-	UxViewportOptions,
-	UxViewportOptionsInternal,
 	ViewportDictionary
 } from "./viewport.model";
 
@@ -120,16 +118,4 @@ export function generateViewportDictionary(breakpoints: UxViewportBreakpoints): 
 			widthThreshold: breakpoints.xxlarge1,
 		}),
 	});
-}
-
-/**
- * Generates the internal config by using the module config to generate the
- *  viewport dictionary.
- * @param value the module config
- */
-export function generateViewportInternalConfig(value: UxViewportOptions): UxViewportOptionsInternal {
-	return {
-		...value,
-		viewportDictionary: generateViewportDictionary(value.breakpoints)
-	};
 }
