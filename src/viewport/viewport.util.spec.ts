@@ -1,7 +1,10 @@
-import { isViewportConditionMatch, generateViewportDictionary } from "./viewport.util";
-import { ViewportSizeType, ComparisonOperation, } from "./viewport.model";
+import {
+	isViewportConditionMatch,
+	generateViewportSizeTypeInfoList
+} from "./viewport.util";
+import { ComparisonOperation, ViewportSizeTypeInfo, } from "./viewport.model";
 
-export const sizeRefs = generateViewportDictionary({
+const viewportList = generateViewportSizeTypeInfoList({
 	xsmall: 450,
 	small: 767,
 	medium: 992,
@@ -11,6 +14,10 @@ export const sizeRefs = generateViewportDictionary({
 	xxlarge1: 2100
 });
 
+function getViewportSizeTypeInfoByName(name: string): ViewportSizeTypeInfo | undefined {
+	return viewportList.find(a => a.name === name);
+}
+
 describe("Viewport utils", () => {
 
 	describe("isViewportConditionMatch", () => {
@@ -18,9 +25,9 @@ describe("Viewport utils", () => {
 		describe("given only size include is used", () => {
 
 			describe("when single matching value is passed", () => {
-				const result = isViewportConditionMatch(sizeRefs[ViewportSizeType.small], {
-					sizeType: "small"
-				});
+				const sizeType = "small";
+				const viewportInfo = getViewportSizeTypeInfoByName(sizeType);
+				const result = viewportInfo && isViewportConditionMatch(viewportInfo, { sizeType });
 
 				it("should return true", () => {
 					expect(result).toBe(true);
@@ -28,9 +35,9 @@ describe("Viewport utils", () => {
 			});
 
 			describe("when single not matching value is passed", () => {
-				const result = isViewportConditionMatch(sizeRefs[ViewportSizeType.small], {
-					sizeType: "xsmall"
-				});
+				const sizeType = "xsmall";
+				const viewportInfo = getViewportSizeTypeInfoByName(sizeType);
+				const result = viewportInfo && isViewportConditionMatch(viewportInfo, { sizeType });
 
 				it("should return false", () => {
 					expect(result).toBe(false);
@@ -38,18 +45,22 @@ describe("Viewport utils", () => {
 			});
 
 			describe("when multi values are passed with a matching value", () => {
-				const result = isViewportConditionMatch(sizeRefs[ViewportSizeType.small], {
+				const viewportInfo = getViewportSizeTypeInfoByName("small");
+				const result = viewportInfo && isViewportConditionMatch(viewportInfo, {
 					sizeType: ["small", "medium"]
 				});
+
 				it("should return true", () => {
 					expect(result).toBe(true);
 				});
 			});
 
 			describe("when multi values are passed with a non matching value", () => {
-				const result = isViewportConditionMatch(sizeRefs[ViewportSizeType.large], {
+				const viewportInfo = getViewportSizeTypeInfoByName("large");
+				const result = viewportInfo && isViewportConditionMatch(viewportInfo, {
 					sizeType: ["small", "medium"]
 				});
+
 				it("should return false", () => {
 					expect(result).toBe(false);
 				});

@@ -90,13 +90,3 @@ export function generateViewportSizeTypeInfoList(breakpoints: Dictionary<number>
 		}))
 	);
 }
-
-/**
- * Gets the viewport size type info by name
- * @param name the breakpoint name
- * @param list the viewport size type info list
- * @internal
- */
-export function getViewportSizeTypeInfoByName(name: string, list: ViewportSizeTypeInfo[]): ViewportSizeTypeInfo | undefined {
-	return list.find(a => a.name === name);
-}
