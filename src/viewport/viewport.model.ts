@@ -1,12 +1,14 @@
-export enum ViewportSizeType {
-	xsmall = 0,
-	small = 1,
-	medium = 2,
-	large = 3,
-	xlarge = 4,
-	xxlarge = 5,
-	xxlarge1 = 6
-}
+import { Dictionary } from "../internal/internal.model";
+
+export const UxViewportSizes = {
+	xsmall: 450,
+	small: 767,
+	medium: 992,
+	large: 1200,
+	xlarge: 1500,
+	xxlarge: 1920,
+	xxlarge1: 2100
+};
 
 export enum ComparisonOperation {
 	equals = "=",
@@ -23,19 +25,10 @@ export enum DeviceType {
 	tablet = "tablet"
 }
 
-export interface UxViewportBreakpoints {
-	xsmall: number;
-	small: number;
-	medium: number;
-	large: number;
-	xlarge: number;
-	xxlarge: number;
-	xxlarge1: number;
-}
-
 export interface UxViewportOptions {
-	breakpoints: UxViewportBreakpoints;
-	resizePollingSpeed: number; // Polling speed on resizing (in milliseconds). e.g. the higher the number the longer it takes to recalculate.
+	/** Polling speed on resizing (in milliseconds). e.g. the higher the number the longer it takes to recalculate. */
+	resizePollingSpeed: number;
+	breakpoints: Dictionary<number>;
 }
 
 export interface ViewportSize {
@@ -44,7 +37,7 @@ export interface ViewportSize {
 }
 
 export interface ViewportSizeTypeInfo {
-	type: ViewportSizeType;
+	type: number;
 	name: string;
 	widthThreshold: number;
 }
@@ -59,9 +52,3 @@ export interface ViewportSizeMatcherExpression {
 	size: string;
 	operation: ComparisonOperation;
 }
-
-export type ViewportDictionary = {
-	[key in ViewportSizeType]: ViewportSizeTypeInfo;
-};
-
-export type ViewportSizeTypeLiteral = keyof typeof ViewportSizeType;

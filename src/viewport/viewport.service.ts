@@ -1,5 +1,4 @@
 import { Injectable, Inject } from "@angular/core";
-import { DOCUMENT } from "@angular/common";
 import { Observable, fromEvent, of } from "rxjs";
 import {
 	map,
@@ -11,10 +10,10 @@ import {
 } from "rxjs/operators";
 
 import { UxOptions, UX_CONFIG } from "../config";
-import { ViewportSizeTypeInfo, ViewportSize, ViewportSizeType, ViewportDictionary } from "./viewport.model";
+import { ViewportSizeTypeInfo, ViewportSize } from "./viewport.model";
 import { WindowRef } from "../platform/window";
 import { ViewportServerSizeService } from "./viewport-server-size.service";
-import { generateViewportDictionary } from "./viewport.util";
+import { generateViewportSizeTypeInfoList } from "./viewport.util";
 
 @Injectable({
 	providedIn: "root",
@@ -26,18 +25,15 @@ export class ViewportService {
 	/** Observable when viewport size type changes. */
 	sizeType$: Observable<ViewportSizeTypeInfo>;
 
-	private lastWidthCheck: number | undefined;
-	private lastWidthSizeInfo: ViewportSizeTypeInfo | undefined;
-
-	private readonly viewportDictionary: ViewportDictionary;
+	/** An ordered list of viewport size type from smallest to largest */
+	private readonly viewportList: ViewportSizeTypeInfo[];
 
 	constructor(
-		@Inject(UX_CONFIG) private config: UxOptions,
-		@Inject(DOCUMENT) private document: any,
+		@Inject(UX_CONFIG) config: UxOptions,
 		private windowRef: WindowRef,
 		private viewportServerSize: ViewportServerSizeService,
 	) {
-		this.viewportDictionary = generateViewportDictionary(config.viewport.breakpoints);
+		this.viewportList = generateViewportSizeTypeInfoList(config.viewport.breakpoints);
 
 		if (windowRef.hasNative) {
 			this.resize$ = fromEvent<Event>(window, "resize").pipe(
@@ -51,58 +47,32 @@ export class ViewportService {
 
 		this.sizeType$ = this.resize$.pipe(
 			startWith(this.getViewportSize()),
-			map(x => this.calculateViewportSize(x.width)),
-			distinctUntilChanged(),
+			distinctUntilChanged((a, b) => a.width === b.width),
+			map(x => this.getWidthSizeInfo(x.width)),
 			shareReplay(1),
 		);
 	}
 
 	/**
-	 * Calculates amount of items that fits into container's width.
-	 * @param containerWidth
-	 * @param itemWidth
-	 * @returns
+	 * Returns the current viewport size
 	 */
-	calculateItemsPerRow(containerWidth: number, itemWidth: number): number {
-		if (containerWidth === 0) {
-			return 0;
-		}
-
-		if (!containerWidth && !this.windowRef.hasNative) {
-			// todo: find a way to get container width for ssr
-			containerWidth = this.viewportServerSize.get().width;
-		}
-
-		return containerWidth / itemWidth;
-	}
-
 	private getViewportSize(): ViewportSize {
 		if (!this.windowRef.hasNative) {
 			return this.viewportServerSize.get();
 		}
 
 		const ua = navigator.userAgent.toLowerCase();
-		// safari subtracts the scrollbar width
-		if (ua.indexOf("safari") !== -1 && ua.indexOf("chrome") === -1) {
+		if (ua.indexOf("safari") !== -1 && ua.indexOf("chrome") === -1) { // safari subtracts the scrollbar width
 			return {
-				width: this.document.documentElement.clientWidth,
-				height: this.document.documentElement.clientHeight,
+				width: this.windowRef.native.document.documentElement.clientWidth,
+				height: this.windowRef.native.document.documentElement.clientHeight,
 			};
 		}
+
 		return {
 			width: this.windowRef.native.innerWidth,
 			height: this.windowRef.native.innerHeight,
 		};
-	}
-
-	private calculateViewportSize(width: number): ViewportSizeTypeInfo {
-		if (width === this.lastWidthCheck && this.lastWidthSizeInfo) {
-			return this.lastWidthSizeInfo;
-		}
-
-		this.lastWidthCheck = width;
-		this.lastWidthSizeInfo = this.getWidthSizeInfo(width);
-		return this.lastWidthSizeInfo;
 	}
 
 	/**
@@ -110,21 +80,16 @@ export class ViewportService {
 	 * @param width the viewport width
 	 */
 	private getWidthSizeInfo(width: number): ViewportSizeTypeInfo {
-		// todo: make this more dynamic
-		if (width <= this.config.viewport.breakpoints.xsmall) {
-			return this.viewportDictionary[ViewportSizeType.xsmall];
-		} else if (width <= this.config.viewport.breakpoints.small) {
-			return this.viewportDictionary[ViewportSizeType.small];
-		} else if (width <= this.config.viewport.breakpoints.medium) {
-			return this.viewportDictionary[ViewportSizeType.medium];
-		} else if (width <= this.config.viewport.breakpoints.large) {
-			return this.viewportDictionary[ViewportSizeType.large];
-		} else if (width <= this.config.viewport.breakpoints.xlarge) {
-			return this.viewportDictionary[ViewportSizeType.xlarge];
-		} else if (width <= this.config.viewport.breakpoints.xxlarge) {
-			return this.viewportDictionary[ViewportSizeType.xxlarge];
+		const lastEntryIndex = this.viewportList.length - 1;
+
+		for (let idx = 0; idx < lastEntryIndex; idx++) {
+			const viewportSizeTypeInfo = this.viewportList[idx];
+
+			if (width <= viewportSizeTypeInfo.widthThreshold) {
+				return viewportSizeTypeInfo;
+			}
 		}
 
-		return this.viewportDictionary[ViewportSizeType.xxlarge1];
+		return this.viewportList[lastEntryIndex];
 	}
 }

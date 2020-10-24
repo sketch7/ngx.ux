@@ -4,7 +4,7 @@ import { NgModule, ModuleWithProviders, InjectionToken } from "@angular/core";
 import { SsvViewportMatcherDirective } from "./viewport/index";
 import { UxOptions, UX_DEFAULT_CONFIG, UX_CONFIG } from "./config";
 import { WINDOW } from "./platform/window";
-import { RecursivePartial } from "./internal/internal.model";
+import { PartialDeep } from "./internal/internal.model";
 
 /** @internal */
 export const _MODULE_CONFIG = new InjectionToken<UxOptions>("_ux-config");
@@ -18,7 +18,7 @@ export const _MODULE_CONFIG = new InjectionToken<UxOptions>("_ux-config");
 	exports: [SsvViewportMatcherDirective],
 })
 export class SsvUxModule {
-	static forRoot(config?: RecursivePartial<UxOptions> | (() => RecursivePartial<UxOptions>)): ModuleWithProviders {
+	static forRoot(config?: PartialDeep<UxOptions> | (() => PartialDeep<UxOptions>)): ModuleWithProviders {
 		return {
 			ngModule: SsvUxModule,
 			providers: [

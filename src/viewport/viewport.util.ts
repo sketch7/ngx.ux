@@ -1,13 +1,10 @@
+import * as _ from "lodash";
 import { Dictionary } from "../internal/internal.model";
 import {
 	ComparisonOperation,
 	ViewportSizeMatcherExpression,
 	ViewportSizeTypeInfo,
-	ViewportMatchConditions,
-	ViewportSizeType,
-	UxViewportBreakpoints,
-	ViewportDictionary,
-	ViewportSizeTypeLiteral
+	ViewportMatchConditions
 } from "./viewport.model";
 
 export function isViewportSizeMatcherExpression(value: unknown): value is ViewportSizeMatcherExpression {
@@ -78,39 +75,28 @@ function match(value: string | string[] | null | undefined, targetValue: string,
 }
 
 /**
- * Generates the viewport information based on the given key and value. Used to generate the
- *  viewport dictionary
- * @param breakpointKey the breakpoint key e.g small or medium
- * @param breakpoint the breakpoint value e.g 500
+ * Pre-processes the given breakpoints into an ordered list from smallest to largest while generating
+ *  all the necessary information on the viewport.
+ * @param breakpoints the breakpoints obtained from the config
+ * @internal
  */
-function generateViewportSizeInformation(
-		breakpointKey: ViewportSizeTypeLiteral,
-		breakpoint: number
-	): Partial<ViewportDictionary> {
-
-	return {
-		[ViewportSizeType[breakpointKey]]: Object.freeze<ViewportSizeTypeInfo>({
-			name: breakpointKey,
-			type: ViewportSizeType[breakpointKey],
-			widthThreshold: breakpoint
-		})
-	};
+export function generateViewportSizeTypeInfoList(breakpoints: Dictionary<number>): ViewportSizeTypeInfo[] {
+	return Object.entries(breakpoints)
+		.sort(([, widthA], [, widthB]) => widthA - widthB)
+		.map(([name, width], index) => (Object.freeze({
+			name,
+			type: index,
+			widthThreshold: width
+		}))
+	);
 }
 
 /**
- * Generate a dictionary with all the information on every viewport available
- * @param breakpoints the breakpoints obtained from the config
+ * Gets the viewport size type info by name
+ * @param name the breakpoint name
+ * @param list the viewport size type info list
+ * @internal
  */
-export function generateViewportDictionary(breakpoints: UxViewportBreakpoints): Readonly<ViewportDictionary> {
-	return Object.freeze<ViewportDictionary>(
-		Object.keys(breakpoints)
-			.map<Partial<ViewportDictionary>>(
-				breakpointKey => generateViewportSizeInformation(
-					breakpointKey as ViewportSizeTypeLiteral,
-					breakpoints[breakpointKey as keyof UxViewportBreakpoints])
-			).reduce<Partial<ViewportDictionary>>(
-				(previous, current) => ({ ...previous, ...current }),
-				{}
-			) as ViewportDictionary
-	);
+export function getViewportSizeTypeInfoByName(name: string, list: ViewportSizeTypeInfo[]): ViewportSizeTypeInfo | undefined {
+	return list.find(a => a.name === name);
 }
