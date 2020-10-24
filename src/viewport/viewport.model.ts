@@ -38,10 +38,6 @@ export interface UxViewportOptions {
 	resizePollingSpeed: number; // Polling speed on resizing (in milliseconds). e.g. the higher the number the longer it takes to recalculate.
 }
 
-export interface UxViewportOptionsInternal extends UxViewportOptions {
-	viewportDictionary: Readonly<ViewportDictionary>;
-}
-
 export interface ViewportSize {
 	width: number;
 	height: number;
