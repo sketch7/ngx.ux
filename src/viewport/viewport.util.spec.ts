@@ -34,9 +34,8 @@ describe("Viewport utils", () => {
 			});
 
 			describe("when single not matching value is passed", () => {
-				const sizeType = "xsmall";
-				const viewportRef = viewportSizeTypeInfoRefs[sizeType];
-				const result = isViewportConditionMatch(viewportRef, { sizeType }, viewportSizeTypeInfoRefs);
+				const viewportRef = viewportSizeTypeInfoRefs.small;
+				const result = isViewportConditionMatch(viewportRef, { sizeType: "xsmall" }, viewportSizeTypeInfoRefs);
 
 				it("should return false", () => {
 					expect(result).toBe(false);
