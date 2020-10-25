@@ -175,4 +175,3 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 	}
 
 }
-
