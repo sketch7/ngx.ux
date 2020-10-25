@@ -67,39 +67,36 @@ describe("Viewport utils", () => {
 
 		describe("given expression tuple is used", () => {
 			describe("when different expressions are passed", () => {
-				const viewportRefXSmall = viewportSizeTypeInfoRefs.xsmall;
-				const viewportRefSmall = viewportSizeTypeInfoRefs.small;
-				const viewportRefMedium = viewportSizeTypeInfoRefs.medium;
 
 				it("should match", () => {
 					const dataSet = [
 						{
-							size: viewportRefSmall,
+							size: viewportSizeTypeInfoRefs.small,
 							expression: { operation: ComparisonOperation.equals, size: "small" },
 							expectedResult: true
 						},
 						{
-							size: viewportRefXSmall,
+							size: viewportSizeTypeInfoRefs.xsmall,
 							expression: { operation: ComparisonOperation.notEquals, size: "small" },
 							expectedResult: true
 						},
 						{
-							size: viewportRefSmall,
+							size: viewportSizeTypeInfoRefs.small,
 							expression: { operation: ComparisonOperation.notEquals, size: "small" },
 							expectedResult: false
 						},
 						{
-							size: viewportRefSmall,
+							size: viewportSizeTypeInfoRefs.small,
 							expression: { operation: ComparisonOperation.lessThan, size: "medium" },
 							expectedResult: true
 						},
 						{
-							size: viewportRefMedium,
+							size: viewportSizeTypeInfoRefs.medium,
 							expression: { operation: ComparisonOperation.lessThan, size: "medium" },
 							expectedResult: false
 						},
 						{
-							size: viewportRefMedium,
+							size: viewportSizeTypeInfoRefs.medium,
 							expression: { operation: ComparisonOperation.lessOrEqualThan, size: "medium" },
 							expectedResult: true
 						},

@@ -1,4 +1,3 @@
-import * as _ from "lodash";
 import { Dictionary } from "../internal/internal.model";
 import {
 	ComparisonOperation,
@@ -43,7 +42,8 @@ export const COMPARISON_OPERATION_FUNC_MAPPING: Dictionary<(a: number, b: number
 	[ComparisonOperation.greaterOrEqualThan]: (a: number, b: number) => a >= b,
 };
 
-export function isViewportConditionMatch(evaluteSize: ViewportSizeTypeInfo,
+export function isViewportConditionMatch(
+		evaluteSize: ViewportSizeTypeInfo,
 		conditions: ViewportMatchConditions,
 		viewportSizeTypeInfoRefs: Dictionary<ViewportSizeTypeInfo>) {
 	const isExcluded = match(conditions.sizeTypeExclude, evaluteSize.name, false);

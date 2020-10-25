@@ -1,6 +1,6 @@
 import { Dictionary } from "../internal/internal.model";
 
-export const UxViewportSizes = {
+export const ViewportSizeType = {
 	xsmall: 450,
 	small: 767,
 	medium: 992,
