@@ -1,4 +1,3 @@
-import * as _ from "lodash";
 import { NgModule, ModuleWithProviders, InjectionToken } from "@angular/core";
 
 import { SsvViewportMatcherDirective } from "./viewport/index";
