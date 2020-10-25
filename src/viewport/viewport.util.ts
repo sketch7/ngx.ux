@@ -43,15 +43,15 @@ export const COMPARISON_OPERATION_FUNC_MAPPING: Dictionary<(a: number, b: number
 	[ComparisonOperation.greaterOrEqualThan]: (a: number, b: number) => a >= b,
 };
 
-export function isViewportConditionMatch(evaluteSize: ViewportSizeTypeInfo, conditions: ViewportMatchConditions) {
+export function isViewportConditionMatch(evaluteSize: ViewportSizeTypeInfo,
+		conditions: ViewportMatchConditions,
+		viewportSizeTypeInfoRefs: Dictionary<ViewportSizeTypeInfo>) {
 	const isExcluded = match(conditions.sizeTypeExclude, evaluteSize.name, false);
 	let isIncluded;
 	let isExpressionTruthy;
 
 	if (!isExcluded && conditions.expresson) {
-		const expressionSizeTypeValue: number = ViewportSizeType[
-			conditions.expresson.size as any
-		] as any;
+		const expressionSizeTypeValue: number = viewportSizeTypeInfoRefs[conditions.expresson.size].type;
 		const expMatcher = COMPARISON_OPERATION_FUNC_MAPPING[conditions.expresson.operation];
 
 		isExpressionTruthy = expMatcher(evaluteSize.type, expressionSizeTypeValue);
@@ -88,5 +88,21 @@ export function generateViewportSizeTypeInfoList(breakpoints: Dictionary<number>
 			type: index,
 			widthThreshold: width
 		}))
+	);
+}
+
+/**
+ * Converts the breakpoint list into a dictionary while using the name as key.
+ * @param breakpointList the list of breakpoints
+ * @internal
+ */
+export function generateViewportSizeTypeInfoRefs(breakpointList: ViewportSizeTypeInfo[]): Dictionary<ViewportSizeTypeInfo> {
+	return Object.freeze(
+		breakpointList.reduce<Dictionary<ViewportSizeTypeInfo>>((dictionary, breakpoint) => (
+			{
+				...dictionary,
+				[breakpoint.name]: breakpoint
+			}
+		), {})
 	);
 }

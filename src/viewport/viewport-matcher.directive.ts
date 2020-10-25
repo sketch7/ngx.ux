@@ -147,7 +147,7 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 	}
 
 	private _updateView(sizeInfo: ViewportSizeTypeInfo) {
-		if (isViewportConditionMatch(sizeInfo, this._context)) {
+		if (isViewportConditionMatch(sizeInfo, this._context, this.viewport.viewportSizeTypeInfoRefs)) {
 			if (!this._thenViewRef) {
 				this._viewContainer.clear();
 				this._elseViewRef = null;
