@@ -1,17 +1,4 @@
 import { Dictionary } from "../internal/internal.model";
-import { generateViewportSizeType } from "./viewport.util";
-
-export const UxViewportSizes = {
-	xsmall: 450,
-	small: 767,
-	medium: 992,
-	large: 1200,
-	xlarge: 1500,
-	xxlarge: 1920,
-	xxlarge1: 2100
-};
-
-export const ViewportSizeType = generateViewportSizeType(UxViewportSizes);
 
 export enum ComparisonOperation {
 	equals = "=",

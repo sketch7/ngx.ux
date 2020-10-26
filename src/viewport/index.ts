@@ -8,3 +8,8 @@ export {
 	COMPARISON_OPERATION_FUNC_MAPPING,
 	generateViewportSizeType,
 } from "./viewport.util";
+export {
+	UxViewportSizes,
+	ViewportSizeType
+} from "./viewport.const";
+
