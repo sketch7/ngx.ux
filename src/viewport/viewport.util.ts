@@ -75,14 +75,38 @@ function match(value: string | string[] | null | undefined, targetValue: string,
 }
 
 /**
+ * A util function which generates the ViewportSizeTypeInfo.type for each breakpoint.
+ * @param breakpoints the custom breakpoints
+ */
+export function generateViewportSizeType(breakpoints: Dictionary<number>): Dictionary<number> {
+	return getSortedBreakpoints(breakpoints)
+		.reduce<Dictionary<number>>((dictionary, [name, _width], index) => (
+			{
+				...dictionary,
+				[name]: index
+			}
+		), {});
+}
+
+/**
+ * Converts the breakpoints into a 2 dimensional array containing the name and width, and sorted from
+ *  smallest to largets.
+ * @param breakpoints the breakpoints obtained from the config
+ * @internal
+ */
+function getSortedBreakpoints(breakpoints: Dictionary<number>): [string, number][] {
+	return Object.entries(breakpoints)
+		.sort(([, widthA], [, widthB]) => widthA - widthB);
+}
+
+/**
  * Pre-processes the given breakpoints into an ordered list from smallest to largest while generating
  *  all the necessary information on the viewport.
  * @param breakpoints the breakpoints obtained from the config
  * @internal
  */
 export function generateViewportSizeTypeInfoList(breakpoints: Dictionary<number>): ViewportSizeTypeInfo[] {
-	return Object.entries(breakpoints)
-		.sort(([, widthA], [, widthB]) => widthA - widthB)
+	return getSortedBreakpoints(breakpoints)
 		.map(([name, width], index) => (Object.freeze({
 			name,
 			type: index,

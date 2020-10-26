@@ -1,23 +1,38 @@
 import {
 	isViewportConditionMatch,
 	generateViewportSizeTypeInfoList,
-	generateViewportSizeTypeInfoRefs
+	generateViewportSizeTypeInfoRefs,
+	generateViewportSizeType,
 } from "./viewport.util";
 import { ComparisonOperation } from "./viewport.model";
 
-const viewportSizeTypeInfoList = generateViewportSizeTypeInfoList({
+const breakpoints = {
 	xsmall: 450,
 	small: 767,
 	medium: 992,
+	fullhd: 1920,
 	large: 1200,
-	xlarge: 1500,
-	xxlarge: 1920,
-	xxlarge1: 2100
-});
-
+};
+const viewportSizeTypeInfoList = generateViewportSizeTypeInfoList(breakpoints);
 const viewportSizeTypeInfoRefs = generateViewportSizeTypeInfoRefs(viewportSizeTypeInfoList);
 
 describe("Viewport utils", () => {
+
+	describe("generateViewportSizeType", () => {
+		describe("given custom breakpoints are used", () => {
+			const result = generateViewportSizeType(breakpoints);
+
+			it("should match the expected key/value pair ", () => {
+				expect(result).toEqual(jasmine.objectContaining({
+					xsmall: 0,
+					small: 1,
+					medium: 2,
+					large: 3,
+					fullhd: 4,
+				}));
+			});
+		});
+	});
 
 	describe("isViewportConditionMatch", () => {
 

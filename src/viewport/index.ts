@@ -6,4 +6,5 @@ export {
 	isViewportSizeMatcherExpression,
 	isViewportSizeMatcherTupleExpression,
 	COMPARISON_OPERATION_FUNC_MAPPING,
+	generateViewportSizeType,
 } from "./viewport.util";
