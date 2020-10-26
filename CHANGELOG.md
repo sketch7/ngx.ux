@@ -8,7 +8,7 @@
 
 ### BREAKING CHANGES
 
-- **viewport:** `ViewportSizeType` has been removed as it is customizable
+- **viewport:** `ViewportSizeType` has been changed to a const
 
 ## [1.1.1](https://github.com/sketch7/ngx.ux/compare/1.1.0...1.1.1) (2020-05-29)
 
