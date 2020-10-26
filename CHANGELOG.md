@@ -3,7 +3,7 @@
 ### Features
 
 - **viewport:** add configurable breakpoints
-- **viewport:** add default breakpoints `UxViewportSizes`
+- **viewport:** add default breakpoints `UxViewportBreakpoints`
 - **viewport:** add util method `generateViewportSizeType` to generate `ViewportSizeType`
 
 ### BREAKING CHANGES

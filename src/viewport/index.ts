@@ -9,7 +9,7 @@ export {
 	generateViewportSizeType,
 } from "./viewport.util";
 export {
-	UxViewportSizes,
+	UxViewportBreakpoints,
 	ViewportSizeType
 } from "./viewport.const";
 

@@ -2,7 +2,7 @@ import { Dictionary } from "../internal/internal.model";
 import { UxViewportOptions } from "./viewport.model";
 import { generateViewportSizeType } from "./viewport.util";
 
-export const UxViewportSizes: Dictionary<number> = {
+export const UxViewportBreakpoints: Dictionary<number> = {
 	xsmall: 450,
 	small: 767,
 	medium: 992,
@@ -12,9 +12,9 @@ export const UxViewportSizes: Dictionary<number> = {
 	xxlarge1: 2100
 };
 
-export const ViewportSizeType = generateViewportSizeType(UxViewportSizes);
+export const ViewportSizeType = generateViewportSizeType(UxViewportBreakpoints);
 
 export const UX_VIEWPORT_DEFAULT_CONFIG: UxViewportOptions = {
 	resizePollingSpeed: 33,
-	breakpoints: UxViewportSizes
+	breakpoints: UxViewportBreakpoints
 };
