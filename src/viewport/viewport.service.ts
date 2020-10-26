@@ -27,18 +27,18 @@ export class ViewportService {
 	sizeType$: Observable<ViewportSizeTypeInfo>;
 
 	/** A dictionary of the generated viewport size type info */
-	readonly viewportSizeTypeInfoRefs: Dictionary<ViewportSizeTypeInfo>;
+	readonly sizeTypeMap: Dictionary<ViewportSizeTypeInfo>;
 
 	/** An ordered list of viewport size type from smallest to largest */
-	private readonly viewportSizeTypeInfoList: ViewportSizeTypeInfo[];
+	private readonly orderedSizeTypeList: ViewportSizeTypeInfo[];
 
 	constructor(
 		@Inject(UX_CONFIG) config: UxOptions,
 		private windowRef: WindowRef,
 		private viewportServerSize: ViewportServerSizeService,
 	) {
-		this.viewportSizeTypeInfoList = generateViewportSizeTypeInfoList(config.viewport.breakpoints);
-		this.viewportSizeTypeInfoRefs = generateViewportSizeTypeInfoRefs(this.viewportSizeTypeInfoList);
+		this.orderedSizeTypeList = generateViewportSizeTypeInfoList(config.viewport.breakpoints);
+		this.sizeTypeMap = generateViewportSizeTypeInfoRefs(this.orderedSizeTypeList);
 
 		if (windowRef.hasNative) {
 			this.resize$ = fromEvent<Event>(window, "resize").pipe(
@@ -105,16 +105,16 @@ export class ViewportService {
 	 * @param width the viewport width
 	 */
 	private getWidthSizeInfo(width: number): ViewportSizeTypeInfo {
-		const lastEntryIndex = this.viewportSizeTypeInfoList.length - 1;
+		const lastEntryIndex = this.orderedSizeTypeList.length - 1;
 
 		for (let idx = 0; idx < lastEntryIndex; idx++) {
-			const viewportSizeTypeInfo = this.viewportSizeTypeInfoList[idx];
+			const viewportSizeTypeInfo = this.orderedSizeTypeList[idx];
 
 			if (width <= viewportSizeTypeInfo.widthThreshold) {
 				return viewportSizeTypeInfo;
 			}
 		}
 
-		return this.viewportSizeTypeInfoList[lastEntryIndex];
+		return this.orderedSizeTypeList[lastEntryIndex];
 	}
 }
