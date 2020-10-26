@@ -185,13 +185,13 @@ import { SsvUxModule } from "@ssv/ngx.ux";
 
 ### Override existing Breakpoints
 ```ts
-import { SsvUxModule, ViewportSizeType } from "@ssv/ngx.ux";
+import { SsvUxModule, UxViewportSizes } from "@ssv/ngx.ux";
 
   imports: [
     SsvUxModule.forRoot({
       viewport: {
         breakpoints: {
-          ...ViewportSizeType, // use breakpoints provided with library
+          ...UxViewportSizes, // use breakpoints provided with library
           xxlarge1: 2000, // override xxlarge1
           uhd: 3840 // add new breakpoint
         }

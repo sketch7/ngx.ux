@@ -3,10 +3,12 @@
 ### Features
 
 - **viewport:** add configurable breakpoints
+- **viewport:** add default breakpoints `UxViewportSizes`
+- **viewport:** add util method `generateViewportSizeType` to generate `ViewportSizeType`
 
 ### BREAKING CHANGES
 
-- **viewport:** `ViewportSizeType` is now a dictionary.
+- **viewport:** `ViewportSizeType` has been removed as it is customizable
 
 ## [1.1.1](https://github.com/sketch7/ngx.ux/compare/1.1.0...1.1.1) (2020-05-29)
 
