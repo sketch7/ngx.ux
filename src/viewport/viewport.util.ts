@@ -78,14 +78,15 @@ function match(value: string | string[] | null | undefined, targetValue: string,
  * A util function which generates the ViewportSizeTypeInfo.type for each breakpoint.
  * @param breakpoints the custom breakpoints
  */
-export function generateViewportSizeType<T extends Dictionary<number>>(breakpoints: T): T {
+export function generateViewportSizeType<T extends Record<string, number>>(breakpoints: T): T & Record<number, string> {
 	return getSortedBreakpoints(breakpoints)
 		.reduce((dictionary, [name, _width], index) => (
 			{
 				...dictionary,
-				[name]: index
+				[name]: index,
+				[index]: name,
 			}
-		), {}) as T;
+		), {}) as T & Record<number, string> ;
 }
 
 /**

@@ -1,5 +1,5 @@
 import { Dictionary } from "../internal/internal.model";
-import { generateViewportSizeType } from './viewport.util';
+import { generateViewportSizeType } from "./viewport.util";
 
 export const UxViewportSizes = {
 	xsmall: 450,
