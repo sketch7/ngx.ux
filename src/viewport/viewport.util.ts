@@ -43,24 +43,25 @@ export const COMPARISON_OPERATION_FUNC_MAPPING: Dictionary<(a: number, b: number
 };
 
 export function isViewportConditionMatch(
-		evaluteSize: ViewportSizeTypeInfo,
-		conditions: ViewportMatchConditions,
-		viewportSizeTypeInfoRefs: Dictionary<ViewportSizeTypeInfo>) {
-	const isExcluded = match(conditions.sizeTypeExclude, evaluteSize.name, false);
+	evaluateSize: ViewportSizeTypeInfo,
+	conditions: ViewportMatchConditions,
+	viewportSizeTypeInfoRefs: Dictionary<ViewportSizeTypeInfo>
+) {
+	const isExcluded = match(conditions.sizeTypeExclude, evaluateSize.name, false);
 	let isIncluded;
 	let isExpressionTruthy;
 
-	if (!isExcluded && conditions.expresson) {
-		const expressionSizeTypeValue: number = viewportSizeTypeInfoRefs[conditions.expresson.size].type;
-		const expMatcher = COMPARISON_OPERATION_FUNC_MAPPING[conditions.expresson.operation];
+	if (!isExcluded && conditions.expression) {
+		const expressionSizeTypeValue: number = viewportSizeTypeInfoRefs[conditions.expression.size].type;
+		const expMatcher = COMPARISON_OPERATION_FUNC_MAPPING[conditions.expression.operation];
 
-		isExpressionTruthy = expMatcher(evaluteSize.type, expressionSizeTypeValue);
+		isExpressionTruthy = expMatcher(evaluateSize.type, expressionSizeTypeValue);
 	} else {
-		isIncluded = match(conditions.sizeType, evaluteSize.name, true);
+		isIncluded = match(conditions.sizeType, evaluateSize.name, true);
 	}
 
 	const shouldRender = (isExpressionTruthy || isIncluded) && !isExcluded;
-	// console.warn(">>> shouldRender", { evaluteSize, conditions, shouldRender });
+	// console.warn(">>> shouldRender", { evaluateSize, conditions, shouldRender });
 	return !!shouldRender;
 }
 
@@ -76,7 +77,7 @@ function match(value: string | string[] | null | undefined, targetValue: string,
 
 /**
  * Converts the breakpoints into a 2 dimensional array containing the name and width, and sorted from
- *  smallest to largets.
+ *  smallest to largest.
  * @param breakpoints the breakpoints obtained from the config
  * @internal
  */

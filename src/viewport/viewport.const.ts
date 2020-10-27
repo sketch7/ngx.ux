@@ -1,8 +1,8 @@
 import { Dictionary } from "../internal/internal.model";
 import { UxViewportOptions } from "./viewport.model";
 
-/** The default breakpoints */
-export const UxViewportBreakpoints: Dictionary<number> = {
+/** Default viewport breakpoints. */
+export const UX_VIEWPORT_DEFAULT_BREAKPOINTS: Dictionary<number> = {
 	xsmall: 450,
 	small: 767,
 	medium: 992,
@@ -14,5 +14,5 @@ export const UxViewportBreakpoints: Dictionary<number> = {
 
 export const UX_VIEWPORT_DEFAULT_CONFIG: UxViewportOptions = {
 	resizePollingSpeed: 33,
-	breakpoints: UxViewportBreakpoints
+	breakpoints: UX_VIEWPORT_DEFAULT_BREAKPOINTS
 };

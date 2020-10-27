@@ -23,7 +23,7 @@ import { ViewportSizeTypeInfo, ViewportMatchConditions, ViewportSizeMatcherExpre
 export class SsvViewportMatcherContext implements ViewportMatchConditions {
 	sizeType: string | string[] | null = null;
 	sizeTypeExclude: string | string[] | null = null;
-	expresson?: ViewportSizeMatcherExpression;
+	expression?: ViewportSizeMatcherExpression;
 }
 
 @Directive({
@@ -37,10 +37,9 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 	private _elseTemplateRef: TemplateRef<SsvViewportMatcherContext> | null = null;
 	private _thenViewRef: EmbeddedViewRef<SsvViewportMatcherContext> | null = null;
 	private _elseViewRef: EmbeddedViewRef<SsvViewportMatcherContext> | null = null;
-	private sizeType$$: Subscription | undefined;
-	private update$$: Subscription | undefined;
-	private cssClass$$: Subscription | undefined;
-	private update$ = new Subject<SsvViewportMatcherContext>();
+	private sizeType$$ = Subscription.EMPTY;
+	private cssClass$$ = Subscription.EMPTY;
+	private readonly _update$ = new Subject<SsvViewportMatcherContext>();
 
 	sizeInfo: ViewportSizeTypeInfo | undefined;
 
@@ -57,7 +56,7 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 	ngOnInit() {
 		// console.log("ssvViewportMatcher init");
 
-		this.update$$ = this.update$
+		this._update$
 			.pipe(
 				// tap(x => console.log(">>> ssvViewportMatcher - update triggered", x)),
 				filter(() => !!this.sizeInfo),
@@ -70,8 +69,8 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 		this.sizeType$$ = this.viewport.sizeType$
 			.pipe(
 				// tap(x => console.log("ssvViewportMatcher - sizeType changed", x)),
-				tap(x => (this.sizeInfo = x)),
-				tap(() => this.update$.next(this._context)),
+				tap(x => this.sizeInfo = x),
+				tap(() => this._update$.next(this._context)),
 			)
 			.subscribe();
 
@@ -98,26 +97,17 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy() {
-		if (this.cssClass$$) {
-			this.cssClass$$.unsubscribe();
-		}
-		if (this.sizeType$$) {
-			this.sizeType$$.unsubscribe();
-		}
-		if (this.update$) {
-			this.update$.complete();
-		}
-		if (this.update$$) {
-			this.update$.unsubscribe();
-		}
+		this.cssClass$$.unsubscribe();
+		this.sizeType$$.unsubscribe();
+		this._update$.complete();
 	}
 
 	@Input() set ssvViewportMatcher(value: string | string[] | ViewportSizeMatcherExpression) {
 		if (isViewportSizeMatcherExpression(value)) {
-			this._context.expresson = value;
+			this._context.expression = value;
 		} else if (isViewportSizeMatcherTupleExpression(value)) {
 			const [op, size] = value;
-			this._context.expresson = {
+			this._context.expression = {
 				operation: op,
 				size
 			};
@@ -126,7 +116,7 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 		}
 
 		if (this.sizeInfo) {
-			this.update$.next(this._context);
+			this._update$.next(this._context);
 		}
 	}
 
@@ -134,7 +124,7 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 		this._context.sizeTypeExclude = value;
 
 		if (this.sizeInfo) {
-			this.update$.next(this._context);
+			this._update$.next(this._context);
 		}
 	}
 
@@ -142,7 +132,7 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 		this._elseTemplateRef = templateRef;
 		this._elseViewRef = null; // clear previous view if any.
 		if (this.sizeInfo) {
-			this.update$.next(this._context);
+			this._update$.next(this._context);
 		}
 	}
 

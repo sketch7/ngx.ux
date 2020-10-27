@@ -1,20 +1,25 @@
 import {
-	isViewportConditionMatch,
+	isViewportConditionMatch as isViewportConditionMatch_,
 	generateViewportSizeTypeInfoList,
 	generateViewportSizeTypeInfoRefs,
 	generateViewportSizeType,
 } from "./viewport.util";
-import { ComparisonOperation } from "./viewport.model";
+import { ComparisonOperation, ViewportMatchConditions, ViewportSizeTypeInfo } from "./viewport.model";
 
 const breakpoints = {
 	xsmall: 450,
 	small: 767,
 	medium: 992,
-	fullhd: 1920,
+	fullHd: 1920,
 	large: 1200,
 };
 const viewportSizeTypeInfoList = generateViewportSizeTypeInfoList(breakpoints);
-const viewportSizeTypeInfoRefs = generateViewportSizeTypeInfoRefs(viewportSizeTypeInfoList);
+const sizeRefs = generateViewportSizeTypeInfoRefs(viewportSizeTypeInfoList);
+
+const isViewportConditionMatch = (
+	evaluateSize: ViewportSizeTypeInfo,
+	conditions: ViewportMatchConditions
+) => isViewportConditionMatch_(evaluateSize, conditions, sizeRefs);
 
 describe("Viewport utils", () => {
 
@@ -28,7 +33,7 @@ describe("Viewport utils", () => {
 					small: 1,
 					medium: 2,
 					large: 3,
-					fullhd: 4,
+					fullHd: 4,
 				}));
 			});
 		});
@@ -40,8 +45,8 @@ describe("Viewport utils", () => {
 
 			describe("when single matching value is passed", () => {
 				const sizeType = "small";
-				const viewportRef = viewportSizeTypeInfoRefs[sizeType];
-				const result = isViewportConditionMatch(viewportRef, { sizeType }, viewportSizeTypeInfoRefs);
+				const viewportRef = sizeRefs[sizeType];
+				const result = isViewportConditionMatch(viewportRef, { sizeType });
 
 				it("should return true", () => {
 					expect(result).toBe(true);
@@ -49,8 +54,8 @@ describe("Viewport utils", () => {
 			});
 
 			describe("when single not matching value is passed", () => {
-				const viewportRef = viewportSizeTypeInfoRefs.small;
-				const result = isViewportConditionMatch(viewportRef, { sizeType: "xsmall" }, viewportSizeTypeInfoRefs);
+				const viewportRef = sizeRefs.small;
+				const result = isViewportConditionMatch(viewportRef, { sizeType: "xsmall" });
 
 				it("should return false", () => {
 					expect(result).toBe(false);
@@ -58,10 +63,10 @@ describe("Viewport utils", () => {
 			});
 
 			describe("when multi values are passed with a matching value", () => {
-				const viewportRef = viewportSizeTypeInfoRefs.small;
+				const viewportRef = sizeRefs.small;
 				const result = isViewportConditionMatch(viewportRef, {
 					sizeType: ["small", "medium"]
-				}, viewportSizeTypeInfoRefs);
+				});
 
 				it("should return true", () => {
 					expect(result).toBe(true);
@@ -69,10 +74,10 @@ describe("Viewport utils", () => {
 			});
 
 			describe("when multi values are passed with a non matching value", () => {
-				const viewportRef = viewportSizeTypeInfoRefs.large;
+				const viewportRef = sizeRefs.large;
 				const result = isViewportConditionMatch(viewportRef, {
 					sizeType: ["small", "medium"]
-				}, viewportSizeTypeInfoRefs);
+				});
 
 				it("should return false", () => {
 					expect(result).toBe(false);
@@ -86,32 +91,32 @@ describe("Viewport utils", () => {
 				it("should match", () => {
 					const dataSet = [
 						{
-							size: viewportSizeTypeInfoRefs.small,
+							size: sizeRefs.small,
 							expression: { operation: ComparisonOperation.equals, size: "small" },
 							expectedResult: true
 						},
 						{
-							size: viewportSizeTypeInfoRefs.xsmall,
+							size: sizeRefs.xsmall,
 							expression: { operation: ComparisonOperation.notEquals, size: "small" },
 							expectedResult: true
 						},
 						{
-							size: viewportSizeTypeInfoRefs.small,
+							size: sizeRefs.small,
 							expression: { operation: ComparisonOperation.notEquals, size: "small" },
 							expectedResult: false
 						},
 						{
-							size: viewportSizeTypeInfoRefs.small,
+							size: sizeRefs.small,
 							expression: { operation: ComparisonOperation.lessThan, size: "medium" },
 							expectedResult: true
 						},
 						{
-							size: viewportSizeTypeInfoRefs.medium,
+							size: sizeRefs.medium,
 							expression: { operation: ComparisonOperation.lessThan, size: "medium" },
 							expectedResult: false
 						},
 						{
-							size: viewportSizeTypeInfoRefs.medium,
+							size: sizeRefs.medium,
 							expression: { operation: ComparisonOperation.lessOrEqualThan, size: "medium" },
 							expectedResult: true
 						},
@@ -119,8 +124,8 @@ describe("Viewport utils", () => {
 
 					for (const data of dataSet) {
 						const result = isViewportConditionMatch(data.size, {
-							expresson: data.expression
-						}, viewportSizeTypeInfoRefs);
+							expression: data.expression
+						});
 						expect(result).toBe(data.expectedResult);
 					}
 				});

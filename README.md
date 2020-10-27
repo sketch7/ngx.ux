@@ -187,13 +187,13 @@ const breakpoints = { // custom breakpoints - key/width
 
 ### Override existing Breakpoints
 ```ts
-import { SsvUxModule, UxViewportBreakpoints } from "@ssv/ngx.ux";
+import { SsvUxModule, UX_VIEWPORT_DEFAULT_BREAKPOINTS } from "@ssv/ngx.ux";
 
   imports: [
     SsvUxModule.forRoot({
       viewport: {
         breakpoints: {
-          ...UxViewportBreakpoints, // use breakpoints provided with library
+          ...UX_VIEWPORT_DEFAULT_BREAKPOINTS, // use breakpoints provided with library
           xxlarge1: 2000, // override xxlarge1
           uhd: 3840 // add new breakpoint
         }

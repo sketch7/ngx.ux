@@ -1,6 +1,7 @@
 {
   "name": "@ssv/ngx.ux",
-  "version": "1.1.2",
+  "version": "1.2.0",
+  "versionSuffix": "",
   "description": "UX essentials for building apps, utilities which enables you writing richer apps easier.",
   "keywords": [
     "sketch7",
@@ -32,7 +33,9 @@
     "type": "git",
     "url": "https://github.com/sketch7/ngx.ux.git"
   },
-  "dependencies": {},
+  "dependencies": {
+    "tslib": "^1.10.0"
+  },
   "peerDependencies": {
     "@angular/core": ">=6.0.0",
     "lodash": "^4.0.0",
