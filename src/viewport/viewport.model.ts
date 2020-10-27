@@ -1,8 +1,9 @@
-export interface ViewportSize {
-	width: number;
-	height: number;
-}
+import { Dictionary } from "../internal/internal.model";
 
+/**
+ * The indices of each breakpoint provided based on the UxViewportBreakpoints.
+ * @see UxViewportBreakpoints
+ */
 export enum ViewportSizeType {
 	xsmall = 0,
 	small = 1,
@@ -10,13 +11,7 @@ export enum ViewportSizeType {
 	large = 3,
 	xlarge = 4,
 	xxlarge = 5,
-	xxlarge1 = 6
-}
-
-export interface ViewportSizeTypeInfo {
-	type: ViewportSizeType;
-	name: string;
-	widthThreshold: number;
+	xxlarge1 = 6,
 }
 
 export enum ComparisonOperation {
@@ -37,6 +32,21 @@ export enum DeviceType {
 export interface UxViewportOptions {
 	/** Polling speed on resizing (in milliseconds). e.g. the higher the number the longer it takes to recalculate. */
 	resizePollingSpeed: number;
+	/** A dictionary of custom breakpoints where the value is the width threshold. e.g. given width '1000' and `medium`
+	 * is set to '992' => `large`
+	 */
+	breakpoints: Dictionary<number>;
+}
+
+export interface ViewportSize {
+	width: number;
+	height: number;
+}
+
+export interface ViewportSizeTypeInfo {
+	type: number;
+	name: string;
+	widthThreshold: number;
 }
 
 export interface ViewportMatchConditions {

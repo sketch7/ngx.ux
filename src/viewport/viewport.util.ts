@@ -3,10 +3,8 @@ import {
 	ComparisonOperation,
 	ViewportSizeMatcherExpression,
 	ViewportSizeTypeInfo,
-	ViewportMatchConditions,
-	ViewportSizeType
+	ViewportMatchConditions
 } from "./viewport.model";
-
 
 export function isViewportSizeMatcherExpression(value: unknown): value is ViewportSizeMatcherExpression {
 	if (typeof value !== "object" || !value) {
@@ -44,15 +42,16 @@ export const COMPARISON_OPERATION_FUNC_MAPPING: Dictionary<(a: number, b: number
 	[ComparisonOperation.greaterOrEqualThan]: (a: number, b: number) => a >= b,
 };
 
-export function isViewportConditionMatch(evaluteSize: ViewportSizeTypeInfo, conditions: ViewportMatchConditions) {
+export function isViewportConditionMatch(
+		evaluteSize: ViewportSizeTypeInfo,
+		conditions: ViewportMatchConditions,
+		viewportSizeTypeInfoRefs: Dictionary<ViewportSizeTypeInfo>) {
 	const isExcluded = match(conditions.sizeTypeExclude, evaluteSize.name, false);
 	let isIncluded;
 	let isExpressionTruthy;
 
 	if (!isExcluded && conditions.expresson) {
-		const expressionSizeTypeValue: number = ViewportSizeType[
-			conditions.expresson.size as any
-		] as any;
+		const expressionSizeTypeValue: number = viewportSizeTypeInfoRefs[conditions.expresson.size].type;
 		const expMatcher = COMPARISON_OPERATION_FUNC_MAPPING[conditions.expresson.operation];
 
 		isExpressionTruthy = expMatcher(evaluteSize.type, expressionSizeTypeValue);
@@ -73,4 +72,60 @@ function match(value: string | string[] | null | undefined, targetValue: string,
 	return Array.isArray(value)
 		? value.includes(targetValue)
 		: value === targetValue;
+}
+
+/**
+ * Converts the breakpoints into a 2 dimensional array containing the name and width, and sorted from
+ *  smallest to largets.
+ * @param breakpoints the breakpoints obtained from the config
+ * @internal
+ */
+function getSortedBreakpoints(breakpoints: Dictionary<number>): [string, number][] {
+	return Object.entries(breakpoints)
+		.sort(([, widthA], [, widthB]) => widthA - widthB);
+}
+
+/**
+ * A util function which generates the ViewportSizeTypeInfo.type for each breakpoint.
+ * @param breakpoints the custom breakpoints
+ */
+export function generateViewportSizeType<T extends Record<string, number>>(breakpoints: T): T & Record<number, string> {
+	return Object.freeze(
+		getSortedBreakpoints(breakpoints)
+			.reduce<Record<number|string, string|number>>((dictionary, [name, _width], index) => {
+				dictionary[name] = index;
+				dictionary[index] = name;
+				return dictionary;
+			}, {})
+	) as T & Record<number, string>;
+}
+
+/**
+ * Pre-processes the given breakpoints into an ordered list from smallest to largest while generating
+ *  all the necessary information on the viewport.
+ * @param breakpoints the breakpoints obtained from the config
+ * @internal
+ */
+export function generateViewportSizeTypeInfoList(breakpoints: Dictionary<number>): ViewportSizeTypeInfo[] {
+	return getSortedBreakpoints(breakpoints)
+		.map(([name, width], index) => (Object.freeze({
+			name,
+			type: index,
+			widthThreshold: width
+		}))
+	);
+}
+
+/**
+ * Converts the breakpoint list into a dictionary while using the name as key.
+ * @param breakpointList the list of breakpoints
+ * @internal
+ */
+export function generateViewportSizeTypeInfoRefs(breakpointList: ViewportSizeTypeInfo[]): Dictionary<ViewportSizeTypeInfo> {
+	return Object.freeze(
+		breakpointList.reduce<Dictionary<ViewportSizeTypeInfo>>((dictionary, breakpoint) => {
+			dictionary[breakpoint.name] = breakpoint;
+			return dictionary;
+		}, {})
+	);
 }
