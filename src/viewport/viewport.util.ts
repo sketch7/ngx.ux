@@ -46,7 +46,7 @@ export function isViewportConditionMatch(
 	evaluateSize: ViewportSizeTypeInfo,
 	conditions: ViewportMatchConditions,
 	viewportSizeTypeInfoRefs: Dictionary<ViewportSizeTypeInfo>
-) {
+): boolean {
 	const isExcluded = match(conditions.sizeTypeExclude, evaluateSize.name, false);
 	let isIncluded;
 	let isExpressionTruthy;
@@ -92,12 +92,13 @@ function getSortedBreakpoints(breakpoints: Dictionary<number>): [string, number]
  */
 export function generateViewportSizeType<T extends Record<string, number>>(breakpoints: T): T & Record<number, string> {
 	return Object.freeze(
-		getSortedBreakpoints(breakpoints)
-			.reduce<Record<number|string, string|number>>((dictionary, [name, _width], index) => {
+		getSortedBreakpoints(breakpoints).reduce<Record<number | string, string | number>>(
+			(dictionary, [name], index) => {
 				dictionary[name] = index;
 				dictionary[index] = name;
 				return dictionary;
-			}, {})
+			}, {}
+		)
 	) as T & Record<number, string>;
 }
 
@@ -109,12 +110,13 @@ export function generateViewportSizeType<T extends Record<string, number>>(break
  */
 export function generateViewportSizeTypeInfoList(breakpoints: Dictionary<number>): ViewportSizeTypeInfo[] {
 	return getSortedBreakpoints(breakpoints)
-		.map(([name, width], index) => (Object.freeze({
-			name,
-			type: index,
-			widthThreshold: width
-		}))
-	);
+		.map(([name, width], index) =>
+			(Object.freeze({
+				name,
+				type: index,
+				widthThreshold: width
+			}))
+		);
 }
 
 /**

@@ -24,11 +24,17 @@ const isViewportConditionMatch = (
 describe("Viewport utils", () => {
 
 	describe("generateViewportSizeType", () => {
+
 		describe("given custom breakpoints are used", () => {
 			const result = generateViewportSizeType(breakpoints);
 
-			it("should match the expected key/value pair ", () => {
-				expect(result).toEqual(jasmine.objectContaining({
+			it("should match the expected key/value pair", () => {
+				expect(result).toEqual(({
+					0: "xsmall",
+					1: "small",
+					2: "medium",
+					3: "large",
+					4: "fullHd",
 					xsmall: 0,
 					small: 1,
 					medium: 2,
@@ -37,6 +43,46 @@ describe("Viewport utils", () => {
 				}));
 			});
 		});
+
+	});
+
+	describe("generateViewportSizeTypeInfoList", () => {
+
+		describe("given custom breakpoints are used", () => {
+			const result = generateViewportSizeTypeInfoList(breakpoints);
+
+			it("should match", () => {
+				expect(result).toEqual([
+					{ name: "xsmall", type: 0, widthThreshold: 450 },
+					{ name: "small", type: 1, widthThreshold: 767 },
+					{ name: "medium", type: 2, widthThreshold: 992 },
+					{ name: "large", type: 3, widthThreshold: 1200 },
+					{ name: "fullHd", type: 4, widthThreshold: 1920 }
+				]);
+			});
+		});
+
+	});
+
+	describe("generateViewportSizeTypeInfoRefs", () => {
+
+		describe("given custom breakpoints are used", () => {
+			const sizes = generateViewportSizeTypeInfoList(breakpoints);
+			const result = generateViewportSizeTypeInfoRefs(sizes);
+
+			it("should match", () => {
+				expect(result).toEqual(
+					{
+						xsmall: { name: "xsmall", type: 0, widthThreshold: 450 },
+						small: { name: "small", type: 1, widthThreshold: 767 },
+						medium: { name: "medium", type: 2, widthThreshold: 992 },
+						large: { name: "large", type: 3, widthThreshold: 1200 },
+						fullHd: { name: "fullHd", type: 4, widthThreshold: 1920 }
+					}
+				);
+			});
+		});
+
 	});
 
 	describe("isViewportConditionMatch", () => {

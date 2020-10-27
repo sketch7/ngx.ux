@@ -10,6 +10,12 @@
 
 - **all:** minor refactoring
 
+### Chore
+
+- **deps:** update dev dependencies
+- **ci:** update node version
+- **lint:** migrate from tslint to eslint
+
 ## [1.1.1](https://github.com/sketch7/ngx.ux/compare/1.1.0...1.1.1) (2020-05-29)
 
 ### Bug Fixes

@@ -37,9 +37,9 @@ export class ViewportService {
 	private _sizeTypes: ViewportSizeTypeInfo[];
 
 	constructor(
-		@Inject(UX_CONFIG) config: UxOptions,
 		private windowRef: WindowRef,
 		private viewportServerSize: ViewportServerSizeService,
+		@Inject(UX_CONFIG) config: UxOptions,
 	) {
 		this._sizeTypes = generateViewportSizeTypeInfoList(config.viewport.breakpoints);
 		this._sizeTypeMap = generateViewportSizeTypeInfoRefs(this._sizeTypes);

@@ -21,9 +21,11 @@ import {
 import { ViewportSizeTypeInfo, ViewportMatchConditions, ViewportSizeMatcherExpression } from "./viewport.model";
 
 export class SsvViewportMatcherContext implements ViewportMatchConditions {
+
 	sizeType: string | string[] | null = null;
 	sizeTypeExclude: string | string[] | null = null;
 	expression?: ViewportSizeMatcherExpression;
+
 }
 
 @Directive({
@@ -31,6 +33,8 @@ export class SsvViewportMatcherContext implements ViewportMatchConditions {
 	exportAs: "ssvViewportMatcher",
 })
 export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
+
+	sizeInfo: ViewportSizeTypeInfo | undefined;
 
 	private _context: SsvViewportMatcherContext = new SsvViewportMatcherContext();
 	private _thenTemplateRef: TemplateRef<SsvViewportMatcherContext> | null = null;
@@ -40,8 +44,6 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 	private sizeType$$ = Subscription.EMPTY;
 	private cssClass$$ = Subscription.EMPTY;
 	private readonly _update$ = new Subject<SsvViewportMatcherContext>();
-
-	sizeInfo: ViewportSizeTypeInfo | undefined;
 
 	constructor(
 		private viewport: ViewportService,
@@ -53,7 +55,7 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 		this._thenTemplateRef = templateRef;
 	}
 
-	ngOnInit() {
+	ngOnInit(): void {
 		// console.log("ssvViewportMatcher init");
 
 		this._update$
@@ -61,6 +63,7 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 				// tap(x => console.log(">>> ssvViewportMatcher - update triggered", x)),
 				filter(() => !!this.sizeInfo),
 				// tap(x => console.log(">>> ssvViewportMatcher - updating...", x)),
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 				tap(() => this._updateView(this.sizeInfo!)),
 				tap(() => this.cdr.markForCheck())
 			)
@@ -82,7 +85,7 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 				tap(([prev, curr]) => {
 					const el: Element = this._thenViewRef
 						? this._thenViewRef.rootNodes[0]
-						: this._elseViewRef!.rootNodes[0];
+						: this._elseViewRef?.rootNodes[0];
 
 					if (!el.classList) {
 						return;
@@ -90,13 +93,13 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 					if (prev) {
 						this.renderer.removeClass(el, `ssv-vp-size--${prev.name}`);
 					}
-					this.renderer.addClass(el, `ssv-vp-size--${curr!.name}`);
+					this.renderer.addClass(el, `ssv-vp-size--${curr?.name}`);
 				}),
 			)
 			.subscribe();
 	}
 
-	ngOnDestroy() {
+	ngOnDestroy(): void {
 		this.cssClass$$.unsubscribe();
 		this.sizeType$$.unsubscribe();
 		this._update$.complete();
