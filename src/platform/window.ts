@@ -8,7 +8,8 @@ export const WINDOW = new InjectionToken<Window>("Window");
 export class WindowRef {
 
 	constructor(
-		@Inject(WINDOW) private window: unknown
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+		@Inject(WINDOW) private window: any
 	) {
 	}
 

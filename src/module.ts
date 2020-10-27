@@ -18,7 +18,7 @@ export const _MODULE_CONFIG = new InjectionToken<UxOptions>("_ux-config");
 })
 export class SsvUxModule {
 
-	static forRoot(config?: PartialDeep<UxOptions> | (() => PartialDeep<UxOptions>)): ModuleWithProviders {
+	static forRoot(config?: PartialDeep<UxOptions> | (() => PartialDeep<UxOptions>)): ModuleWithProviders<SsvUxModule> {
 		return {
 			ngModule: SsvUxModule,
 			providers: [
