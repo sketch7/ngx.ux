@@ -10,6 +10,5 @@ export {
 } from "./viewport.util";
 export {
 	UxViewportBreakpoints,
-	ViewportSizeType
 } from "./viewport.const";
 

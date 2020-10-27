@@ -1,5 +1,19 @@
 import { Dictionary } from "../internal/internal.model";
 
+/**
+ * The indices of each breakpoint provided based on the UxViewportBreakpoints.
+ * @see UxViewportBreakpoints
+ */
+export enum ViewportSizeType {
+	xsmall = 0,
+	small = 1,
+	medium = 2,
+	large = 3,
+	xlarge = 4,
+	xxlarge = 5,
+	xxlarge1 = 6,
+}
+
 export enum ComparisonOperation {
 	equals = "=",
 	notEquals = "<>",

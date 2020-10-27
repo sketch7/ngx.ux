@@ -175,9 +175,6 @@ const breakpoints = { // custom breakpoints - key/width
   uhd: 3840
 };
 
-// Generates the indices for each breakpoint similar to an enum format. Can be used to assist in development
-export const ViewportSizeType = generateViewportSizeType(breakpoints);
-
   imports: [
     SsvUxModule.forRoot({
       viewport: {
