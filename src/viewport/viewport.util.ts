@@ -43,16 +43,16 @@ export const COMPARISON_OPERATION_FUNC_MAPPING: Dictionary<(a: number, b: number
 };
 
 export function isViewportConditionMatch(
-		evaluteSize: ViewportSizeTypeInfo,
+		evaluateSize: ViewportSizeTypeInfo,
 		conditions: ViewportMatchConditions,
 		viewportSizeTypeInfoRefs: Dictionary<ViewportSizeTypeInfo>) {
-	const isExcluded = match(conditions.sizeTypeExclude, evaluteSize.name, false);
+	const isExcluded = match(conditions.sizeTypeExclude, evaluateSize.name, false);
 	let isIncluded;
 	let isExpressionTruthy;
 
-	if (!isExcluded && conditions.expresson) {
-		const expressionSizeTypeValue: number = viewportSizeTypeInfoRefs[conditions.expresson.size].type;
-		const expMatcher = COMPARISON_OPERATION_FUNC_MAPPING[conditions.expresson.operation];
+	if (!isExcluded && conditions.expression) {
+		const expressionSizeTypeValue: number = viewportSizeTypeInfoRefs[conditions.expression.size].type;
+		const expMatcher = COMPARISON_OPERATION_FUNC_MAPPING[conditions.expression.operation];
 
 		isExpressionTruthy = expMatcher(evaluateSize.type, expressionSizeTypeValue);
 	} else {
