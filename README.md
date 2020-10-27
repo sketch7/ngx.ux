@@ -158,16 +158,48 @@ import { ViewportServerSizeService } from "@ssv/ngx.ux";
 
 
 ## Configure
-In order to configure globally, you can do so as following:
+You can configure the existing resize polling speed and as well as provide your custom breakpoints.
 
+### Custom Breakpoints
 ```ts
-import { SsvUxModule } from "@ssv/ngx.ux";
+import { SsvUxModule, generateViewportSizeType } from "@ssv/ngx.ux";
 
-    imports: [
-      SsvUxModule.forRoot({
-        viewport: { resizePollingSpeed: 66 }
-      }),
-    ],
+const breakpoints = { // custom breakpoints - key/width
+  smallest: 500,
+  small: 700,
+  medium: 1000,
+  large: 1400,
+  extralarge: 1600,
+  xxlarge: 1800,
+  fhd: 1920,
+  uhd: 3840
+};
+
+  imports: [
+    SsvUxModule.forRoot({
+      viewport: {
+        resizePollingSpeed: 66, // optional - defaults to 33
+        breakpoints // provide the custom breakpoints
+      }
+    }),
+  ],
+```
+
+### Override existing Breakpoints
+```ts
+import { SsvUxModule, UxViewportBreakpoints } from "@ssv/ngx.ux";
+
+  imports: [
+    SsvUxModule.forRoot({
+      viewport: {
+        breakpoints: {
+          ...UxViewportBreakpoints, // use breakpoints provided with library
+          xxlarge1: 2000, // override xxlarge1
+          uhd: 3840 // add new breakpoint
+        }
+      }
+    }),
+  ],
 ```
 
 

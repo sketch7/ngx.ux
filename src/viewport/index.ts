@@ -2,4 +2,13 @@ export * from "./viewport-matcher.directive";
 export * from "./viewport-server-size.service";
 export * from "./viewport.model";
 export * from "./viewport.service";
-export * from "./viewport.util";
+export {
+	isViewportSizeMatcherExpression,
+	isViewportSizeMatcherTupleExpression,
+	COMPARISON_OPERATION_FUNC_MAPPING,
+	generateViewportSizeType,
+} from "./viewport.util";
+export {
+	UxViewportBreakpoints,
+} from "./viewport.const";
+
