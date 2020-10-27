@@ -90,14 +90,14 @@ function getSortedBreakpoints(breakpoints: Dictionary<number>): [string, number]
  * @param breakpoints the custom breakpoints
  */
 export function generateViewportSizeType<T extends Record<string, number>>(breakpoints: T): T & Record<number, string> {
-	return getSortedBreakpoints(breakpoints)
-		.reduce((dictionary, [name, _width], index) => (
-			{
-				...dictionary,
-				[name]: index,
-				[index]: name,
-			}
-		), {}) as T & Record<number, string> ;
+	return Object.freeze(
+		getSortedBreakpoints(breakpoints)
+			.reduce<Record<number|string, string|number>>((dictionary, [name, _width], index) => {
+				dictionary[name] = index;
+				dictionary[index] = name;
+				return dictionary;
+			}, {})
+	) as T & Record<number, string>;
 }
 
 /**
@@ -123,11 +123,9 @@ export function generateViewportSizeTypeInfoList(breakpoints: Dictionary<number>
  */
 export function generateViewportSizeTypeInfoRefs(breakpointList: ViewportSizeTypeInfo[]): Dictionary<ViewportSizeTypeInfo> {
 	return Object.freeze(
-		breakpointList.reduce<Dictionary<ViewportSizeTypeInfo>>((dictionary, breakpoint) => (
-			{
-				...dictionary,
-				[breakpoint.name]: breakpoint
-			}
-		), {})
+		breakpointList.reduce<Dictionary<ViewportSizeTypeInfo>>((dictionary, breakpoint) => {
+			dictionary[breakpoint.name] = breakpoint;
+			return dictionary;
+		}, {})
 	);
 }
