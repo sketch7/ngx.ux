@@ -43,9 +43,10 @@ export const COMPARISON_OPERATION_FUNC_MAPPING: Dictionary<(a: number, b: number
 };
 
 export function isViewportConditionMatch(
-		evaluateSize: ViewportSizeTypeInfo,
-		conditions: ViewportMatchConditions,
-		viewportSizeTypeInfoRefs: Dictionary<ViewportSizeTypeInfo>) {
+	evaluateSize: ViewportSizeTypeInfo,
+	conditions: ViewportMatchConditions,
+	viewportSizeTypeInfoRefs: Dictionary<ViewportSizeTypeInfo>
+) {
 	const isExcluded = match(conditions.sizeTypeExclude, evaluateSize.name, false);
 	let isIncluded;
 	let isExpressionTruthy;
@@ -76,7 +77,7 @@ function match(value: string | string[] | null | undefined, targetValue: string,
 
 /**
  * Converts the breakpoints into a 2 dimensional array containing the name and width, and sorted from
- *  smallest to largets.
+ *  smallest to largest.
  * @param breakpoints the breakpoints obtained from the config
  * @internal
  */

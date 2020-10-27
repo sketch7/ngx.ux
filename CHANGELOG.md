@@ -1,8 +1,8 @@
-## [1.1.2](https://github.com/sketch7/ngx.ux/compare/1.1.1...1.1.2) (2020-10-27)
+## [1.2.0](https://github.com/sketch7/ngx.ux/compare/1.1.2...1.2.0) (2020-10-27)
 
 ### Features
 
-- **viewport:** add configurable breakpoints and default breakpoints `UxViewportBreakpoints`
+- **viewport:** implement configurable breakpoints (thanks to [@joseph118](https://github.com/joseph118))
 - **viewport:** add util method `generateViewportSizeType` to generate a representation of `ViewportSizeType`
 
 ## [1.1.1](https://github.com/sketch7/ngx.ux/compare/1.1.0...1.1.1) (2020-05-29)
