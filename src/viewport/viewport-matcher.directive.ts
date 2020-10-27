@@ -39,7 +39,7 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 	private _elseViewRef: EmbeddedViewRef<SsvViewportMatcherContext> | null = null;
 	private sizeType$$ = Subscription.EMPTY;
 	private cssClass$$ = Subscription.EMPTY;
-	private update$ = new Subject<SsvViewportMatcherContext>();
+	private readonly _update$ = new Subject<SsvViewportMatcherContext>();
 
 	sizeInfo: ViewportSizeTypeInfo | undefined;
 
@@ -56,7 +56,7 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 	ngOnInit() {
 		// console.log("ssvViewportMatcher init");
 
-		this.update$
+		this._update$
 			.pipe(
 				// tap(x => console.log(">>> ssvViewportMatcher - update triggered", x)),
 				filter(() => !!this.sizeInfo),
@@ -64,13 +64,13 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 				tap(() => this._updateView(this.sizeInfo!)),
 				tap(() => this.cdr.markForCheck())
 			)
-			.subscribe(); // todo: verify unsubscribing
+			.subscribe();
 
 		this.sizeType$$ = this.viewport.sizeType$
 			.pipe(
 				// tap(x => console.log("ssvViewportMatcher - sizeType changed", x)),
 				tap(x => this.sizeInfo = x),
-				tap(() => this.update$.next(this._context)),
+				tap(() => this._update$.next(this._context)),
 			)
 			.subscribe();
 
@@ -99,7 +99,7 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 	ngOnDestroy() {
 		this.cssClass$$.unsubscribe();
 		this.sizeType$$.unsubscribe();
-		this.update$.complete();
+		this._update$.complete();
 	}
 
 	@Input() set ssvViewportMatcher(value: string | string[] | ViewportSizeMatcherExpression) {
@@ -116,7 +116,7 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 		}
 
 		if (this.sizeInfo) {
-			this.update$.next(this._context);
+			this._update$.next(this._context);
 		}
 	}
 
@@ -124,7 +124,7 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 		this._context.sizeTypeExclude = value;
 
 		if (this.sizeInfo) {
-			this.update$.next(this._context);
+			this._update$.next(this._context);
 		}
 	}
 
@@ -132,7 +132,7 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 		this._elseTemplateRef = templateRef;
 		this._elseViewRef = null; // clear previous view if any.
 		if (this.sizeInfo) {
-			this.update$.next(this._context);
+			this._update$.next(this._context);
 		}
 	}
 

@@ -33,8 +33,8 @@ export interface UxViewportOptions {
 	/** Polling speed on resizing (in milliseconds). e.g. the higher the number the longer it takes to recalculate. */
 	resizePollingSpeed: number;
 
-	/** Dictionary of custom breakpoints where the value is the width threshold. e.g. given width '1000' and `medium`
-	 * is set to '992' => `large`.
+	/** Breakpoints to use. Key needs to match the size type and the value the width threshold.
+	 * e.g. given width '1000' and `medium` is set to '992' => `large`.
 	 */
 	breakpoints: Dictionary<number>;
 }
