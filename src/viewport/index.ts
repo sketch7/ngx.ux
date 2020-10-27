@@ -8,7 +8,5 @@ export {
 	COMPARISON_OPERATION_FUNC_MAPPING,
 	generateViewportSizeType,
 } from "./viewport.util";
-export {
-	UxViewportBreakpoints,
-} from "./viewport.const";
+export { UX_VIEWPORT_DEFAULT_BREAKPOINTS } from "./viewport.const";
 

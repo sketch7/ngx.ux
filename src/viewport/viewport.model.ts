@@ -1,8 +1,8 @@
 import { Dictionary } from "../internal/internal.model";
 
 /**
- * The indices of each breakpoint provided based on the UxViewportBreakpoints.
- * @see UxViewportBreakpoints
+ * The indices of each breakpoint provided based on the `UX_VIEWPORT_DEFAULT_BREAKPOINTS`.
+ * @see UX_VIEWPORT_DEFAULT_BREAKPOINTS
  */
 export enum ViewportSizeType {
 	xsmall = 0,
@@ -32,8 +32,9 @@ export enum DeviceType {
 export interface UxViewportOptions {
 	/** Polling speed on resizing (in milliseconds). e.g. the higher the number the longer it takes to recalculate. */
 	resizePollingSpeed: number;
-	/** A dictionary of custom breakpoints where the value is the width threshold. e.g. given width '1000' and `medium`
-	 * is set to '992' => `large`
+
+	/** Dictionary of custom breakpoints where the value is the width threshold. e.g. given width '1000' and `medium`
+	 * is set to '992' => `large`.
 	 */
 	breakpoints: Dictionary<number>;
 }
