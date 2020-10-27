@@ -17,6 +17,7 @@ export const _MODULE_CONFIG = new InjectionToken<UxOptions>("_ux-config");
 	exports: [SsvViewportMatcherDirective],
 })
 export class SsvUxModule {
+
 	static forRoot(config?: PartialDeep<UxOptions> | (() => PartialDeep<UxOptions>)): ModuleWithProviders {
 		return {
 			ngModule: SsvUxModule,
@@ -30,6 +31,7 @@ export class SsvUxModule {
 			],
 		};
 	}
+
 }
 
 /** @internal */
@@ -44,7 +46,7 @@ export function _moduleConfigFactory(config: UxOptions | (() => UxOptions)): UxO
 }
 
 /** @internal */
-export function _window(): any {
+export function _window(): unknown {
 	if (typeof window !== "undefined") {
 		return window;
 	}

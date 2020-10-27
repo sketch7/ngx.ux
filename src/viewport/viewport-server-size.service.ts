@@ -36,4 +36,5 @@ export class ViewportServerSizeService {
 	get(): ViewportSize {
 		return viewportSizeSSR[this.deviceType] || viewportSizeSSR[DeviceType.desktop];
 	}
+
 }

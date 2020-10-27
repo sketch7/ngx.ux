@@ -8,13 +8,13 @@ export const WINDOW = new InjectionToken<Window>("Window");
 export class WindowRef {
 
 	constructor(
-		@Inject(WINDOW) private window: any
+		@Inject(WINDOW) private window: unknown
 	) {
 	}
 
 	/** Window underlying native object. */
 	get native(): Window {
-		return this.window;
+		return this.window as Window;
 	}
 
 	/** Determines whether native element is supported or not. Generally `false` when executing in SSR. */
