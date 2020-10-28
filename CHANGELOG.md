@@ -8,7 +8,7 @@
 ### BREAKING CHANGES
 
 - **viewport:** make several utils/models internal only
-- **viewport:** change `ViewportSizeType` TODO
+- **viewport:** change `ViewportSizeType` and `UX_VIEWPORT_DEFAULT_BREAKPOINTS` has been changed (see readme)
 
 ## [1.2.1](https://github.com/sketch7/ngx.ux/compare/1.1.2...1.2.0) (2020-10-28)
 

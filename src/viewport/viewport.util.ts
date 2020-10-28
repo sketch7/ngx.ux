@@ -75,6 +75,20 @@ function match(value: string | string[] | null | undefined, targetValue: string,
 		: value === targetValue;
 }
 
+export function getSizeTypeInfo(width: number, sizeTypes: ViewportSizeTypeInfo[]): ViewportSizeTypeInfo {
+	const lastEntryIndex = sizeTypes.length - 1;
+
+	for (let idx = 0; idx < lastEntryIndex; idx++) {
+		const viewportSizeTypeInfo = sizeTypes[idx];
+
+		if (width <= viewportSizeTypeInfo.widthThreshold) {
+			return viewportSizeTypeInfo;
+		}
+	}
+
+	return sizeTypes[lastEntryIndex];
+}
+
 /**
  * Converts the breakpoints into a 2 dimensional array containing the name and width, and sorted from
  *  smallest to largest.
