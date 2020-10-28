@@ -1,4 +1,10 @@
-## [1.2.0](https://github.com/sketch7/ngx.ux/compare/1.1.2...1.2.0) (2020-10-27)
+## [1.2.1](https://github.com/sketch7/ngx.ux/compare/1.1.2...1.2.0) (2020-10-28)
+
+### Bug Fixes
+
+- **build:** down version several dependencies packages in order to support angular 8 (and possibly less)
+
+## [1.2.0](https://github.com/sketch7/ngx.ux/compare/1.1.1...1.2.0) (2020-10-27)
 
 ### Features
 
