@@ -2,7 +2,7 @@
 
 ### Bug Fixes
 
-- **build:** down version several devDep packages in order to support angular 8 (and possibly less)
+- **build:** down version several dependencies packages in order to support angular 8 (and possibly less)
 
 ## [1.2.0](https://github.com/sketch7/ngx.ux/compare/1.1.1...1.2.0) (2020-10-27)
 
