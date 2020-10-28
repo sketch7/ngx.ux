@@ -1,3 +1,15 @@
+## [2.0.0](https://github.com/sketch7/ngx.ux/compare/1.2.1...2.0.0) (2020-xx-xx)
+
+### Features
+
+- **deps:** update dependencies to support Angular v10
+- **deps:** add dependency on `tslib: ^2.0.0`
+
+### BREAKING CHANGES
+
+- **viewport:** make several utils/models internal only
+- **viewport:** xxlarge
+
 ## [1.2.1](https://github.com/sketch7/ngx.ux/compare/1.1.2...1.2.0) (2020-10-28)
 
 ### Bug Fixes

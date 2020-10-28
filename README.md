@@ -22,6 +22,14 @@ Get library via [npm]
 npm install @ssv/ngx.ux
 ```
 
+Choose the version corresponding to your Angular version:
+
+ | Angular | library |
+ | ------- | ------- |
+ | 10      | 2.x+    |
+ | 4 to 9  | 1.x+    |
+
+
 # Usage
 
 ## Register module
@@ -54,6 +62,8 @@ Provides utilities to handle responsiveness easier based on the viewport (view s
 <br>
 
 ### Size Types
+These are the default but can be configured.
+
 | Size Type | Size Range |
 | --------- | ---------- |
 | xsmall    | <=449      |
@@ -61,8 +71,10 @@ Provides utilities to handle responsiveness easier based on the viewport (view s
 | medium    | 767-991    |
 | large     | 992-1199   |
 | xlarge    | 1200-1499  |
-| xxlarge   | 1500-1919  |
-| xxlarge1  | >=1920     |
+| fhd       | 1500-1080  |
+| qhd       | 1081-2560  |
+| uhd4k     | 2561-3840  |
+| uhd8k     | >=3841     |
 
 
 ### Viewport Matcher Attribute (directive)
