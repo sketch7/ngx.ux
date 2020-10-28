@@ -3,6 +3,7 @@
 ### Bug Fixes
 
 - **build:** down version several dependencies packages in order to support angular 8 (and possibly less)
+- **deps:** revert dependency on tslib `^1.10.0`
 
 ## [1.2.0](https://github.com/sketch7/ngx.ux/compare/1.1.1...1.2.0) (2020-10-27)
 
