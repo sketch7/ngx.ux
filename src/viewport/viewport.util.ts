@@ -52,10 +52,13 @@ export function isViewportConditionMatch(
 	let isExpressionTruthy;
 
 	if (!isExcluded && conditions.expression) {
-		const expressionSizeTypeValue: number = viewportSizeTypeInfoRefs[conditions.expression.size].type;
+		const ref = viewportSizeTypeInfoRefs[conditions.expression.size];
+		if(!ref) {
+			throw new Error(`Viewport size type is invalid. Size type: '${conditions.expression.size}'`);
+		}
 		const expMatcher = COMPARISON_OPERATION_FUNC_MAPPING[conditions.expression.operation];
 
-		isExpressionTruthy = expMatcher(evaluateSize.type, expressionSizeTypeValue);
+		isExpressionTruthy = expMatcher(evaluateSize.type, ref.type);
 	} else {
 		isIncluded = match(conditions.sizeType, evaluateSize.name, true);
 	}
