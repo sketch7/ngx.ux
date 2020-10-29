@@ -6,6 +6,10 @@
 - **deps:** add dependency on `tslib: ^2.0.0`
 - **viewport:** add `size$` to `ViewportService`
 
+### Bug Fixes
+
+- **viewport:** throw error when invalid size type is used in matcher
+
 ### BREAKING CHANGES
 
 - **viewport:** make several utils/models internal only
