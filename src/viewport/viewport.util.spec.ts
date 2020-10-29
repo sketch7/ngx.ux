@@ -29,14 +29,17 @@ describe("Viewport utils", () => {
 
 	describe("given default breakpoints", () => {
 
-		it("should match all ViewportSizeType", () => {
-			_.reduce(UX_VIEWPORT_DEFAULT_BREAKPOINTS, (r, _value, key) => {
+		it("should match ViewportSizeType definition", () => {
+			const result = _.reduce(UX_VIEWPORT_DEFAULT_BREAKPOINTS, (r, _value, key) => {
 				const idx = ViewportSizeType[key as unknown as ViewportSizeType];
 
 				expect(idx).not.toBeUndefined();
+				r.push(idx);
 				return r;
-			}, {});
+			}, [] as string[]);
 
+			const viewportSizeTypeItems = Object.keys(ViewportSizeType).filter(v => isNaN(+v));
+			expect(viewportSizeTypeItems.length).toBe(result.length);
 		});
 
 	});
