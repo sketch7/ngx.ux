@@ -156,6 +156,22 @@ import { ViewportServerSizeService } from "@ssv/ngx.ux";
 }
 ```
 
+Alternatively you can also override the device sizes by providing the configuration on module import.
+
+```
+  imports: [
+    SsvUxModule.forRoot({
+      viewport: {
+        viewportSsrSizes: {
+          mobile: { width: 300, height: 300 },
+          tablet: { width: 600, height: 600 },
+          desktop: { width: 1200, height: 1200 },
+        }
+      }
+    }),
+  ],
+```
+
 
 ## Configure
 You can configure the existing resize polling speed and as well as provide your custom breakpoints.
