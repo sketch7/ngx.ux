@@ -1,3 +1,9 @@
+## [1.3.0](https://github.com/sketch7/ngx.ux/compare/1.2.1...1.3.0) (2020-10-29)
+
+### Features
+
+- **viewport:** implement configurable ssr viewport sizes 
+
 ## [1.2.1](https://github.com/sketch7/ngx.ux/compare/1.1.2...1.2.0) (2020-10-28)
 
 ### Bug Fixes
