@@ -29,7 +29,7 @@ describe("Viewport utils", () => {
 
 	describe("given default breakpoints", () => {
 
-		it("should ViewportSizeType", () => {
+		it("should match all ViewportSizeType", () => {
 			_.reduce(UX_VIEWPORT_DEFAULT_BREAKPOINTS, (r, _value, key) => {
 				const idx = ViewportSizeType[key as unknown as ViewportSizeType];
 
