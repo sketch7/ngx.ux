@@ -4,11 +4,13 @@
 
 - **deps:** update dependencies to support Angular v10
 - **deps:** add dependency on `tslib: ^2.0.0`
+- **viewport:** add `size$` to `ViewportService`
 
 ### BREAKING CHANGES
 
 - **viewport:** make several utils/models internal only
 - **viewport:** change `ViewportSizeType` and `UX_VIEWPORT_DEFAULT_BREAKPOINTS` has been changed (see readme)
+- **viewport:** remove `ViewportService.calculateItemsPerRow` function
 
 ## [1.2.1](https://github.com/sketch7/ngx.ux/compare/1.1.2...1.2.0) (2020-10-28)
 

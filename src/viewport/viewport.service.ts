@@ -21,11 +21,14 @@ import { Dictionary } from "../internal/internal.model";
 })
 export class ViewportService {
 
-	/** Observable when window is resized (which is also throttled). */
-	resize$: Observable<ViewportSize>;
+	/** Window resize observable (which is also throttled). */
+	readonly resize$: Observable<ViewportSize>;
 
-	/** Observable when viewport size type changes. */
-	sizeType$: Observable<ViewportSizeTypeInfo>;
+	/** Viewport size type observable. */
+	readonly sizeType$: Observable<ViewportSizeTypeInfo>;
+
+	/** Viewport size observable. */
+	readonly size$: Observable<ViewportSize>;
 
 	/** Size types refs of the generated viewport size type info. */
 	get sizeTypeMap(): Dictionary<ViewportSizeTypeInfo> { return this._sizeTypeMap; }
@@ -54,31 +57,18 @@ export class ViewportService {
 			this.resize$ = of(viewportServerSize.get());
 		}
 
-		this.sizeType$ = this.resize$.pipe(
+		this.size$ = this.resize$.pipe(
 			startWith(this.getViewportSize()),
+			distinctUntilChanged((a, b) => a.width === b.width && a.height === b.height),
+			shareReplay(1),
+		);
+
+		this.sizeType$ = this.size$.pipe(
 			distinctUntilChanged((a, b) => a.width === b.width),
 			map(x => getSizeTypeInfo(x.width, this.sizeTypes)),
 			distinctUntilChanged(),
 			shareReplay(1),
 		);
-	}
-
-	/**
-	 * Calculates amount of items that fits into container's width.
-	 * @param containerWidth
-	 * @param itemWidth
-	 * @returns
-	 */
-	calculateItemsPerRow(containerWidth: number, itemWidth: number): number {
-		if (containerWidth === 0) {
-			return 0;
-		}
-		if (!containerWidth && !this.windowRef.hasNative) {
-			// todo: find a way to get container width for ssr
-			containerWidth = this.viewportServerSize.get().width;
-		}
-
-		return containerWidth / itemWidth;
 	}
 
 	/** Returns the current viewport size */
