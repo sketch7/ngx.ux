@@ -51,7 +51,7 @@ export function _moduleConfigFactory(config: UxOptions | (() => UxOptions)): UxO
 				? uxOptions.viewport.viewportSsrSizes
 				: {}),
 		},
-	}
+	};
 
 	return { viewport };
 }

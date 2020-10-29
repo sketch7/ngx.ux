@@ -36,7 +36,7 @@ export interface ViewportSize {
 
 export type ViewportSsrSizes = {
 	[key in keyof typeof DeviceType]: ViewportSize;
-}
+};
 
 export interface UxViewportOptions {
 	/** Polling speed on resizing (in milliseconds). e.g. the higher the number the longer it takes to recalculate. */
