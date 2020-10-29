@@ -1,5 +1,5 @@
 import { Dictionary } from "../internal/internal.model";
-import { UxViewportOptions } from "./viewport.model";
+import { DeviceType, UxViewportOptions, ViewportSsrSizes } from "./viewport.model";
 
 /** Default viewport breakpoints. */
 export const UX_VIEWPORT_DEFAULT_BREAKPOINTS: Dictionary<number> = {
@@ -12,7 +12,24 @@ export const UX_VIEWPORT_DEFAULT_BREAKPOINTS: Dictionary<number> = {
 	xxlarge1: 2100,
 };
 
+/** Default viewport SSR sizes. */
+export const UX_VIEWPORT_DEFAULT_SSR_SIZES: ViewportSsrSizes = {
+	[DeviceType.mobile]: {
+		width: 414,
+		height: 736,
+	},
+	[DeviceType.tablet]: {
+		width: 768,
+		height: 1024,
+	},
+	[DeviceType.desktop]: {
+		width: 1366,
+		height: 768,
+	},
+};
+
 export const UX_VIEWPORT_DEFAULT_CONFIG: UxViewportOptions = {
 	resizePollingSpeed: 33,
-	breakpoints: UX_VIEWPORT_DEFAULT_BREAKPOINTS
+	breakpoints: UX_VIEWPORT_DEFAULT_BREAKPOINTS,
+	viewportSsrSizes: UX_VIEWPORT_DEFAULT_SSR_SIZES,
 };

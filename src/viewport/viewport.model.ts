@@ -29,6 +29,15 @@ export enum DeviceType {
 	tablet = "tablet"
 }
 
+export interface ViewportSize {
+	width: number;
+	height: number;
+}
+
+export type ViewportSsrSizes = {
+	[key in keyof typeof DeviceType]: ViewportSize;
+}
+
 export interface UxViewportOptions {
 	/** Polling speed on resizing (in milliseconds). e.g. the higher the number the longer it takes to recalculate. */
 	resizePollingSpeed: number;
@@ -37,11 +46,9 @@ export interface UxViewportOptions {
 	 * e.g. given width '1000' and `medium` is set to '992' => `large`.
 	 */
 	breakpoints: Dictionary<number>;
-}
 
-export interface ViewportSize {
-	width: number;
-	height: number;
+	/** Viewports to use during SSR based on Device Type. */
+	viewportSsrSizes: ViewportSsrSizes;
 }
 
 export interface ViewportSizeTypeInfo {
