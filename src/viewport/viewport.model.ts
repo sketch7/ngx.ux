@@ -9,9 +9,10 @@ export enum ViewportSizeType {
 	small = 1,
 	medium = 2,
 	large = 3,
-	xlarge = 4,
-	xxlarge = 5,
-	xxlarge1 = 6,
+	fhd = 4,
+	qhd = 6,
+	uhd4k = 7,
+	uhd8k = 8,
 }
 
 export enum ComparisonOperation {

@@ -1,20 +1,24 @@
+import _ from "lodash";
 import {
 	isViewportConditionMatch as isViewportConditionMatch_,
 	generateViewportSizeTypeInfoList,
 	generateViewportSizeTypeInfoRefs,
 	generateViewportSizeType,
+	getSizeTypeInfo,
 } from "./viewport.util";
-import { ComparisonOperation, ViewportMatchConditions, ViewportSizeTypeInfo } from "./viewport.model";
+import { ComparisonOperation, ViewportMatchConditions, ViewportSizeType, ViewportSizeTypeInfo } from "./viewport.model";
+import { UX_VIEWPORT_DEFAULT_BREAKPOINTS } from "./viewport.const";
 
 const breakpoints = {
 	xsmall: 450,
 	small: 767,
 	medium: 992,
-	fullHd: 1920,
 	large: 1200,
+	hd: 1280,
+	fullHd: 1920,
 };
-const viewportSizeTypeInfoList = generateViewportSizeTypeInfoList(breakpoints);
-const sizeRefs = generateViewportSizeTypeInfoRefs(viewportSizeTypeInfoList);
+const sizeTypes = generateViewportSizeTypeInfoList(breakpoints);
+const sizeRefs = generateViewportSizeTypeInfoRefs(sizeTypes);
 
 const isViewportConditionMatch = (
 	evaluateSize: ViewportSizeTypeInfo,
@@ -22,6 +26,24 @@ const isViewportConditionMatch = (
 ) => isViewportConditionMatch_(evaluateSize, conditions, sizeRefs);
 
 describe("Viewport utils", () => {
+
+	describe("given default breakpoints", () => {
+
+		it("should match ViewportSizeType definition", () => {
+			const result = _.reduce(UX_VIEWPORT_DEFAULT_BREAKPOINTS, (r, _value, key) => {
+				const idx = ViewportSizeType[key as unknown as ViewportSizeType];
+
+				expect(idx).not.toBeUndefined();
+				r.push(idx);
+				return r;
+			}, [] as string[]);
+
+			const viewportSizeTypeItems = Object.keys(ViewportSizeType).filter(v => isNaN(+v));
+			expect(viewportSizeTypeItems.length).toBe(result.length);
+		});
+
+	});
+
 
 	describe("generateViewportSizeType", () => {
 
@@ -34,17 +56,20 @@ describe("Viewport utils", () => {
 					1: "small",
 					2: "medium",
 					3: "large",
-					4: "fullHd",
+					4: "hd",
+					5: "fullHd",
 					xsmall: 0,
 					small: 1,
 					medium: 2,
 					large: 3,
-					fullHd: 4,
+					hd: 4,
+					fullHd: 5,
 				}));
 			});
 		});
 
 	});
+
 
 	describe("generateViewportSizeTypeInfoList", () => {
 
@@ -57,12 +82,14 @@ describe("Viewport utils", () => {
 					{ name: "small", type: 1, widthThreshold: 767 },
 					{ name: "medium", type: 2, widthThreshold: 992 },
 					{ name: "large", type: 3, widthThreshold: 1200 },
-					{ name: "fullHd", type: 4, widthThreshold: 1920 }
+					{ name: "hd", type: 4, widthThreshold: 1280 },
+					{ name: "fullHd", type: 5, widthThreshold: 1920 }
 				]);
 			});
 		});
 
 	});
+
 
 	describe("generateViewportSizeTypeInfoRefs", () => {
 
@@ -77,13 +104,38 @@ describe("Viewport utils", () => {
 						small: { name: "small", type: 1, widthThreshold: 767 },
 						medium: { name: "medium", type: 2, widthThreshold: 992 },
 						large: { name: "large", type: 3, widthThreshold: 1200 },
-						fullHd: { name: "fullHd", type: 4, widthThreshold: 1920 }
+						hd: { name: "hd", type: 4, widthThreshold: 1280 },
+						fullHd: { name: "fullHd", type: 5, widthThreshold: 1920 }
 					}
 				);
 			});
 		});
 
 	});
+
+	describe("getSizeTypeInfo", () => {
+		describe("when different widths are passed", () => {
+
+			it("should match", () => {
+				const dataSet = [
+					{ width: 10, expectedSize: "xsmall" },
+					{ width: 450, expectedSize: "xsmall" },
+					{ width: 1280, expectedSize: "hd" },
+					{ width: 1280, expectedSize: "hd" },
+					{ width: 1281, expectedSize: "fullHd" },
+					{ width: 1920, expectedSize: "fullHd" },
+					{ width: 2000, expectedSize: "fullHd" },
+				];
+
+				for (const data of dataSet) {
+					const result = getSizeTypeInfo(data.width, sizeTypes);
+					expect(result.name).toBe(data.expectedSize);
+				}
+			});
+
+		});
+	});
+
 
 	describe("isViewportConditionMatch", () => {
 

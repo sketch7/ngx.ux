@@ -22,6 +22,14 @@ Get library via [npm]
 npm install @ssv/ngx.ux
 ```
 
+Choose the version corresponding to your Angular version:
+
+ | Angular | library |
+ | ------- | ------- |
+ | 10      | 2.x+    |
+ | 4 to 9  | 1.x+    |
+
+
 # Usage
 
 ## Register module
@@ -41,7 +49,7 @@ export class AppModule {
 ## Viewport
 Provides utilities to handle responsiveness easier based on the viewport (view size)
 
-### Comparsion Operands
+### Comparison Operands
 | Operand | Description           |
 | ------- | --------------------- |
 | =       | Equals                |
@@ -54,15 +62,18 @@ Provides utilities to handle responsiveness easier based on the viewport (view s
 <br>
 
 ### Size Types
+These are the defaults, but they are configurable.
+
 | Size Type | Size Range |
 | --------- | ---------- |
-| xsmall    | <=449      |
-| small     | 450-766    |
-| medium    | 767-991    |
-| large     | 992-1199   |
-| xlarge    | 1200-1499  |
-| xxlarge   | 1500-1919  |
-| xxlarge1  | >=1920     |
+| xsmall    | <=450      |
+| small     | 451-767    |
+| medium    | 768-992    |
+| large     | 993-1280   |
+| fhd       | 1281-1920  |
+| qhd       | 1921-2560  |
+| uhd4k     | 2561-3840  |
+| uhd8k     | >=3841     |
 
 
 ### Viewport Matcher Attribute (directive)

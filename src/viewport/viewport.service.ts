@@ -13,7 +13,7 @@ import { UxOptions, UX_CONFIG } from "../config";
 import { ViewportSizeTypeInfo, ViewportSize } from "./viewport.model";
 import { WindowRef } from "../platform/window";
 import { ViewportServerSizeService } from "./viewport-server-size.service";
-import { generateViewportSizeTypeInfoList, generateViewportSizeTypeInfoRefs } from "./viewport.util";
+import { generateViewportSizeTypeInfoList, generateViewportSizeTypeInfoRefs, getSizeTypeInfo } from "./viewport.util";
 import { Dictionary } from "../internal/internal.model";
 
 @Injectable({
@@ -57,7 +57,7 @@ export class ViewportService {
 		this.sizeType$ = this.resize$.pipe(
 			startWith(this.getViewportSize()),
 			distinctUntilChanged((a, b) => a.width === b.width),
-			map(x => this.getSizeTypeInfo(x.width)),
+			map(x => getSizeTypeInfo(x.width, this.sizeTypes)),
 			distinctUntilChanged(),
 			shareReplay(1),
 		);
@@ -99,20 +99,6 @@ export class ViewportService {
 			width: this.windowRef.native.innerWidth,
 			height: this.windowRef.native.innerHeight,
 		};
-	}
-
-	private getSizeTypeInfo(width: number): ViewportSizeTypeInfo {
-		const lastEntryIndex = this.sizeTypes.length - 1;
-
-		for (let idx = 0; idx < lastEntryIndex; idx++) {
-			const viewportSizeTypeInfo = this.sizeTypes[idx];
-
-			if (width <= viewportSizeTypeInfo.widthThreshold) {
-				return viewportSizeTypeInfo;
-			}
-		}
-
-		return this.sizeTypes[lastEntryIndex];
 	}
 
 }
