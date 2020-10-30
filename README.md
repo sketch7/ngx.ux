@@ -126,18 +126,17 @@ Structural directive which loads components based on a viewport sizing condition
 ### Viewport Service
 
 ```ts
-this.viewport.sizeType$
-  .pipe(
+// get size type
+this.viewport.sizeType$.pipe(
     tap(x => console.log("Viewport - sizeType changed", x)), // { type: 4, name: "xlarge", widthThreshold: 1500 }
-  )
-  .subscribe();
+  ).subscribe();
 ```
 
 ### Viewport for SSR
 Since in SSR there is no way to know the client viewport size, we should at least determine device type and handle provide
 3 different sizes based on device type e.g. `mobile`, `tablet` or `desktop` so the initial rendering will be closer based on device type.
 
-The basic implemention allows to provide a device type `mobile`, `tablet` or `desktop` and there are static sizes for those.
+The basic implementation allows to provide a device type `mobile`, `tablet` or `desktop` and there are static sizes for those.
 
 ```ts
 import { UX_VIEWPORT_SSR_DEVICE } from "@ssv/ngx.ux";
