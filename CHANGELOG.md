@@ -4,11 +4,6 @@
 
 - **deps:** update dependencies to support Angular v10
 - **deps:** add dependency on `tslib: ^2.0.0`
-- **viewport:** add `size$` to `ViewportService`
-
-### Bug Fixes
-
-- **viewport:** throw error when invalid size type is used in matcher
 
 ### BREAKING CHANGES
 
@@ -16,7 +11,17 @@
 - **viewport:** change `ViewportSizeType` and `UX_VIEWPORT_DEFAULT_BREAKPOINTS` has been changed (see readme)
 - **viewport:** remove `ViewportService.calculateItemsPerRow` function
 
-## [1.2.1](https://github.com/sketch7/ngx.ux/compare/1.1.2...1.2.0) (2020-10-28)
+## [1.2.2](https://github.com/sketch7/ngx.ux/compare/1.2.1...1.2.2) (2020-10-30)
+
+### Features
+
+- **viewport:** add `size$` to `ViewportService`
+
+### Bug Fixes
+
+- **viewport:** throw error when invalid size type is used in matcher
+
+## [1.2.1](https://github.com/sketch7/ngx.ux/compare/1.2.0...1.2.1) (2020-10-28)
 
 ### Bug Fixes
 
