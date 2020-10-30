@@ -35,11 +35,11 @@
 			class="matcher-dummy-container">
 			Dummy container #1 <strong class="matcher-dummy-container__target">only (large)</strong>
 		</div>
-		<div *ssvViewportMatcher="['large', 'xlarge']"
+		<div *ssvViewportMatcher="['large', 'fhd']"
 			class="matcher-dummy-container">
 			Dummy container #2 <br />
 			<strong class="matcher-dummy-container__target">
-				only (large, xlarge)
+				only (large, fhd)
 			</strong>
 		</div>
 		<div *ssvViewportMatcher="''; exclude ['xsmall', 'small']"
@@ -51,12 +51,12 @@
 			<div *ssvViewportMatcher="{size: 'fhd', operation: '<='}; else elseB"
 				class="matcher-dummy-container">
 				Dummy container #4
-				<strong class="matcher-dummy-container__target">(<= xlarge>)</strong>
+				<strong class="matcher-dummy-container__target">(<= fhd>)</strong>
 			</div>
 			<ng-template #elseB>
 				<div class="matcher-dummy-container">
 					Dummy container #5
-					<strong class="matcher-dummy-container__target">(<= xlarge
+					<strong class="matcher-dummy-container__target">(<= fhd
 							[else]>)</strong>
 				</div>
 			</ng-template>
@@ -64,7 +64,7 @@
 
 		<div *ssvViewportMatcher="['>=', 'fhd']"
 			class="matcher-dummy-container">
-			Dummy container #6 <strong class="matcher-dummy-container__target">(>= xlarge>)</strong>
+			Dummy container #6 <strong class="matcher-dummy-container__target">(>= fhd>)</strong>
 			<small>tuple syntax *recommended*</small>
 		</div>
 
