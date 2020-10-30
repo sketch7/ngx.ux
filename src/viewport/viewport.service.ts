@@ -13,7 +13,7 @@ import { UxOptions, UX_CONFIG } from "../config";
 import { ViewportSizeTypeInfo, ViewportSize } from "./viewport.model";
 import { WindowRef } from "../platform/window";
 import { ViewportServerSizeService } from "./viewport-server-size.service";
-import { generateViewportSizeTypeInfoList, generateViewportSizeTypeInfoRefs } from "./viewport.util";
+import { generateViewportSizeTypeInfoList, generateViewportSizeTypeInfoRefs, getSizeTypeInfo } from "./viewport.util";
 import { Dictionary } from "../internal/internal.model";
 
 @Injectable({
@@ -21,11 +21,14 @@ import { Dictionary } from "../internal/internal.model";
 })
 export class ViewportService {
 
-	/** Observable when window is resized (which is also throttled). */
-	resize$: Observable<ViewportSize>;
+	/** Window resize observable (which is also throttled). */
+	readonly resize$: Observable<ViewportSize>;
 
-	/** Observable when viewport size type changes. */
-	sizeType$: Observable<ViewportSizeTypeInfo>;
+	/** Viewport size type observable. */
+	readonly sizeType$: Observable<ViewportSizeTypeInfo>;
+
+	/** Viewport size observable. */
+	readonly size$: Observable<ViewportSize>;
 
 	/** Size types refs of the generated viewport size type info. */
 	get sizeTypeMap(): Dictionary<ViewportSizeTypeInfo> { return this._sizeTypeMap; }
@@ -54,10 +57,15 @@ export class ViewportService {
 			this.resize$ = of(viewportServerSize.get());
 		}
 
-		this.sizeType$ = this.resize$.pipe(
+		this.size$ = this.resize$.pipe(
 			startWith(this.getViewportSize()),
+			distinctUntilChanged((a, b) => a.width === b.width && a.height === b.height),
+			shareReplay(1),
+		);
+
+		this.sizeType$ = this.size$.pipe(
 			distinctUntilChanged((a, b) => a.width === b.width),
-			map(x => this.getSizeTypeInfo(x.width)),
+			map(x => getSizeTypeInfo(x.width, this.sizeTypes)),
 			distinctUntilChanged(),
 			shareReplay(1),
 		);
@@ -99,20 +107,6 @@ export class ViewportService {
 			width: this.windowRef.native.innerWidth,
 			height: this.windowRef.native.innerHeight,
 		};
-	}
-
-	private getSizeTypeInfo(width: number): ViewportSizeTypeInfo {
-		const lastEntryIndex = this.sizeTypes.length - 1;
-
-		for (let idx = 0; idx < lastEntryIndex; idx++) {
-			const viewportSizeTypeInfo = this.sizeTypes[idx];
-
-			if (width <= viewportSizeTypeInfo.widthThreshold) {
-				return viewportSizeTypeInfo;
-			}
-		}
-
-		return this.sizeTypes[lastEntryIndex];
 	}
 
 }

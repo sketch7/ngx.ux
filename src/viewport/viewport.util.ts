@@ -52,10 +52,13 @@ export function isViewportConditionMatch(
 	let isExpressionTruthy;
 
 	if (!isExcluded && conditions.expression) {
-		const expressionSizeTypeValue: number = viewportSizeTypeInfoRefs[conditions.expression.size].type;
+		const ref = viewportSizeTypeInfoRefs[conditions.expression.size];
+		if(!ref) {
+			throw new Error(`Viewport size type is invalid. Size type: '${conditions.expression.size}'`);
+		}
 		const expMatcher = COMPARISON_OPERATION_FUNC_MAPPING[conditions.expression.operation];
 
-		isExpressionTruthy = expMatcher(evaluateSize.type, expressionSizeTypeValue);
+		isExpressionTruthy = expMatcher(evaluateSize.type, ref.type);
 	} else {
 		isIncluded = match(conditions.sizeType, evaluateSize.name, true);
 	}
@@ -73,6 +76,20 @@ function match(value: string | string[] | null | undefined, targetValue: string,
 	return Array.isArray(value)
 		? value.includes(targetValue)
 		: value === targetValue;
+}
+
+export function getSizeTypeInfo(width: number, sizeTypes: ViewportSizeTypeInfo[]): ViewportSizeTypeInfo {
+	const lastEntryIndex = sizeTypes.length - 1;
+
+	for (let idx = 0; idx < lastEntryIndex; idx++) {
+		const viewportSizeTypeInfo = sizeTypes[idx];
+
+		if (width <= viewportSizeTypeInfo.widthThreshold) {
+			return viewportSizeTypeInfo;
+		}
+	}
+
+	return sizeTypes[lastEntryIndex];
 }
 
 /**
