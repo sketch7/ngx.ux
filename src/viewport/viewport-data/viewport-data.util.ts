@@ -10,9 +10,9 @@ export interface ViewportDataMatcher<T = unknown> {
 	): T | undefined;
 }
 
-export interface ViewportDataConfig<T = unknown> extends Dictionary<T> {
-	default: T;
-}
+export type ViewportDataConfig<TValue = unknown, TData = Dictionary<TValue>> = TData & {
+	default?: TValue
+};
 
 export enum ViewportDataResolveStrategy {
 	/** Indicates that size should match only or default. */
@@ -37,7 +37,7 @@ export function resolveViewportData<T>(
 	strategy: ViewportDataResolveStrategy,
 	sizeTypes: ViewportSizeTypeInfo[],
 	sizeTypeMap: Dictionary<ViewportSizeTypeInfo>,
-): T {
+): T | undefined {
 	const resolveFn = resolveStrategyHandlerMap[strategy];
 	if (!resolveFn) {
 		throw Error(`Viewport Data strategy not implemented. Strategy: '${strategy}'`);

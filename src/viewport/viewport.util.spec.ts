@@ -1,4 +1,6 @@
 import _ from "lodash";
+
+import { EnumDictionary } from "../internal/internal.model";
 import {
 	isViewportConditionMatch as isViewportConditionMatch_,
 	generateViewportSizeTypeInfoList,
@@ -9,7 +11,16 @@ import {
 import { ComparisonOperation, ViewportMatchConditions, ViewportSizeType, ViewportSizeTypeInfo } from "./viewport.model";
 import { UX_VIEWPORT_DEFAULT_BREAKPOINTS } from "./viewport.const";
 
-const breakpoints = {
+export enum TestViewportSizeType {
+	xsmall = 0,
+	small = 1,
+	medium = 2,
+	large = 3,
+	hd = 4,
+	fullHd = 5,
+}
+
+const breakpoints: EnumDictionary<keyof typeof TestViewportSizeType, number> = {
 	xsmall: 450,
 	small: 767,
 	medium: 992,
@@ -18,7 +29,7 @@ const breakpoints = {
 	fullHd: 1920,
 };
 const sizeTypes = generateViewportSizeTypeInfoList(breakpoints);
-const sizeRefs = generateViewportSizeTypeInfoRefs(sizeTypes);
+const sizeRefs = generateViewportSizeTypeInfoRefs(sizeTypes) as EnumDictionary<keyof typeof TestViewportSizeType, ViewportSizeTypeInfo>;
 
 const isViewportConditionMatch = (
 	evaluateSize: ViewportSizeTypeInfo,

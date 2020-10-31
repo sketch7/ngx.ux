@@ -1,11 +1,18 @@
 import _ from "lodash";
-import { generateViewportSizeTypeInfoList, generateViewportSizeTypeInfoRefs, } from "../viewport.util";
-import {
-	ViewportDataConfig, resolveViewportData as resolveViewportData_, ViewportDataResolveStrategy
-} from "./viewport-data.util";
-import { ViewportSizeTypeInfo } from "../viewport.model";
 
-const breakpoints = {
+import { EnumDictionary } from "../../internal/internal.model";
+import { generateViewportSizeTypeInfoList, generateViewportSizeTypeInfoRefs, } from "../viewport.util";
+import { ViewportSizeTypeInfo } from "../viewport.model";
+import {
+	ViewportDataConfig,
+	resolveViewportData as resolveViewportData_,
+	ViewportDataResolveStrategy
+} from "./viewport-data.util";
+import { TestViewportSizeType } from "../viewport.util.spec";
+
+type TestViewportDataConfig<T> = ViewportDataConfig<T, Partial<EnumDictionary<keyof typeof TestViewportSizeType, T>>>;
+
+const breakpoints: EnumDictionary<keyof typeof TestViewportSizeType, number> = {
 	xsmall: 450,
 	small: 767,
 	medium: 992,
@@ -13,10 +20,9 @@ const breakpoints = {
 	hd: 1280,
 	fullHd: 1920,
 };
-const sizeTypes = generateViewportSizeTypeInfoList(breakpoints);
-const sizeRefs = generateViewportSizeTypeInfoRefs(sizeTypes);
 
-type StrictViewportDataConfig<T> = ViewportDataConfig<T> & Partial<typeof breakpoints>;
+const sizeTypes = generateViewportSizeTypeInfoList(breakpoints);
+const sizeRefs = generateViewportSizeTypeInfoRefs(sizeTypes) as EnumDictionary<keyof typeof TestViewportSizeType, ViewportSizeTypeInfo>;
 
 const resolveViewportData = <T>(
 	dataConfig: ViewportDataConfig<T>,
@@ -30,10 +36,10 @@ describe("Viewport utils", () => {
 
 		describe("given strategy is exact", () => {
 			const strategy = ViewportDataResolveStrategy.match;
-			const dataConfig: StrictViewportDataConfig<number> = {
+			const dataConfig: TestViewportDataConfig<number> = {
 				default: 15,
 				small: 10,
-				large: 20
+				large: 20,
 			};
 
 			describe("when type value exists", () => {
@@ -57,7 +63,7 @@ describe("Viewport utils", () => {
 
 		describe("given strategy is larger (up)", () => {
 			const strategy = ViewportDataResolveStrategy.larger;
-			const dataConfig: StrictViewportDataConfig<number> = {
+			const dataConfig: TestViewportDataConfig<number> = {
 				default: 15,
 				small: 10,
 				large: 20,
@@ -97,7 +103,7 @@ describe("Viewport utils", () => {
 
 
 		describe("given strategy is smaller (down)", () => {
-			const dataConfig: StrictViewportDataConfig<number> = {
+			const dataConfig: TestViewportDataConfig<number> = {
 				default: 15,
 				small: 10,
 				large: 20,
@@ -137,7 +143,7 @@ describe("Viewport utils", () => {
 
 
 		describe("given strategy is closestSmallerFirst (down)", () => {
-			const dataConfig: StrictViewportDataConfig<number> = {
+			const dataConfig: TestViewportDataConfig<number> = {
 				default: 15,
 				small: 10,
 				large: 20,
@@ -178,7 +184,7 @@ describe("Viewport utils", () => {
 
 
 		describe("given strategy is closestLargerFirst (up)", () => {
-			const dataConfig: StrictViewportDataConfig<number> = {
+			const dataConfig: TestViewportDataConfig<number> = {
 				default: 15,
 				small: 10,
 				large: 20,
