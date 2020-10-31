@@ -61,7 +61,6 @@ function resolveWithLargerMatch<T>(
 	dataConfig: ViewportDataConfig<T>,
 	currentSizeType: ViewportSizeTypeInfo,
 	sizeTypes: ViewportSizeTypeInfo[],
-	sizeTypeMap: Dictionary<ViewportSizeTypeInfo>,
 ): T | undefined {
 	let data = dataConfig[currentSizeType.name];
 	if (data !== undefined) {
@@ -73,29 +72,21 @@ function resolveWithLargerMatch<T>(
 		return undefined;
 	}
 
-	let sizeTypeIdx = currentSizeType.type;
-	for (const key in dataConfig) { // iterate only data provided
-		if (Object.prototype.hasOwnProperty.call(dataConfig, key)) {
-			sizeTypeIdx++;
-			const sizeType = sizeTypeMap[sizeTypeIdx];
-			if (!sizeType) { // exceeded largest
-				return undefined;
-			}
-
-			data = dataConfig[sizeType.name];
-			if (data !== undefined) { // first match found
-				return data;
-			}
+	for (let index = currentSizeType.type; index < sizeTypes.length; index++) {
+		const sizeType = sizeTypes[index];
+		data = dataConfig[sizeType.name];
+		if (data !== undefined) { // first match found
+			return data;
 		}
 	}
+
 	return undefined;
 }
 
 function resolveWithSmallerMatch<T>(
 	dataConfig: ViewportDataConfig<T>,
 	currentSizeType: ViewportSizeTypeInfo,
-	_sizeTypes: ViewportSizeTypeInfo[],
-	sizeTypeMap: Dictionary<ViewportSizeTypeInfo>,
+	sizeTypes: ViewportSizeTypeInfo[],
 ): T | undefined {
 	let data = dataConfig[currentSizeType.name];
 	if (data !== undefined) {
@@ -106,20 +97,14 @@ function resolveWithSmallerMatch<T>(
 		return undefined;
 	}
 
-	let sizeTypeIdx = currentSizeType.type;
-	for (const key in dataConfig) { // iterate only data provided
-		if (Object.prototype.hasOwnProperty.call(dataConfig, key)) {
-			sizeTypeIdx--;
-			const sizeType = sizeTypeMap[sizeTypeIdx];
-			if (!sizeType) { // exceeded largest
-				return undefined;
-			}
-
-			data = dataConfig[sizeType.name];
-			if (data !== undefined) { // first match found
-				return data;
-			}
+	// eslint-disable-next-line for-direction
+	for (let index = currentSizeType.type; index < sizeTypes.length; index--) {
+		const sizeType = sizeTypes[index];
+		data = dataConfig[sizeType.name];
+		if (data !== undefined) { // first match found
+			return data;
 		}
 	}
+
 	return undefined;
 }
