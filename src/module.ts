@@ -2,7 +2,6 @@ import { NgModule, ModuleWithProviders, InjectionToken } from "@angular/core";
 
 import { SsvViewportMatcherDirective } from "./viewport/index";
 import { UxOptions, UX_DEFAULT_CONFIG, UX_CONFIG } from "./config";
-import { WINDOW } from "./platform/window";
 import { PartialDeep } from "./internal/internal.model";
 
 /** @internal */
@@ -12,7 +11,6 @@ export const _MODULE_CONFIG = new InjectionToken<UxOptions>("_ux-config");
 	declarations: [SsvViewportMatcherDirective],
 	providers: [
 		{ provide: UX_CONFIG, useValue: UX_DEFAULT_CONFIG },
-		{ provide: WINDOW, useFactory: _window },
 	],
 	exports: [SsvViewportMatcherDirective],
 })
@@ -43,12 +41,4 @@ export function _moduleConfigFactory(config: UxOptions | (() => UxOptions)): UxO
 	}; // breakpoints shouldn't be merged
 
 	return { viewport };
-}
-
-/** @internal */
-export function _window(): unknown {
-	if (typeof window !== "undefined") {
-		return window;
-	}
-	return {};
 }

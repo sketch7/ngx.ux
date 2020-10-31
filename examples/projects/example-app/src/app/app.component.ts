@@ -7,6 +7,6 @@ import { Component } from "@angular/core";
 })
 export class AppComponent {
 
-	title = "example-app";
+	title = "Viewport Demo";
 
 }
