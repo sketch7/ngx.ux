@@ -10,14 +10,15 @@ import {
 } from "rxjs/operators";
 
 import { UxOptions, UX_CONFIG } from "../config";
-import { ViewportSizeTypeInfo, ViewportSize } from "./viewport.model";
-import { WindowRef } from "../platform/window";
-import { ViewportServerSizeService } from "./viewport-server-size.service";
-import { generateViewportSizeTypeInfoList, generateViewportSizeTypeInfoRefs, getSizeTypeInfo } from "./viewport.util";
 import { Dictionary } from "../internal/internal.model";
+import { WindowRef } from "../platform/window";
+import { ViewportSizeTypeInfo } from "./viewport.model";
+import { generateViewportSizeTypeInfoList, generateViewportSizeTypeInfoRefs, getSizeTypeInfo } from "./viewport.util";
+import { ViewportSizeService } from "./size/viewport-size.service";
+import { ViewportSize } from "./size/viewport-size.model";
 
 @Injectable({
-	providedIn: "root",
+	providedIn: "root"
 })
 export class ViewportService {
 
@@ -40,8 +41,8 @@ export class ViewportService {
 	private _sizeTypes: ViewportSizeTypeInfo[];
 
 	constructor(
-		private windowRef: WindowRef,
-		private viewportServerSize: ViewportServerSizeService,
+		sizeService: ViewportSizeService,
+		windowRef: WindowRef,
 		@Inject(UX_CONFIG) config: UxOptions,
 	) {
 		this._sizeTypes = generateViewportSizeTypeInfoList(config.viewport.breakpoints);
@@ -49,16 +50,16 @@ export class ViewportService {
 
 		if (windowRef.hasNative) {
 			this.resize$ = fromEvent<Event>(window, "resize").pipe(
-				map(() => this.getViewportSize()),
+				map(() => sizeService.get()),
 				auditTime(config.viewport.resizePollingSpeed),
 				share(),
 			);
 		} else {
-			this.resize$ = of(viewportServerSize.get());
+			this.resize$ = of(sizeService.get());
 		}
 
 		this.size$ = this.resize$.pipe(
-			startWith(this.getViewportSize()),
+			startWith(sizeService.get()),
 			distinctUntilChanged((a, b) => a.width === b.width && a.height === b.height),
 			shareReplay(1),
 		);
@@ -69,26 +70,6 @@ export class ViewportService {
 			distinctUntilChanged(),
 			shareReplay(1),
 		);
-	}
-
-	/** Returns the current viewport size */
-	private getViewportSize(): ViewportSize {
-		if (!this.windowRef.hasNative) {
-			return this.viewportServerSize.get();
-		}
-
-		const ua = navigator.userAgent.toLowerCase();
-		if (ua.indexOf("safari") !== -1 && ua.indexOf("chrome") === -1) { // safari subtracts the scrollbar width
-			return {
-				width: this.windowRef.native.document.documentElement.clientWidth,
-				height: this.windowRef.native.document.documentElement.clientHeight,
-			};
-		}
-
-		return {
-			width: this.windowRef.native.innerWidth,
-			height: this.windowRef.native.innerHeight,
-		};
 	}
 
 }

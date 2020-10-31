@@ -24,12 +24,6 @@ export enum ComparisonOperation {
 	greaterOrEqualThan = ">=",
 }
 
-export enum DeviceType {
-	desktop = "desktop",
-	mobile = "mobile",
-	tablet = "tablet"
-}
-
 export interface UxViewportOptions {
 	/** Polling speed on resizing (in milliseconds). e.g. the higher the number the longer it takes to recalculate. */
 	resizePollingSpeed: number;
@@ -38,11 +32,6 @@ export interface UxViewportOptions {
 	 * e.g. given width '1000' and `medium` is set to '992' => `large`.
 	 */
 	breakpoints: Dictionary<number>;
-}
-
-export interface ViewportSize {
-	width: number;
-	height: number;
 }
 
 export interface ViewportSizeTypeInfo {
