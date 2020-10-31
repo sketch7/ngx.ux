@@ -145,6 +145,7 @@ export function generateViewportSizeTypeInfoRefs(breakpointList: ViewportSizeTyp
 	return Object.freeze(
 		breakpointList.reduce<Dictionary<ViewportSizeTypeInfo>>((dictionary, breakpoint) => {
 			dictionary[breakpoint.name] = breakpoint;
+			dictionary[breakpoint.type] = breakpoint;
 			return dictionary;
 		}, {})
 	);
