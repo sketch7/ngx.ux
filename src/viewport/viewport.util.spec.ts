@@ -105,7 +105,13 @@ describe("Viewport utils", () => {
 						medium: { name: "medium", type: 2, widthThreshold: 992 },
 						large: { name: "large", type: 3, widthThreshold: 1200 },
 						hd: { name: "hd", type: 4, widthThreshold: 1280 },
-						fullHd: { name: "fullHd", type: 5, widthThreshold: 1920 }
+						fullHd: { name: "fullHd", type: 5, widthThreshold: 1920 },
+						0: { name: "xsmall", type: 0, widthThreshold: 450 },
+						1: { name: "small", type: 1, widthThreshold: 767 },
+						2: { name: "medium", type: 2, widthThreshold: 992 },
+						3: { name: "large", type: 3, widthThreshold: 1200 },
+						4: { name: "hd", type: 4, widthThreshold: 1280 },
+						5: { name: "fullHd", type: 5, widthThreshold: 1920 },
 					}
 				);
 			});
