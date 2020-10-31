@@ -122,40 +122,22 @@ function resolveWithClosestSmallerFirstMatch<T>(
 	currentSizeType: ViewportSizeTypeInfo,
 	sizeTypes: ViewportSizeTypeInfo[],
 ): T | undefined {
-	let data = dataConfig[currentSizeType.name];
-	if (data !== undefined) {
-		return data;
-	}
-
-	let downIndex = currentSizeType.type;
-	let upIndex = currentSizeType.type;
-
-	// eslint-disable-next-line @typescript-eslint/prefer-for-of
-	for (let index = 0; index < sizeTypes.length; index++) {
-		const downSizeType = sizeTypes[--downIndex];
-		if (downSizeType) {
-			data = dataConfig[downSizeType.name];
-			if (data !== undefined) {
-				return data;
-			}
-		}
-
-		const upSizeType = sizeTypes[++upIndex];
-		if (upSizeType) {
-			data = dataConfig[upSizeType.name];
-			if (data !== undefined) {
-				return data;
-			}
-		}
-	}
-
-	return undefined;
+	return closestMatch(dataConfig, currentSizeType, sizeTypes, true);
 }
 
 function resolveWithClosestLargerFirstMatch<T>(
 	dataConfig: ViewportDataConfig<T>,
 	currentSizeType: ViewportSizeTypeInfo,
 	sizeTypes: ViewportSizeTypeInfo[],
+): T | undefined {
+	return closestMatch(dataConfig, currentSizeType, sizeTypes, false);
+}
+
+function closestMatch<T>(
+	dataConfig: ViewportDataConfig<T>,
+	currentSizeType: ViewportSizeTypeInfo,
+	sizeTypes: ViewportSizeTypeInfo[],
+	isSmallerFirst: boolean
 ): T | undefined {
 	let data = dataConfig[currentSizeType.name];
 	if (data !== undefined) {
@@ -167,19 +149,13 @@ function resolveWithClosestLargerFirstMatch<T>(
 
 	// eslint-disable-next-line @typescript-eslint/prefer-for-of
 	for (let index = 0; index < sizeTypes.length; index++) {
-		const upSizeType = sizeTypes[++upIndex];
-		if (upSizeType) {
-			data = dataConfig[upSizeType.name];
-			if (data !== undefined) {
-				return data;
-			}
-		}
-
-		const downSizeType = sizeTypes[--downIndex];
-		if (downSizeType) {
-			data = dataConfig[downSizeType.name];
-			if (data !== undefined) {
-				return data;
+		for (const idx of isSmallerFirst ? [--downIndex, ++upIndex] : [++upIndex, --downIndex]) {
+			const sizeType = sizeTypes[idx];
+			if (sizeType) {
+				data = dataConfig[sizeType.name];
+				if (data !== undefined) {
+					return data;
+				}
 			}
 		}
 	}
