@@ -74,13 +74,18 @@
 	</fieldset>
 
 	<div class="viewport__data-container">
-		<small>
-			<span class="type variable">data</span>
-			<span class="type boolean value">{{dataConfig | json}}</span>
-		</small>
-		<small>
-			<span class="type variable">value</span>
-			<span class="type boolean value">{{ dataConfig | ssvViewportData: "closestSmallerFirst" }}</span>
-		</small>
+		<div>
+			<small>
+				<span class="type variable">data</span>
+				<span class="type boolean value">{{dataConfig | json}}</span>
+			</small>
+		</div>
+		<div>
+			<small>
+				<span class="type variable">value</span>
+				<span
+					class="type boolean value">{{ dataConfig | ssvViewportData: "closestSmallerFirst" }}</span>
+			</small>
+		</div>
 	</div>
 </div>
