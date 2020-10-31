@@ -83,7 +83,7 @@ function resolveWithLargerMatch<T>(
 	for (let index = currentSizeType.type; index < sizeTypes.length; index++) {
 		const sizeType = sizeTypes[index];
 		data = dataConfig[sizeType.name];
-		if (data !== undefined) { // first match found
+		if (data !== undefined) {
 			return data;
 		}
 	}
@@ -109,7 +109,7 @@ function resolveWithSmallerMatch<T>(
 	for (let index = currentSizeType.type; index < sizeTypes.length; index--) {
 		const sizeType = sizeTypes[index];
 		data = dataConfig[sizeType.name];
-		if (data !== undefined) { // first match found
+		if (data !== undefined) {
 			return data;
 		}
 	}
@@ -135,7 +135,7 @@ function resolveWithClosestSmallerFirstMatch<T>(
 		const downSizeType = sizeTypes[--downIndex];
 		if (downSizeType) {
 			data = dataConfig[downSizeType.name];
-			if (data !== undefined) { // first match found
+			if (data !== undefined) {
 				return data;
 			}
 		}
@@ -143,7 +143,7 @@ function resolveWithClosestSmallerFirstMatch<T>(
 		const upSizeType = sizeTypes[++upIndex];
 		if (upSizeType) {
 			data = dataConfig[upSizeType.name];
-			if (data !== undefined) { // first match found
+			if (data !== undefined) {
 				return data;
 			}
 		}
@@ -170,7 +170,7 @@ function resolveWithClosestLargerFirstMatch<T>(
 		const upSizeType = sizeTypes[++upIndex];
 		if (upSizeType) {
 			data = dataConfig[upSizeType.name];
-			if (data !== undefined) { // first match found
+			if (data !== undefined) {
 				return data;
 			}
 		}
@@ -178,7 +178,7 @@ function resolveWithClosestLargerFirstMatch<T>(
 		const downSizeType = sizeTypes[--downIndex];
 		if (downSizeType) {
 			data = dataConfig[downSizeType.name];
-			if (data !== undefined) { // first match found
+			if (data !== undefined) {
 				return data;
 			}
 		}
