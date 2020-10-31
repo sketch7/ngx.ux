@@ -20,6 +20,11 @@ export class ViewportComponent implements OnInit, OnDestroy {
 	sizeInfo: ViewportSizeTypeInfo | undefined;
 	size: ViewportSize | undefined;
 	isVisible = true;
+	dataConfig = {
+		default: "default",
+		small: "small",
+		large: "large",
+	};
 
 	private readonly _destroy$ = new Subject<void>();
 

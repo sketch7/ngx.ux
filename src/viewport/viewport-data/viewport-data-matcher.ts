@@ -30,6 +30,7 @@ export enum ViewportDataMatchStrategy {
 	/** Indicates that size matches when exact match, or it tries both larger/smaller (larger is preferred) until match or default. */
 	closestLargerFirst,
 }
+export type ViewportDataMatchStrategyLiteral = keyof typeof ViewportDataMatchStrategy;
 
 export function matchViewportData<T>(
 	dataConfig: ViewportDataConfig<T>,
