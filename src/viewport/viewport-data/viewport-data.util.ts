@@ -17,8 +17,12 @@ export interface ViewportDataConfig<T = unknown> extends Dictionary<T> {
 export enum ViewportDataResolveStrategy {
 	/** Indicates that size should match only or default. */
 	match,
-	/** Indicates that size should match, or larger else default. */
+
+	/** Indicates that size should match, or larger (up) else default. */
 	larger,
+
+	/** Indicates that size should match, or smaller (down) else default. */
+	smaller,
 }
 
 export function resolveViewportData<T>(
@@ -43,6 +47,7 @@ export function resolveViewportData<T>(
 const resolveStrategyHandlerMap: Dictionary<ViewportDataMatcher> = {
 	[ViewportDataResolveStrategy.match]: resolveWithExactMatch,
 	[ViewportDataResolveStrategy.larger]: resolveWithLargerMatch,
+	[ViewportDataResolveStrategy.smaller]: resolveWithSmallerMatch,
 };
 
 function resolveWithExactMatch<T>(
@@ -72,6 +77,39 @@ function resolveWithLargerMatch<T>(
 	for (const key in dataConfig) { // iterate only data provided
 		if (Object.prototype.hasOwnProperty.call(dataConfig, key)) {
 			sizeTypeIdx++;
+			const sizeType = sizeTypeMap[sizeTypeIdx];
+			if (!sizeType) { // exceeded largest
+				return undefined;
+			}
+
+			data = dataConfig[sizeType.name];
+			if (data !== undefined) { // first match found
+				return data;
+			}
+		}
+	}
+	return undefined;
+}
+
+function resolveWithSmallerMatch<T>(
+	dataConfig: ViewportDataConfig<T>,
+	currentSizeType: ViewportSizeTypeInfo,
+	_sizeTypes: ViewportSizeTypeInfo[],
+	sizeTypeMap: Dictionary<ViewportSizeTypeInfo>,
+): T | undefined {
+	let data = dataConfig[currentSizeType.name];
+	if (data !== undefined) {
+		return data;
+	}
+
+	if (currentSizeType.type <= 0) {
+		return undefined;
+	}
+
+	let sizeTypeIdx = currentSizeType.type;
+	for (const key in dataConfig) { // iterate only data provided
+		if (Object.prototype.hasOwnProperty.call(dataConfig, key)) {
+			sizeTypeIdx--;
 			const sizeType = sizeTypeMap[sizeTypeIdx];
 			if (!sizeType) { // exceeded largest
 				return undefined;
