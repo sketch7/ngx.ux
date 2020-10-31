@@ -14,9 +14,9 @@ export type ViewportDataConfig<TValue = unknown, TData = Dictionary<TValue>> = T
 	default?: TValue
 };
 
-export enum ViewportDataResolveStrategy {
-	/** Indicates that size should match only or default. */
-	match,
+export enum ViewportDataMatchStrategy {
+	/** Indicates that size should match exact or default. */
+	exact,
 
 	/** Indicates that size matches when exact match, first match larger (up) or default. */
 	larger,
@@ -31,18 +31,18 @@ export enum ViewportDataResolveStrategy {
 	closestLargerFirst,
 }
 
-export function resolveViewportData<T>(
+export function matchViewportData<T>(
 	dataConfig: ViewportDataConfig<T>,
 	currentSizeType: ViewportSizeTypeInfo,
-	strategy: ViewportDataResolveStrategy,
+	strategy: ViewportDataMatchStrategy,
 	sizeTypes: ViewportSizeTypeInfo[],
 	sizeTypeMap: Dictionary<ViewportSizeTypeInfo>,
 ): T | undefined {
-	const resolveFn = resolveStrategyHandlerMap[strategy];
-	if (!resolveFn) {
+	const matchFn = matchStrategyHandlerMap[strategy];
+	if (!matchFn) {
 		throw Error(`Viewport Data strategy not implemented. Strategy: '${strategy}'`);
 	}
-	const data = resolveFn(dataConfig, currentSizeType, sizeTypes, sizeTypeMap) as T;
+	const data = matchFn(dataConfig, currentSizeType, sizeTypes, sizeTypeMap) as T;
 	if (data !== undefined) {
 		return data;
 	}
@@ -50,22 +50,22 @@ export function resolveViewportData<T>(
 }
 
 
-const resolveStrategyHandlerMap: Dictionary<ViewportDataMatcher> = {
-	[ViewportDataResolveStrategy.match]: resolveWithExactMatch,
-	[ViewportDataResolveStrategy.larger]: resolveWithLargerMatch,
-	[ViewportDataResolveStrategy.smaller]: resolveWithSmallerMatch,
-	[ViewportDataResolveStrategy.closestSmallerFirst]: resolveWithClosestSmallerFirstMatch,
-	[ViewportDataResolveStrategy.closestLargerFirst]: resolveWithClosestLargerFirstMatch,
+const matchStrategyHandlerMap: Dictionary<ViewportDataMatcher> = {
+	[ViewportDataMatchStrategy.exact]: matchWithExact,
+	[ViewportDataMatchStrategy.larger]: matchWithLargerMatch,
+	[ViewportDataMatchStrategy.smaller]: matchWithSmallerMatch,
+	[ViewportDataMatchStrategy.closestSmallerFirst]: matchWithClosestSmallerFirstMatch,
+	[ViewportDataMatchStrategy.closestLargerFirst]: matchWithClosestLargerFirstMatch,
 };
 
-function resolveWithExactMatch<T>(
+function matchWithExact<T>(
 	dataConfig: ViewportDataConfig<T>,
 	currentSizeType: ViewportSizeTypeInfo,
 ): T | undefined {
 	return dataConfig[currentSizeType.name];
 }
 
-function resolveWithLargerMatch<T>(
+function matchWithLargerMatch<T>(
 	dataConfig: ViewportDataConfig<T>,
 	currentSizeType: ViewportSizeTypeInfo,
 	sizeTypes: ViewportSizeTypeInfo[],
@@ -91,7 +91,7 @@ function resolveWithLargerMatch<T>(
 	return undefined;
 }
 
-function resolveWithSmallerMatch<T>(
+function matchWithSmallerMatch<T>(
 	dataConfig: ViewportDataConfig<T>,
 	currentSizeType: ViewportSizeTypeInfo,
 	sizeTypes: ViewportSizeTypeInfo[],
@@ -117,7 +117,7 @@ function resolveWithSmallerMatch<T>(
 	return undefined;
 }
 
-function resolveWithClosestSmallerFirstMatch<T>(
+function matchWithClosestSmallerFirstMatch<T>(
 	dataConfig: ViewportDataConfig<T>,
 	currentSizeType: ViewportSizeTypeInfo,
 	sizeTypes: ViewportSizeTypeInfo[],
@@ -125,7 +125,7 @@ function resolveWithClosestSmallerFirstMatch<T>(
 	return closestMatch(dataConfig, currentSizeType, sizeTypes, true);
 }
 
-function resolveWithClosestLargerFirstMatch<T>(
+function matchWithClosestLargerFirstMatch<T>(
 	dataConfig: ViewportDataConfig<T>,
 	currentSizeType: ViewportSizeTypeInfo,
 	sizeTypes: ViewportSizeTypeInfo[],

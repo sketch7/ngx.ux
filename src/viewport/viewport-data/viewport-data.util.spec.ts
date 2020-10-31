@@ -5,8 +5,8 @@ import { generateViewportSizeTypeInfoList, generateViewportSizeTypeInfoRefs, } f
 import { ViewportSizeTypeInfo } from "../viewport.model";
 import {
 	ViewportDataConfig,
-	resolveViewportData as resolveViewportData_,
-	ViewportDataResolveStrategy
+	matchViewportData as resolveViewportData_,
+	ViewportDataMatchStrategy
 } from "./viewport-data.util";
 import { TestViewportSizeType } from "../viewport.util.spec";
 
@@ -27,7 +27,7 @@ const sizeRefs = generateViewportSizeTypeInfoRefs(sizeTypes) as EnumDictionary<k
 const resolveViewportData = <T>(
 	dataConfig: ViewportDataConfig<T>,
 	currentSizeType: ViewportSizeTypeInfo,
-	strategy: ViewportDataResolveStrategy,
+	strategy: ViewportDataMatchStrategy,
 ) => resolveViewportData_<T>(dataConfig, currentSizeType, strategy, sizeTypes, sizeRefs);
 
 describe("Viewport utils", () => {
@@ -35,7 +35,7 @@ describe("Viewport utils", () => {
 	describe("resolveViewportData", () => {
 
 		describe("given strategy is exact", () => {
-			const strategy = ViewportDataResolveStrategy.match;
+			const strategy = ViewportDataMatchStrategy.exact;
 			const dataConfig: TestViewportDataConfig<number> = {
 				default: 15,
 				small: 10,
@@ -62,7 +62,7 @@ describe("Viewport utils", () => {
 
 
 		describe("given strategy is larger (up)", () => {
-			const strategy = ViewportDataResolveStrategy.larger;
+			const strategy = ViewportDataMatchStrategy.larger;
 			const dataConfig: TestViewportDataConfig<number> = {
 				default: 15,
 				small: 10,
@@ -109,7 +109,7 @@ describe("Viewport utils", () => {
 				large: 20,
 				hd: 25,
 			};
-			const strategy = ViewportDataResolveStrategy.smaller;
+			const strategy = ViewportDataMatchStrategy.smaller;
 
 			describe("when matching is smallest", () => {
 				it("should return match", () => {
@@ -149,7 +149,7 @@ describe("Viewport utils", () => {
 				large: 20,
 				hd: 25,
 			};
-			const strategy = ViewportDataResolveStrategy.closestSmallerFirst;
+			const strategy = ViewportDataMatchStrategy.closestSmallerFirst;
 
 			describe("when closest is smaller", () => {
 				it("should return smaller", () => {
@@ -190,7 +190,7 @@ describe("Viewport utils", () => {
 				large: 20,
 				hd: 25,
 			};
-			const strategy = ViewportDataResolveStrategy.closestLargerFirst;
+			const strategy = ViewportDataMatchStrategy.closestLargerFirst;
 
 			describe("when closest is larger", () => {
 				it("should return larger", () => {
