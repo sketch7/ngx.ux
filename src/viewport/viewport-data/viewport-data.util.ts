@@ -18,10 +18,10 @@ export enum ViewportDataResolveStrategy {
 	/** Indicates that size should match only or default. */
 	match,
 
-	/** Indicates that size should match, or larger (up) else default. */
+	/** Indicates that size matches when exact match, first match larger (up) or default. */
 	larger,
 
-	/** Indicates that size should match, or smaller (down) else default. */
+	/** Indicates that size matches when exact match, first match smaller (down) or default. */
 	smaller,
 }
 
