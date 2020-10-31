@@ -54,6 +54,7 @@ describe("Viewport utils", () => {
 
 		});
 
+
 		describe("given strategy is larger (up)", () => {
 			const strategy = ViewportDataResolveStrategy.larger;
 			const dataConfig: StrictViewportDataConfig<number> = {
@@ -94,6 +95,7 @@ describe("Viewport utils", () => {
 
 		});
 
+
 		describe("given strategy is smaller (down)", () => {
 			const dataConfig: StrictViewportDataConfig<number> = {
 				default: 15,
@@ -128,6 +130,47 @@ describe("Viewport utils", () => {
 				it("should return smallest", () => {
 					const result = resolveViewportData({ default: dataConfig.default, xsmall: 5 }, sizeRefs.fullHd, strategy);
 					expect(result).toBe(5);
+				});
+			});
+
+		});
+
+
+		describe("given strategy is closestSmallerFirst (down)", () => {
+			const dataConfig: StrictViewportDataConfig<number> = {
+				default: 15,
+				small: 10,
+				large: 20,
+				hd: 25,
+			};
+			const strategy = ViewportDataResolveStrategy.closestSmallerFirst;
+
+			describe("when closest is smaller", () => {
+				it("should return smaller", () => {
+					const result = resolveViewportData(dataConfig, sizeRefs.medium, strategy);
+					expect(result).toBe(dataConfig.small);
+				});
+			});
+
+			describe("when closest is smaller and current not specified", () => {
+				it("should return smaller", () => {
+					const result = resolveViewportData(dataConfig, sizeRefs.fullHd, strategy);
+					expect(result).toBe(dataConfig.hd);
+				});
+			});
+
+			describe("when closest is larger", () => {
+				it("should return larger", () => {
+					const result = resolveViewportData({
+						default: 15,
+						xsmall: 5, // -3
+						small: undefined,
+						medium: undefined,
+						large: undefined, // <--
+						hd: undefined,
+						fullHd: 20, // +2
+					}, sizeRefs.large, strategy);
+					expect(result).toBe(20);
 				});
 			});
 
