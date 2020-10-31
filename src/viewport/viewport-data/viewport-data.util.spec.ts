@@ -16,83 +16,65 @@ const breakpoints = {
 const sizeTypes = generateViewportSizeTypeInfoList(breakpoints);
 const sizeRefs = generateViewportSizeTypeInfoRefs(sizeTypes);
 
+type StrictViewportDataConfig<T> = ViewportDataConfig<T> & Partial<typeof breakpoints>;
+
 const resolveViewportData = <T>(
 	dataConfig: ViewportDataConfig<T>,
 	currentSizeType: ViewportSizeTypeInfo,
 	strategy: ViewportDataResolveStrategy,
-) => resolveViewportData_<T>(dataConfig, currentSizeType, strategy);
+) => resolveViewportData_<T>(dataConfig, currentSizeType, strategy, sizeTypes, sizeRefs);
 
 describe("Viewport utils", () => {
 
 	describe("resolveViewportData", () => {
 
 		describe("given strategy is exact", () => {
-			const dataConfig: ViewportDataConfig<number> = {
+			const dataConfig: StrictViewportDataConfig<number> = {
 				default: 15,
 				small: 10,
 				large: 20
 			};
 
 			describe("when type value exists", () => {
-				const result = resolveViewportData(dataConfig, sizeRefs.small, ViewportDataResolveStrategy.match);
 
 				it("should return matching value", () => {
+					const result = resolveViewportData(dataConfig, sizeRefs.small, ViewportDataResolveStrategy.match);
 					expect(result).toBe(dataConfig.small);
 				});
 			});
 
 			describe("when type value does not exists", () => {
-				const result = resolveViewportData(dataConfig, sizeRefs.hd, ViewportDataResolveStrategy.match);
 
 				it("should return default", () => {
+					const result = resolveViewportData(dataConfig, sizeRefs.hd, ViewportDataResolveStrategy.match);
 					expect(result).toBe(dataConfig.default);
 				});
 			});
 
-			// 	describe("when different scenarios are set", () => {
+		});
 
-			// 		it("should match", () => {
-			// 			const dataSet = [
-			// 				{
-			// 					size: sizeRefs.small,
-			// 					data: dataConfig,
-			// 					expectedResult: dataConfig.small,
-			// 				},
-			// 				// {
-			// 				// 	size: sizeRefs.xsmall,
-			// 				// 	expression: { operation: ComparisonOperation.notEquals, size: "small" },
-			// 				// 	expectedResult: true
-			// 				// },
-			// 				// {
-			// 				// 	size: sizeRefs.small,
-			// 				// 	expression: { operation: ComparisonOperation.notEquals, size: "small" },
-			// 				// 	expectedResult: false
-			// 				// },
-			// 				// {
-			// 				// 	size: sizeRefs.small,
-			// 				// 	expression: { operation: ComparisonOperation.lessThan, size: "medium" },
-			// 				// 	expectedResult: true
-			// 				// },
-			// 				// {
-			// 				// 	size: sizeRefs.medium,
-			// 				// 	expression: { operation: ComparisonOperation.lessThan, size: "medium" },
-			// 				// 	expectedResult: false
-			// 				// },
-			// 				// {
-			// 				// 	size: sizeRefs.medium,
-			// 				// 	expression: { operation: ComparisonOperation.lessOrEqualThan, size: "medium" },
-			// 				// 	expectedResult: true
-			// 				// },
-			// 			];
+		describe("given strategy is larger", () => {
+			const dataConfig: StrictViewportDataConfig<number> = {
+				default: 15,
+				small: 10,
+				large: 20,
+				hd: 25,
+			};
 
-			// 			for (const data of dataSet) {
-			// 				const result = resolveViewportData(data.data, data.size, ViewportDataResolveStrategy.match);
-			// 				expect(result).toBe(data.expectedResult);
-			// 			}
-			// 		});
+			describe("when matching not exist but larger exists", () => {
+				it("should return first match larger value", () => {
+					const result = resolveViewportData(dataConfig, sizeRefs.medium, ViewportDataResolveStrategy.larger);
+					expect(result).toBe(dataConfig.large);
+				});
+			});
 
-			// 	});
-			// });
+			describe("when type is larger than data defined", () => {
+				it("should return default", () => {
+					const result = resolveViewportData(dataConfig, sizeRefs.fullHd, ViewportDataResolveStrategy.larger);
+					expect(result).toBe(dataConfig.default);
+				});
+			});
+
 		});
 
 

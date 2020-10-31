@@ -1,37 +1,87 @@
 import { Dictionary } from "../../internal/internal.model";
 import { ViewportSizeTypeInfo } from "../viewport.model";
 
+export interface ViewportDataMatcher<T = unknown> {
+	(
+		dataConfig: ViewportDataConfig<T>,
+		currentSizeType: ViewportSizeTypeInfo,
+		sizeTypes: ViewportSizeTypeInfo[],
+		sizeTypeMap: Dictionary<ViewportSizeTypeInfo>,
+	): T | undefined;
+}
+
 export interface ViewportDataConfig<T = unknown> extends Dictionary<T> {
 	default: T;
 }
 
 export enum ViewportDataResolveStrategy {
+	/** Indicates that size should match only or default. */
 	match,
+	/** Indicates that size should match, or larger else default. */
+	larger,
 }
 
 export function resolveViewportData<T>(
 	dataConfig: ViewportDataConfig<T>,
 	currentSizeType: ViewportSizeTypeInfo,
 	strategy: ViewportDataResolveStrategy,
+	sizeTypes: ViewportSizeTypeInfo[],
+	sizeTypeMap: Dictionary<ViewportSizeTypeInfo>,
 ): T {
 	const resolveFn = resolveStrategyHandlerMap[strategy];
-	if(!resolveFn) {
+	if (!resolveFn) {
 		throw Error(`Viewport Data strategy not implemented. Strategy: '${strategy}'`);
 	}
-	return resolveFn(dataConfig, currentSizeType);
+	const data = resolveFn(dataConfig, currentSizeType, sizeTypes, sizeTypeMap) as T;
+	if (data !== undefined) {
+		return data;
+	}
+	return dataConfig.default;
 }
 
-const resolveStrategyHandlerMap = {
+
+const resolveStrategyHandlerMap: Dictionary<ViewportDataMatcher> = {
 	[ViewportDataResolveStrategy.match]: resolveWithExactMatch,
+	[ViewportDataResolveStrategy.larger]: resolveWithLargerMatch,
 };
 
 function resolveWithExactMatch<T>(
 	dataConfig: ViewportDataConfig<T>,
 	currentSizeType: ViewportSizeTypeInfo,
-): T {
-	const data = dataConfig[currentSizeType.name];
+): T | undefined {
+	return dataConfig[currentSizeType.name];
+}
+
+function resolveWithLargerMatch<T>(
+	dataConfig: ViewportDataConfig<T>,
+	currentSizeType: ViewportSizeTypeInfo,
+	sizeTypes: ViewportSizeTypeInfo[],
+	sizeTypeMap: Dictionary<ViewportSizeTypeInfo>,
+): T | undefined {
+	let data = dataConfig[currentSizeType.name];
 	if (data !== undefined) {
 		return data;
 	}
-	return dataConfig.default;
+
+	const largestTypeIdx = sizeTypes[sizeTypes.length - 1].type;
+	if (currentSizeType.type >= largestTypeIdx) {
+		return undefined;
+	}
+
+	let sizeTypeIdx = currentSizeType.type;
+	for (const key in dataConfig) { // iterate only data provided
+		if (Object.prototype.hasOwnProperty.call(dataConfig, key)) {
+			sizeTypeIdx++;
+			const sizeType = sizeTypeMap[sizeTypeIdx];
+			if (!sizeType) { // exceeded largest
+				return undefined;
+			}
+
+			data = dataConfig[sizeType.name];
+			if (data !== undefined) { // first match found
+				return data;
+			}
+		}
+	}
+	return undefined;
 }
