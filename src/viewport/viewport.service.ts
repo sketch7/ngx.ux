@@ -2,6 +2,7 @@ import { Injectable, Inject } from "@angular/core";
 import { Observable, fromEvent, of } from "rxjs";
 import {
 	map,
+	tap,
 	distinctUntilChanged,
 	startWith,
 	share,
@@ -27,6 +28,9 @@ export class ViewportService {
 	/** Viewport size type observable. */
 	readonly sizeType$: Observable<ViewportSizeTypeInfo>;
 
+	/** Viewport size type snapshot of the last value. (Prefer use `sizeType$` observable when possible.) */
+	get sizeTypeSnapshot(): ViewportSizeTypeInfo | undefined { return this._sizeTypeSnapshot; }
+
 	/** Viewport size observable. */
 	readonly size$: Observable<ViewportSize>;
 
@@ -38,6 +42,7 @@ export class ViewportService {
 
 	private _sizeTypeMap: Dictionary<ViewportSizeTypeInfo>;
 	private _sizeTypes: ViewportSizeTypeInfo[];
+	private _sizeTypeSnapshot: ViewportSizeTypeInfo | undefined;
 
 	constructor(
 		private windowRef: WindowRef,
@@ -67,6 +72,7 @@ export class ViewportService {
 			distinctUntilChanged((a, b) => a.width === b.width),
 			map(x => getSizeTypeInfo(x.width, this.sizeTypes)),
 			distinctUntilChanged(),
+			tap(x => this._sizeTypeSnapshot = x),
 			shareReplay(1),
 		);
 	}

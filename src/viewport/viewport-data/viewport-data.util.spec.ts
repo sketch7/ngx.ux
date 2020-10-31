@@ -7,7 +7,7 @@ import {
 	ViewportDataConfig,
 	matchViewportData as resolveViewportData_,
 	ViewportDataMatchStrategy
-} from "./viewport-data.util";
+} from "./viewport-data-matcher";
 import { TestViewportSizeType } from "../viewport.util.spec";
 
 type TestViewportDataConfig<T> = ViewportDataConfig<T, Partial<EnumDictionary<keyof typeof TestViewportSizeType, T>>>;
