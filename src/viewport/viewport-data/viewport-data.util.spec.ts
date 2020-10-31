@@ -177,6 +177,47 @@ describe("Viewport utils", () => {
 		});
 
 
+		describe("given strategy is closestLargerFirst (up)", () => {
+			const dataConfig: StrictViewportDataConfig<number> = {
+				default: 15,
+				small: 10,
+				large: 20,
+				hd: 25,
+			};
+			const strategy = ViewportDataResolveStrategy.closestLargerFirst;
+
+			describe("when closest is larger", () => {
+				it("should return larger", () => {
+					const result = resolveViewportData(dataConfig, sizeRefs.medium, strategy);
+					expect(result).toBe(dataConfig.large);
+				});
+			});
+
+			describe("when closest is larger and current not specified", () => {
+				it("should return larger", () => {
+					const result = resolveViewportData(dataConfig, sizeRefs.xsmall, strategy);
+					expect(result).toBe(dataConfig.small);
+				});
+			});
+
+			describe("when closest is smaller", () => {
+				it("should return smaller", () => {
+					const result = resolveViewportData({
+						default: 15,
+						xsmall: 5, // -2
+						small: undefined,
+						medium: undefined, // <--
+						large: undefined,
+						hd: undefined,
+						fullHd: 20, // +3
+					}, sizeRefs.medium, strategy);
+					expect(result).toBe(5);
+				});
+			});
+
+		});
+
+
 	});
 
 

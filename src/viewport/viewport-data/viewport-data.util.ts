@@ -24,8 +24,11 @@ export enum ViewportDataResolveStrategy {
 	/** Indicates that size matches when exact match, first match smaller (down) or default. */
 	smaller,
 
-	/** Indicates that size matches when exact match, or else -1 +1 until match or default. */
+	/** Indicates that size matches when exact match, or it tries both smaller/larger (smaller is preferred) until match or default. */
 	closestSmallerFirst,
+
+	/** Indicates that size matches when exact match, or it tries both larger/smaller (larger is preferred) until match or default. */
+	closestLargerFirst,
 }
 
 export function resolveViewportData<T>(
@@ -52,6 +55,7 @@ const resolveStrategyHandlerMap: Dictionary<ViewportDataMatcher> = {
 	[ViewportDataResolveStrategy.larger]: resolveWithLargerMatch,
 	[ViewportDataResolveStrategy.smaller]: resolveWithSmallerMatch,
 	[ViewportDataResolveStrategy.closestSmallerFirst]: resolveWithClosestSmallerFirstMatch,
+	[ViewportDataResolveStrategy.closestLargerFirst]: resolveWithClosestLargerFirstMatch,
 };
 
 function resolveWithExactMatch<T>(
@@ -123,18 +127,12 @@ function resolveWithClosestSmallerFirstMatch<T>(
 		return data;
 	}
 
-	if (currentSizeType.type <= 0) {
-		return undefined;
-	}
-
 	let downIndex = currentSizeType.type;
 	let upIndex = currentSizeType.type;
 
 	// eslint-disable-next-line @typescript-eslint/prefer-for-of
 	for (let index = 0; index < sizeTypes.length; index++) {
 		const downSizeType = sizeTypes[--downIndex];
-		const upSizeType = sizeTypes[++upIndex];
-
 		if (downSizeType) {
 			data = dataConfig[downSizeType.name];
 			if (data !== undefined) { // first match found
@@ -142,8 +140,44 @@ function resolveWithClosestSmallerFirstMatch<T>(
 			}
 		}
 
+		const upSizeType = sizeTypes[++upIndex];
 		if (upSizeType) {
 			data = dataConfig[upSizeType.name];
+			if (data !== undefined) { // first match found
+				return data;
+			}
+		}
+	}
+
+	return undefined;
+}
+
+function resolveWithClosestLargerFirstMatch<T>(
+	dataConfig: ViewportDataConfig<T>,
+	currentSizeType: ViewportSizeTypeInfo,
+	sizeTypes: ViewportSizeTypeInfo[],
+): T | undefined {
+	let data = dataConfig[currentSizeType.name];
+	if (data !== undefined) {
+		return data;
+	}
+
+	let downIndex = currentSizeType.type;
+	let upIndex = currentSizeType.type;
+
+	// eslint-disable-next-line @typescript-eslint/prefer-for-of
+	for (let index = 0; index < sizeTypes.length; index++) {
+		const upSizeType = sizeTypes[++upIndex];
+		if (upSizeType) {
+			data = dataConfig[upSizeType.name];
+			if (data !== undefined) { // first match found
+				return data;
+			}
+		}
+
+		const downSizeType = sizeTypes[--downIndex];
+		if (downSizeType) {
+			data = dataConfig[downSizeType.name];
 			if (data !== undefined) { // first match found
 				return data;
 			}
