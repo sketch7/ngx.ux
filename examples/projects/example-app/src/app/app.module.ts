@@ -5,13 +5,11 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatIconModule } from "@angular/material/icon";
 import { MatCardModule } from "@angular/material/card";
-import { BrowserViewportSizeService, ServerViewportSizeService, SsvUxModule } from "@ssv/ngx.ux";
+import { SsvUxModule } from "@ssv/ngx.ux";
 
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { ViewportComponent } from "./viewport/viewport.component";
-import { CustomBrowserViewportSize } from "./override-examples/custom-browser-viewport-size";
-import { CustomServerViewportSize } from "./override-examples/custom-server-viewport-size";
 
 const materialModules = [
 	MatButtonModule,
@@ -29,7 +27,7 @@ const materialModules = [
 		BrowserModule,
 		AppRoutingModule,
 		BrowserAnimationsModule,
-		SsvUxModule.forRoot({
+		SsvUxModule.forServer({
 			// viewport: {
 
 			// }
@@ -37,8 +35,6 @@ const materialModules = [
 		materialModules,
 	],
 	providers: [
-		{ provide: ServerViewportSizeService, useClass: CustomServerViewportSize },
-		{ provide: BrowserViewportSizeService, useClass: CustomBrowserViewportSize },
 	],
 	bootstrap: [AppComponent]
 })

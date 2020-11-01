@@ -1,8 +1,10 @@
-import { Injectable, Inject, InjectionToken, Optional } from "@angular/core";
+import { Inject, InjectionToken, Optional } from "@angular/core";
 
-import { Dictionary } from "../../internal/internal.model";
-import { UxOptions } from "../../config";
-import { DeviceType, IViewportSize, ViewportSize } from "./viewport-size.model";
+import { Dictionary } from "../internal/internal.model";
+import { UxOptions } from "../config";
+import { WindowRef } from "../platform/window";
+import { ViewportSizeService } from "./viewport-size.service";
+import { DeviceType, ViewportSize } from "./viewport.model";
 
 /** Viewport size for SSR. */
 const viewportSizeSSR: Dictionary<ViewportSize> = {
@@ -22,17 +24,22 @@ const viewportSizeSSR: Dictionary<ViewportSize> = {
 
 export const UX_VIEWPORT_SSR_DEVICE = new InjectionToken<UxOptions>("@ssv/ngx.ux-config/viewport/ssr-device");
 
-@Injectable({
-	providedIn: "root"
-})
-export class ServerViewportSizeService implements IViewportSize {
+export class ServerViewportSizeService extends ViewportSizeService {
 
 	constructor(
+		window: WindowRef,
 		@Optional() @Inject(UX_VIEWPORT_SSR_DEVICE) private deviceType: DeviceType,
 	) {
+		super(window);
 	}
 
 	get(): ViewportSize {
+		return this.window
+			? super.get()
+			: this.getServerViewportSize();
+	}
+
+	private getServerViewportSize(): ViewportSize {
 		return viewportSizeSSR[this.deviceType] || viewportSizeSSR[DeviceType.desktop];
 	}
 

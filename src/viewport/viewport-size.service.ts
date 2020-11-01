@@ -1,15 +1,15 @@
 import { Injectable } from "@angular/core";
 
-import { WindowRef } from "../../platform/window";
-import { IViewportSize, ViewportSize } from "./viewport-size.model";
+import { WindowRef } from "../platform/window";
+import { IViewportSize, ViewportSize } from "./viewport.model";
 
 @Injectable({
 	providedIn: "root"
 })
-export class BrowserViewportSizeService implements IViewportSize {
+export class ViewportSizeService implements IViewportSize {
 
 	constructor(
-		private window: WindowRef,
+		protected window: WindowRef,
 	) {
 	}
 

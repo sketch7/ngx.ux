@@ -1,6 +1,6 @@
-import { NgModule, ModuleWithProviders, InjectionToken } from "@angular/core";
+import { NgModule, ModuleWithProviders, InjectionToken, Provider } from "@angular/core";
 
-import { SsvViewportMatcherDirective } from "./viewport/index";
+import { SsvViewportMatcherDirective, ViewportSizeService, ServerViewportSizeService } from "./viewport/index";
 import { UxOptions, UX_DEFAULT_CONFIG, UX_CONFIG } from "./config";
 import { PartialDeep } from "./internal/internal.model";
 
@@ -19,17 +19,33 @@ export class SsvUxModule {
 	static forRoot(config?: PartialDeep<UxOptions> | (() => PartialDeep<UxOptions>)): ModuleWithProviders<SsvUxModule> {
 		return {
 			ngModule: SsvUxModule,
-			providers: [
-				{
-					provide: UX_CONFIG,
-					useFactory: _moduleConfigFactory,
-					deps: [_MODULE_CONFIG],
-				},
-				{ provide: _MODULE_CONFIG, useValue: config },
-			],
+			providers: _moduleProviders(config),
 		};
 	}
 
+	static forServer(config?: PartialDeep<UxOptions> | (() => PartialDeep<UxOptions>)): ModuleWithProviders<SsvUxModule> {
+		return {
+			ngModule: SsvUxModule,
+			providers: [
+				ServerViewportSizeService,
+				..._moduleProviders(config),
+				{ provide: ViewportSizeService, useClass: ServerViewportSizeService },
+			]
+		};
+	}
+
+}
+
+/** @internal */
+export function _moduleProviders(config?: PartialDeep<UxOptions> | (() => PartialDeep<UxOptions>)): Provider[] {
+	return [
+		{
+			provide: UX_CONFIG,
+			useFactory: _moduleConfigFactory,
+			deps: [_MODULE_CONFIG],
+		},
+		{ provide: _MODULE_CONFIG, useValue: config },
+	];
 }
 
 /** @internal */

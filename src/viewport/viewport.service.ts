@@ -12,10 +12,9 @@ import {
 import { UxOptions, UX_CONFIG } from "../config";
 import { Dictionary } from "../internal/internal.model";
 import { WindowRef } from "../platform/window";
-import { ViewportSizeTypeInfo } from "./viewport.model";
+import { ViewportSizeTypeInfo, ViewportSize } from "./viewport.model";
 import { generateViewportSizeTypeInfoList, generateViewportSizeTypeInfoRefs, getSizeTypeInfo } from "./viewport.util";
-import { ViewportSizeService } from "./size/viewport-size.service";
-import { ViewportSize } from "./size/viewport-size.model";
+import { ViewportSizeService } from "./viewport-size.service";
 
 @Injectable({
 	providedIn: "root"

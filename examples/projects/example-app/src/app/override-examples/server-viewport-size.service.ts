@@ -4,7 +4,7 @@ import { IViewportSize, ViewportSize } from "@ssv/ngx.ux";
 @Injectable({
 	providedIn: "root"
 })
-export class CustomServerViewportSize implements IViewportSize {
+export class ServerViewportSizeService implements IViewportSize {
 
 	get(): ViewportSize {
 		const viewportSize = {

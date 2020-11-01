@@ -5,7 +5,7 @@ import { IViewportSize, ViewportSize } from "@ssv/ngx.ux";
 @Injectable({
 	providedIn: "root"
 })
-export class CustomBrowserViewportSize implements IViewportSize {
+export class ViewportSizeService implements IViewportSize {
 
 	constructor(
 		@Inject(DOCUMENT) private document: Document
