@@ -36,7 +36,7 @@ export class ServerViewportSizeService extends ViewportSizeService {
 	}
 
 	get(): ViewportSize {
-		return this.window
+		return this.window.native
 			? super.get()
 			: this.getServerViewportSize();
 	}

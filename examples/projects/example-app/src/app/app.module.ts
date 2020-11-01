@@ -34,8 +34,7 @@ const materialModules = [
 		}),
 		materialModules,
 	],
-	providers: [
-	],
+	providers: [],
 	bootstrap: [AppComponent]
 })
 export class AppModule { }
