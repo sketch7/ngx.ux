@@ -1,4 +1,4 @@
-import { Inject, InjectionToken, Optional } from "@angular/core";
+import { Inject, Injectable, InjectionToken, Optional } from "@angular/core";
 
 import { Dictionary } from "../internal/internal.model";
 import { UxOptions } from "../config";
@@ -24,6 +24,8 @@ const viewportSizeSSR: Dictionary<ViewportSize> = {
 
 export const UX_VIEWPORT_SSR_DEVICE = new InjectionToken<UxOptions>("@ssv/ngx.ux-config/viewport/ssr-device");
 
+// eslint-disable-next-line @angular-eslint/use-injectable-provided-in
+@Injectable()
 export class ServerViewportSizeService extends ViewportSizeService {
 
 	constructor(

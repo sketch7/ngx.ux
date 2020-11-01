@@ -27,7 +27,6 @@ export class SsvUxModule {
 		return {
 			ngModule: SsvUxModule,
 			providers: [
-				ServerViewportSizeService,
 				..._moduleProviders(config),
 				{ provide: ViewportSizeService, useClass: ServerViewportSizeService },
 			]
