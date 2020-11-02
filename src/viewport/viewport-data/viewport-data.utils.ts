@@ -9,13 +9,39 @@ export interface ViewportDataRule<T> {
 }
 
 export function generateViewportRulesRangeFromDataMatcher<T>(
-	_dataConfig: ViewportDataConfig<T>,
+	dataConfig: ViewportDataConfig<T>,
 	_strategy: ViewportDataMatchStrategy,
 	_sizeTypes: ViewportSizeTypeInfo[],
-	_sizeTypeMap: Dictionary<ViewportSizeTypeInfo>,
+	sizeTypeMap: Dictionary<ViewportSizeTypeInfo>,
 ): ViewportDataRule<T>[] {
-	throw Error("Not implemented");
+	let dataSizes: ViewportSizeTypeInfo[] = [];
+	for (const key in dataConfig) {
+		if (Object.prototype.hasOwnProperty.call(dataConfig, key)) {
+			const size = sizeTypeMap[key];
+			if (size) {
+				dataSizes.push(size);
+			}
+		}
+	}
+	dataSizes = dataSizes.sort(({ type: typeA }, { type: typeB }) => typeA - typeB);
 
+	const rules: ViewportDataRule<T>[] = [];
+	if (dataConfig.default) {
+		rules.push({ value: dataConfig.default });
+	}
+	for (const size of dataSizes) {
+		const data = dataConfig[size.name];
+		const rule: ViewportDataRule<T> = {
+			value: data
+		};
+
+		// todo: handle strategies
+		// get previous + get next sizes + sizeTypes to calculate min/max
+
+		rules.push(rule);
+	}
+
+	throw Error("Not implemented");
 	// convert dataConfig to array (order by size)
 	// iterate and generate min/max (per strategy)
 }
