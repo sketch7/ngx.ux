@@ -1,15 +1,6 @@
 import { Dictionary } from "../../internal/internal.model";
 import { ViewportSizeTypeInfo } from "../viewport.model";
 
-export interface ViewportDataMatcher<T = unknown> {
-	(
-		dataConfig: ViewportDataConfig<T>,
-		currentSizeType: ViewportSizeTypeInfo,
-		sizeTypes: ViewportSizeTypeInfo[],
-		sizeTypeMap: Dictionary<ViewportSizeTypeInfo>,
-	): T | undefined;
-}
-
 export type ViewportDataConfig<TValue = unknown, TData = Dictionary<TValue>> = TData & {
 	default?: TValue
 };
@@ -31,6 +22,15 @@ export enum ViewportDataMatchStrategy {
 	closestLargerFirst,
 }
 export type ViewportDataMatchStrategyLiteral = keyof typeof ViewportDataMatchStrategy;
+
+export interface ViewportDataMatcher<T = unknown> {
+	(
+		dataConfig: ViewportDataConfig<T>,
+		currentSizeType: ViewportSizeTypeInfo,
+		sizeTypes: ViewportSizeTypeInfo[],
+		sizeTypeMap: Dictionary<ViewportSizeTypeInfo>,
+	): T | undefined;
+}
 
 export function matchViewportData<T>(
 	dataConfig: ViewportDataConfig<T>,

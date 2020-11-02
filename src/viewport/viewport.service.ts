@@ -29,7 +29,7 @@ export class ViewportService {
 	readonly sizeType$: Observable<ViewportSizeTypeInfo>;
 
 	/** Viewport size type snapshot of the last value. (Prefer use `sizeType$` observable when possible.) */
-	get sizeTypeSnapshot(): ViewportSizeTypeInfo | undefined { return this._sizeTypeSnapshot; }
+	get sizeTypeSnapshot(): ViewportSizeTypeInfo { return this._sizeTypeSnapshot; }
 
 	/** Viewport size observable. */
 	readonly size$: Observable<ViewportSize>;
@@ -42,7 +42,7 @@ export class ViewportService {
 
 	private _sizeTypeMap: Dictionary<ViewportSizeTypeInfo>;
 	private _sizeTypes: ViewportSizeTypeInfo[];
-	private _sizeTypeSnapshot: ViewportSizeTypeInfo | undefined;
+	private _sizeTypeSnapshot: ViewportSizeTypeInfo;
 
 	constructor(
 		private windowRef: WindowRef,
@@ -61,9 +61,11 @@ export class ViewportService {
 		} else {
 			this.resize$ = of(viewportServerSize.get());
 		}
+		const size = this.getViewportSize();
+		this._sizeTypeSnapshot = getSizeTypeInfo(size.width, this.sizeTypes);
 
 		this.size$ = this.resize$.pipe(
-			startWith(this.getViewportSize()),
+			startWith(size),
 			distinctUntilChanged((a, b) => a.width === b.width && a.height === b.height),
 			shareReplay(1),
 		);
