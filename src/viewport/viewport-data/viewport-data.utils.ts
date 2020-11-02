@@ -40,8 +40,5 @@ export function generateViewportRulesRangeFromDataMatcher<T>(
 
 		rules.push(rule);
 	}
-
-	throw Error("Not implemented");
-	// convert dataConfig to array (order by size)
-	// iterate and generate min/max (per strategy)
+	return rules;
 }
