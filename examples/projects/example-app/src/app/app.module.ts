@@ -5,11 +5,12 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatIconModule } from "@angular/material/icon";
 import { MatCardModule } from "@angular/material/card";
-import { SsvUxModule } from "@ssv/ngx.ux";
+import { SsvUxModule, ViewportSizeService } from "@ssv/ngx.ux";
 
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { ViewportComponent } from "./viewport/viewport.component";
+import { ExampleServerViewportSizeService } from "./override-examples/example-server-viewport-size.service";
 
 const materialModules = [
 	MatButtonModule,
@@ -24,17 +25,15 @@ const materialModules = [
 		ViewportComponent,
 	],
 	imports: [
-		BrowserModule,
+		BrowserModule.withServerTransition({ appId: "serverApp" }),
 		AppRoutingModule,
 		BrowserAnimationsModule,
-		SsvUxModule.forServer({
-			// viewport: {
-
-			// }
-		}),
+		SsvUxModule.forServer(),
 		materialModules,
 	],
-	providers: [],
+	providers: [
+		{ provide: ViewportSizeService, useClass: ExampleServerViewportSizeService }, // SSR override example
+	],
 	bootstrap: [AppComponent]
 })
 export class AppModule { }
