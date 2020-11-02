@@ -30,9 +30,9 @@ const resolveViewportData = <T>(
 	strategy: ViewportDataMatchStrategy,
 ) => resolveViewportData_<T>(dataConfig, currentSizeType, strategy, sizeTypes, sizeRefs);
 
-describe("Viewport utils", () => {
+describe("viewportDataMatcher", () => {
 
-	describe("resolveViewportData", () => {
+	describe("matchViewportData", () => {
 
 		describe("given strategy is exact", () => {
 			const strategy = ViewportDataMatchStrategy.exact;
