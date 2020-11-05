@@ -1,4 +1,4 @@
-import { NgModule, ModuleWithProviders, InjectionToken } from "@angular/core";
+import { NgModule, ModuleWithProviders, InjectionToken, Optional } from "@angular/core";
 
 import { SsvViewportMatcherDirective } from "./viewport/index";
 import { UxOptions, UX_DEFAULT_CONFIG, UX_CONFIG } from "./config";
@@ -13,7 +13,7 @@ export const _MODULE_CONFIG = new InjectionToken<UxOptions>("_ux-config");
 @NgModule({
 	declarations: [SsvViewportMatcherDirective, ViewportDataPipe],
 	providers: [
-		{ provide: UX_CONFIG, useValue: UX_DEFAULT_CONFIG },
+		{ provide: UX_CONFIG, useFactory: _moduleConfigFactory, deps: [[_MODULE_CONFIG, new Optional()]] },
 		{ provide: WINDOW, useFactory: _window },
 	],
 	exports: [SsvViewportMatcherDirective, ViewportDataPipe],
@@ -24,11 +24,6 @@ export class SsvUxModule {
 		return {
 			ngModule: SsvUxModule,
 			providers: [
-				{
-					provide: UX_CONFIG,
-					useFactory: _moduleConfigFactory,
-					deps: [_MODULE_CONFIG],
-				},
 				{ provide: _MODULE_CONFIG, useValue: config },
 			],
 		};
