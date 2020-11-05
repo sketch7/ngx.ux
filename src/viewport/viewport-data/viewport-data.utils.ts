@@ -10,8 +10,8 @@ export interface ViewportDataRule<T> {
 
 export function generateViewportRulesRangeFromDataMatcher<T>(
 	dataConfig: ViewportDataConfig<T>,
-	_strategy: ViewportDataMatchStrategy,
-	_sizeTypes: ViewportSizeTypeInfo[],
+	strategy: ViewportDataMatchStrategy,
+	sizeTypes: ViewportSizeTypeInfo[],
 	sizeTypeMap: Dictionary<ViewportSizeTypeInfo>,
 ): ViewportDataRule<T>[] {
 	let dataSizes: ViewportSizeTypeInfo[] = [];
@@ -27,16 +27,40 @@ export function generateViewportRulesRangeFromDataMatcher<T>(
 
 	const rules: ViewportDataRule<T>[] = [];
 	if (dataConfig.default) {
-		rules.push({ value: dataConfig.default });
+		rules.push({ value: dataConfig.default, min: undefined, max: undefined });
 	}
-	for (const size of dataSizes) {
-		const data = dataConfig[size.name];
+
+	for (let index = 0; index < dataSizes.length; index++) {
+		const prevDataSize = dataSizes[index - 1];
+		const nextDataSize = dataSizes[index + 1];
+		const dataSize = dataSizes[index];
+		const prevSize = sizeTypes[dataSize.type - 1];
+		// const nextSize = sizeTypes[dataSize.type + 1];
+		const data = dataConfig[dataSize.name];
 		const rule: ViewportDataRule<T> = {
-			value: data
+			value: data,
+			min: undefined,
+			max: undefined,
 		};
 
+		if (strategy === ViewportDataMatchStrategy.smaller) {
+			if (nextDataSize) {
+				rule.max = dataSize.widthThreshold;
+			}
+			if (prevDataSize) {
+				rule.min = prevDataSize.widthThreshold + 1;
+			}
+		} else if (strategy === ViewportDataMatchStrategy.larger) {
+			if (nextDataSize) {
+				rule.max = dataSize.widthThreshold;
+			}
+			if (prevDataSize) {
+				rule.min = prevDataSize.widthThreshold + 1;
+			} else if (prevSize) {
+				rule.min = prevSize.widthThreshold;
+			}
+		}
 		// todo: handle strategies
-		// get previous + get next sizes + sizeTypes to calculate min/max
 
 		rules.push(rule);
 	}

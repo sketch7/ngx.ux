@@ -43,9 +43,29 @@ describe("viewportDataUtils", () => {
 
 			it("should return matching rules", () => {
 				const result = generateViewportRulesRangeFromDataMatcher(dataConfig, strategy);
-				expect(result).toBe([
+				expect(result).toEqual([
 					{ min: undefined, max: undefined, value: dataConfig.default }, // default
 					{ min: undefined, max: breakpoints.medium, value: dataConfig.medium }, // medium
+					{ min: breakpoints.medium + 1, max: breakpoints.large, value: dataConfig.large }, // large
+					{ min: breakpoints.large + 1, max: undefined, value: dataConfig.hd }, // hd
+				]);
+			});
+		});
+
+		describe("given strategy is larger", () => {
+			const strategy = ViewportDataMatchStrategy.larger;
+			const dataConfig: TestViewportDataConfig<number> = {
+				default: 12,
+				medium: 15,
+				large: 20,
+				hd: 30,
+			};
+
+			it("should return matching rules", () => {
+				const result = generateViewportRulesRangeFromDataMatcher(dataConfig, strategy);
+				expect(result).toEqual([
+					{ min: undefined, max: undefined, value: dataConfig.default }, // default
+					{ min: breakpoints.small, max: breakpoints.medium, value: dataConfig.medium }, // medium
 					{ min: breakpoints.medium + 1, max: breakpoints.large, value: dataConfig.large }, // large
 					{ min: breakpoints.large + 1, max: undefined, value: dataConfig.hd }, // hd
 				]);
