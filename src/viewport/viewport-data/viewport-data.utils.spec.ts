@@ -100,9 +100,9 @@ describe("viewportDataUtils", () => {
 				const result = generateViewportRulesRangeFromDataMatcher(dataConfig, strategy);
 				expect(result).toEqual([
 					{ min: undefined, max: undefined, value: dataConfig.default }, // default
-					{ min: breakpoints.small, max: breakpoints.medium, value: dataConfig.medium }, // medium
+					{ min: undefined, max: breakpoints.medium, value: dataConfig.medium }, // medium
 					{ min: breakpoints.medium + 1, max: breakpoints.large, value: dataConfig.large }, // large
-					{ min: breakpoints.large + 1, max: undefined, value: dataConfig.hd }, // hd
+					{ min: breakpoints.large + 1, max: breakpoints.hd, value: dataConfig.hd }, // hd
 				]);
 			});
 		});

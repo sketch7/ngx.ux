@@ -88,14 +88,12 @@ const matchStrategyHandlerMap: Dictionary<ViewportRuleRangeBuilder> = {
 			rule.min = prevDataSize.widthThreshold + 1;
 		}
 	},
-	[ViewportDataMatchStrategy.larger]: (rule, dataSize, nextDataSize, prevDataSize, prevSize) => {
-		if (nextDataSize) {
+	[ViewportDataMatchStrategy.larger]: (rule, dataSize, _nextDataSize, prevDataSize, _prevSize) => {
+		if (dataSize) {
 			rule.max = dataSize.widthThreshold;
 		}
 		if (prevDataSize) {
 			rule.min = prevDataSize.widthThreshold + 1;
-		} else if (prevSize) {
-			rule.min = prevSize.widthThreshold;
 		}
 	},
 	[ViewportDataMatchStrategy.closestSmallerFirst]: (rule, dataSize, nextDataSize, _prevDataSize, _prevSize, prevRule, sizeTypes) => {
