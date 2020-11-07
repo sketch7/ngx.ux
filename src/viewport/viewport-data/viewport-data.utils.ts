@@ -73,9 +73,13 @@ export interface ViewportRuleRangeBuilder<T = unknown> {
 	): void;
 }
 
-
 const matchStrategyHandlerMap: Dictionary<ViewportRuleRangeBuilder> = {
-	// [ViewportDataMatchStrategy.exact]: matchWithExact,
+	[ViewportDataMatchStrategy.exact]: (rule, dataSize, _nextDataSize, _prevDataSize, prevSize) => {
+		rule.max = dataSize.widthThreshold;
+		if (prevSize) {
+			rule.min = prevSize.widthThreshold + 1;
+		}
+	},
 	[ViewportDataMatchStrategy.smaller]: (rule, dataSize, nextDataSize, prevDataSize) => {
 		if (nextDataSize) {
 			rule.max = dataSize.widthThreshold;

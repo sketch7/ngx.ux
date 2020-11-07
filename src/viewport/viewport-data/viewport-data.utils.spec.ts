@@ -32,6 +32,36 @@ describe("viewportDataUtils", () => {
 
 	describe("generateViewportRulesRangeFromDataMatcher", () => {
 
+		describe("given strategy is exact", () => {
+			const strategy = ViewportDataMatchStrategy.exact;
+			const dataConfig: TestViewportDataConfig<number> = {
+				default: 12,
+				xsmall: undefined,
+				small: 10,
+				medium: undefined,
+				large: 20,
+				hd: 25,
+				fullHd: undefined,
+			};
+			/**
+			 * default: 12
+			 * [451-767]=10
+			 * [993-1200]=20
+			 * [1201-1280]=25
+			 * */
+
+			it("should return matching rules", () => {
+				const result = generateViewportRulesRangeFromDataMatcher(dataConfig, strategy);
+				expect(result).toEqual([
+					{ min: undefined, max: undefined, value: dataConfig.default },
+					{ min: breakpoints.xsmall + 1, max: breakpoints.small, value: dataConfig.small },
+					{ min: breakpoints.medium + 1, max: breakpoints.large, value: dataConfig.large },
+					{ min: breakpoints.large + 1, max: breakpoints.hd, value: dataConfig.hd },
+				]);
+			});
+
+		});
+
 		describe("given strategy is smaller", () => {
 			const strategy = ViewportDataMatchStrategy.smaller;
 			const dataConfig: TestViewportDataConfig<number> = {
@@ -60,7 +90,12 @@ describe("viewportDataUtils", () => {
 				large: 20,
 				hd: 30,
 			};
-
+			/**
+			 * default: 12
+			 * [*-992]=15
+			 * [993-1200]=20
+			 * [1201-1280]=30
+			 * */
 			it("should return matching rules", () => {
 				const result = generateViewportRulesRangeFromDataMatcher(dataConfig, strategy);
 				expect(result).toEqual([
