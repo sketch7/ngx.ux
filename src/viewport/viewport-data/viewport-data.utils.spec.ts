@@ -123,6 +123,66 @@ describe("viewportDataUtils", () => {
 
 		});
 
+		describe("given strategy is closestLargerFirst", () => {
+			const strategy = ViewportDataMatchStrategy.closestLargerFirst;
+
+			// todo: name
+			describe("when dataset A", () => {
+				const dataConfig: TestViewportDataConfig<number> = {
+					default: 12,
+					xsmall: 5,
+					small: undefined,
+					medium: 15,
+					large: undefined,
+					hd: undefined,
+					fullHd: 50,
+				};
+				/**
+				 * [*-450]=5
+				 * [451-1200]=10
+				 * [1201-*]=50
+				 * */
+
+				it("should return matching rules", () => {
+					const result = generateViewportRulesRangeFromDataMatcher(dataConfig, strategy);
+					expect(result).toEqual([
+						{ min: undefined, max: undefined, value: dataConfig.default },
+						{ min: undefined, max: breakpoints.xsmall, value: dataConfig.xsmall },
+						{ min: breakpoints.xsmall + 1, max: breakpoints.large, value: dataConfig.medium },
+						{ min: breakpoints.large + 1, max: undefined, value: dataConfig.fullHd },
+					]);
+				});
+			});
+
+			// todo: name
+			describe("when dataset B", () => {
+				const dataConfig: TestViewportDataConfig<number> = {
+					default: 12,
+					xsmall: undefined,
+					small: 10,
+					medium: undefined,
+					large: 20,
+					hd: 25,
+					fullHd: undefined,
+				};
+				/**
+				 * [*-767]=10
+				 * [768-1200]=20
+				 * [1201-*]=25
+				 * */
+				it("should return matching rules", () => {
+					const result = generateViewportRulesRangeFromDataMatcher(dataConfig, strategy);
+					expect(result).toEqual([
+						{ min: undefined, max: undefined, value: dataConfig.default },
+						{ min: undefined, max: breakpoints.small, value: dataConfig.small },
+						{ min: breakpoints.small + 1, max: breakpoints.large, value: dataConfig.large },
+						{ min: breakpoints.large + 1, max: undefined, value: dataConfig.hd },
+					]);
+				});
+			});
+
+		});
+
 
 	});
 

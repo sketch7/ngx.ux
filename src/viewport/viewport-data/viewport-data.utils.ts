@@ -76,6 +76,18 @@ export function generateViewportRulesRangeFromDataMatcher<T>(
 			} else if (prevDataSize) {
 				// rule.min = prevDataSize.widthThreshold + 1;
 			}
+		} else if (strategy === ViewportDataMatchStrategy.closestLargerFirst) {
+			if (nextDataSize) {
+				// get closest between curr and next (smaller preferred)
+				const diffIndex = Math.floor((nextDataSize.type - dataSize.type - 1) / 2);
+				const diffNextSize = sizeTypes[dataSize.type + diffIndex];
+				rule.max = (diffNextSize || dataSize).widthThreshold;
+			}
+			if (prevRule?.max) {
+				rule.min = prevRule.max + 1;
+			} else if (prevDataSize) {
+				// rule.min = prevDataSize.widthThreshold + 1;
+			}
 		}
 		// todo: handle strategies
 		prevRule = rule;
