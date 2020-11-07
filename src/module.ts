@@ -7,16 +7,21 @@ import { PartialDeep } from "./internal/internal.model";
 import { ViewportDataPipe } from "./viewport/viewport-data/viewport-data.pipe";
 
 /** @internal */
-export const _MODULE_CONFIG = new InjectionToken<UxOptions>("_ux-config");
+export const MODULE_CONFIG_DATA = new InjectionToken<UxOptions>("@ssv/ngx.ux/configData");
+
+const components = [
+	SsvViewportMatcherDirective,
+	ViewportDataPipe,
+];
 
 // todo: create module for Viewport
 @NgModule({
-	declarations: [SsvViewportMatcherDirective, ViewportDataPipe],
+	declarations: [components],
 	providers: [
-		{ provide: UX_CONFIG, useFactory: _moduleConfigFactory, deps: [[_MODULE_CONFIG, new Optional()]] },
+		{ provide: UX_CONFIG, useFactory: _moduleConfigFactory, deps: [[MODULE_CONFIG_DATA, new Optional()]] },
 		{ provide: WINDOW, useFactory: _window },
 	],
-	exports: [SsvViewportMatcherDirective, ViewportDataPipe],
+	exports: [...components],
 })
 export class SsvUxModule {
 
@@ -24,7 +29,7 @@ export class SsvUxModule {
 		return {
 			ngModule: SsvUxModule,
 			providers: [
-				{ provide: _MODULE_CONFIG, useValue: config },
+				{ provide: MODULE_CONFIG_DATA, useValue: config },
 			],
 		};
 	}
