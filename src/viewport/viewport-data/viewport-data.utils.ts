@@ -114,7 +114,6 @@ const matchStrategyHandlerMap: Dictionary<ViewportRuleRangeBuilder> = {
 	},
 };
 
-
 function calculateClosestWidthThreshold(
 	nextDataSize: ViewportSizeTypeInfo,
 	dataSize: ViewportSizeTypeInfo,
