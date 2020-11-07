@@ -22,9 +22,9 @@ export class ViewportDataService {
 	get<T>(
 		dataConfig: ViewportDataConfig<T>,
 		strategy: ViewportDataMatchStrategy = this.config.viewport.defaultDataMatchStrategy,
-		viewportSizeType: ViewportSizeTypeInfo = this.viewport.sizeTypeSnapshot
+		sizeType: ViewportSizeTypeInfo = this.viewport.sizeTypeSnapshot
 	): T | undefined {
-		return matchViewportData(dataConfig, viewportSizeType, strategy, this.viewport.sizeTypes, this.viewport.sizeTypeMap);
+		return matchViewportData(dataConfig, sizeType, strategy, this.viewport.sizeTypes, this.viewport.sizeTypeMap);
 	}
 
 	get$<T>(dataConfig: ViewportDataConfig<T>, strategy?: ViewportDataMatchStrategy): Observable<T | undefined> {

@@ -8,6 +8,15 @@ export interface ViewportDataRule<T> {
 	value: T;
 }
 
+/**
+ * Utility function to generate rules based on strategies.
+ *
+ * @param dataConfig Data config to generate rules based on.
+ * @param strategy Strategy to use when building rules.
+ * @param sizeTypes Available size types ordered by index type. (Can be obtained from `ViewportService`)
+ * @param sizeTypeMap Available size type map. (Can be obtained from `ViewportService`)
+ * @returns Returns a collection of rules (ordered).
+ */
 export function generateViewportRulesRangeFromDataMatcher<T>(
 	dataConfig: ViewportDataConfig<T>,
 	strategy: ViewportDataMatchStrategy,

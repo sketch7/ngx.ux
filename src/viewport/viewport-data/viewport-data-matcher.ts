@@ -32,9 +32,19 @@ export interface ViewportDataMatcher<T = unknown> {
 	): T | undefined;
 }
 
+/**
+ * Utility function to match data based on strategy and size.
+ *
+ * @param dataConfig Data config to generate rules based on.
+ * @param sizeType Size type to get data for.
+ * @param strategy Strategy to use when building rules.
+ * @param sizeTypes Available size types ordered by index type. (Can be obtained from `ViewportService`)
+ * @param sizeTypeMap Available size type map. (Can be obtained from `ViewportService`)
+ * @returns Returns the matched data value.
+ */
 export function matchViewportData<T>(
 	dataConfig: ViewportDataConfig<T>,
-	currentSizeType: ViewportSizeTypeInfo,
+	sizeType: ViewportSizeTypeInfo,
 	strategy: ViewportDataMatchStrategy,
 	sizeTypes: ViewportSizeTypeInfo[],
 	sizeTypeMap: Dictionary<ViewportSizeTypeInfo>,
@@ -43,7 +53,7 @@ export function matchViewportData<T>(
 	if (!matchFn) {
 		throw Error(`matchViewportData: Viewport Data strategy not implemented. Strategy: '${strategy}'`);
 	}
-	const data = matchFn(dataConfig, currentSizeType, sizeTypes, sizeTypeMap) as T;
+	const data = matchFn(dataConfig, sizeType, sizeTypes, sizeTypeMap) as T;
 	if (data !== undefined) {
 		return data;
 	}
