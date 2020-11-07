@@ -70,12 +70,18 @@ describe("viewportDataUtils", () => {
 				large: 20,
 				hd: 30,
 			};
+			/**
+			 * default: 12
+			 * [768-992]=15
+			 * [993-1200]=20
+			 * [1201-*]=30
+			 * */
 
 			it("should return matching rules", () => {
 				const result = generateViewportRulesRangeFromDataMatcher(dataConfig, strategy);
 				expect(result).toEqual([
 					{ min: undefined, max: undefined, value: dataConfig.default }, // default
-					{ min: undefined, max: breakpoints.medium, value: dataConfig.medium }, // medium
+					{ min: breakpoints.small + 1, max: breakpoints.medium, value: dataConfig.medium }, // medium
 					{ min: breakpoints.medium + 1, max: breakpoints.large, value: dataConfig.large }, // large
 					{ min: breakpoints.large + 1, max: undefined, value: dataConfig.hd }, // hd
 				]);
