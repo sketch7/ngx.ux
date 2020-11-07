@@ -41,7 +41,7 @@ export function matchViewportData<T>(
 ): T | undefined {
 	const matchFn = matchStrategyHandlerMap[strategy];
 	if (!matchFn) {
-		throw Error(`Viewport Data strategy not implemented. Strategy: '${strategy}'`);
+		throw Error(`matchViewportData: Viewport Data strategy not implemented. Strategy: '${strategy}'`);
 	}
 	const data = matchFn(dataConfig, currentSizeType, sizeTypes, sizeTypeMap) as T;
 	if (data !== undefined) {

@@ -14,6 +14,11 @@ export function generateViewportRulesRangeFromDataMatcher<T>(
 	sizeTypes: ViewportSizeTypeInfo[],
 	sizeTypeMap: Dictionary<ViewportSizeTypeInfo>,
 ): ViewportDataRule<T>[] {
+	const ruleBuilderFn = matchStrategyHandlerMap[strategy];
+	if (!ruleBuilderFn) {
+		throw Error(`generateViewportRulesRangeFromDataMatcher: Viewport Data strategy not implemented. Strategy: '${strategy}'`);
+	}
+
 	let dataSizes: ViewportSizeTypeInfo[] = [];
 	for (const key in dataConfig) {
 		if (Object.prototype.hasOwnProperty.call(dataConfig, key)) {
@@ -48,50 +53,75 @@ export function generateViewportRulesRangeFromDataMatcher<T>(
 			max: undefined,
 		};
 
-		if (strategy === ViewportDataMatchStrategy.smaller) {
-			if (nextDataSize) {
-				rule.max = dataSize.widthThreshold;
-			}
-			if (prevDataSize) {
-				rule.min = prevDataSize.widthThreshold + 1;
-			}
-		} else if (strategy === ViewportDataMatchStrategy.larger) {
-			if (nextDataSize) {
-				rule.max = dataSize.widthThreshold;
-			}
-			if (prevDataSize) {
-				rule.min = prevDataSize.widthThreshold + 1;
-			} else if (prevSize) {
-				rule.min = prevSize.widthThreshold;
-			}
-		} else if (strategy === ViewportDataMatchStrategy.closestSmallerFirst) {
-			if (nextDataSize) {
-				// get closest between curr and next (smaller preferred)
-				const diffIndex = Math.ceil((nextDataSize.type - dataSize.type - 1) / 2);
-				const diffNextSize = sizeTypes[dataSize.type + diffIndex];
-				rule.max = (diffNextSize || dataSize).widthThreshold;
-			}
-			if (prevRule?.max) {
-				rule.min = prevRule.max + 1;
-			} else if (prevDataSize) {
-				// rule.min = prevDataSize.widthThreshold + 1;
-			}
-		} else if (strategy === ViewportDataMatchStrategy.closestLargerFirst) {
-			if (nextDataSize) {
-				// get closest between curr and next (smaller preferred)
-				const diffIndex = Math.floor((nextDataSize.type - dataSize.type - 1) / 2);
-				const diffNextSize = sizeTypes[dataSize.type + diffIndex];
-				rule.max = (diffNextSize || dataSize).widthThreshold;
-			}
-			if (prevRule?.max) {
-				rule.min = prevRule.max + 1;
-			} else if (prevDataSize) {
-				// rule.min = prevDataSize.widthThreshold + 1;
-			}
-		}
-		// todo: handle strategies
+		ruleBuilderFn(rule, dataSize, nextDataSize, prevDataSize, prevSize, prevRule, sizeTypes);
+
 		prevRule = rule;
 		rules.push(rule);
 	}
 	return rules;
+}
+
+export interface ViewportRuleRangeBuilder<T = unknown> {
+	(
+		rule: ViewportDataRule<T>,
+		dataSize: ViewportSizeTypeInfo,
+		nextDataSize: ViewportSizeTypeInfo | undefined,
+		prevDataSize: ViewportSizeTypeInfo | undefined,
+		prevSize: ViewportSizeTypeInfo | undefined,
+		prevRule: ViewportDataRule<T> | undefined,
+		sizeTypes: ViewportSizeTypeInfo[],
+	): void;
+}
+
+
+const matchStrategyHandlerMap: Dictionary<ViewportRuleRangeBuilder> = {
+	// [ViewportDataMatchStrategy.exact]: matchWithExact,
+	[ViewportDataMatchStrategy.smaller]: (rule, dataSize, nextDataSize, prevDataSize) => {
+		if (nextDataSize) {
+			rule.max = dataSize.widthThreshold;
+		}
+		if (prevDataSize) {
+			rule.min = prevDataSize.widthThreshold + 1;
+		}
+	},
+	[ViewportDataMatchStrategy.larger]: (rule, dataSize, nextDataSize, prevDataSize, prevSize) => {
+		if (nextDataSize) {
+			rule.max = dataSize.widthThreshold;
+		}
+		if (prevDataSize) {
+			rule.min = prevDataSize.widthThreshold + 1;
+		} else if (prevSize) {
+			rule.min = prevSize.widthThreshold;
+		}
+	},
+	[ViewportDataMatchStrategy.closestSmallerFirst]: (rule, dataSize, nextDataSize, _prevDataSize, _prevSize, prevRule, sizeTypes) => {
+		if (nextDataSize) {
+			rule.max = calculateClosestWidthThreshold(nextDataSize, dataSize, sizeTypes, true);
+		}
+		if (prevRule?.max) {
+			rule.min = prevRule.max + 1;
+		}
+	},
+	[ViewportDataMatchStrategy.closestLargerFirst]: (rule, dataSize, nextDataSize, _prevDataSize, _prevSize, prevRule, sizeTypes) => {
+		if (nextDataSize) {
+			rule.max = calculateClosestWidthThreshold(nextDataSize, dataSize, sizeTypes, false);
+		}
+		if (prevRule?.max) {
+			rule.min = prevRule.max + 1;
+		}
+	},
+};
+
+
+function calculateClosestWidthThreshold(
+	nextDataSize: ViewportSizeTypeInfo,
+	dataSize: ViewportSizeTypeInfo,
+	sizeTypes: ViewportSizeTypeInfo[],
+	isSmallerPreferred: boolean,
+) {
+	const fn = isSmallerPreferred ? Math.ceil : Math.floor;
+	// get closest between curr and next
+	const diffIndex = fn((nextDataSize.type - dataSize.type - 1) / 2);
+	const diffNextSize = sizeTypes[dataSize.type + diffIndex];
+	return (diffNextSize || dataSize).widthThreshold;
 }
