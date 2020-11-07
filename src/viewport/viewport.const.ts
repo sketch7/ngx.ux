@@ -17,5 +17,5 @@ export const UX_VIEWPORT_DEFAULT_BREAKPOINTS: Dictionary<number> = {
 export const UX_VIEWPORT_DEFAULT_CONFIG: UxViewportOptions = {
 	resizePollingSpeed: 33,
 	breakpoints: UX_VIEWPORT_DEFAULT_BREAKPOINTS,
-	defaultDataMatchStrategy: ViewportDataMatchStrategy.closestSmallerFirst,
+	defaultDataMatchStrategy: ViewportDataMatchStrategy.smaller,
 };
