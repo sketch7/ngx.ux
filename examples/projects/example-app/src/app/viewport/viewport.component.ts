@@ -7,7 +7,7 @@ import {
 } from "@angular/core";
 import { Observable, Subject } from "rxjs";
 import { tap } from "rxjs/operators";
-import { ViewportSizeTypeInfo, ViewportService, ViewportSize } from "@ssv/ngx.ux";
+import { ViewportSizeTypeInfo, ViewportService, ViewportSize, ViewportDataConfig, ViewportDataService, ViewportDataMatchStrategy } from "@ssv/ngx.ux";
 
 @Component({
 	selector: "app-viewport",
@@ -20,7 +20,7 @@ export class ViewportComponent implements OnInit, OnDestroy {
 	sizeInfo: ViewportSizeTypeInfo | undefined;
 	size: ViewportSize | undefined;
 	isVisible = true;
-	dataConfig = {
+	dataConfig: ViewportDataConfig<string> = {
 		default: "default",
 		small: "small",
 		large: "large",
@@ -31,6 +31,7 @@ export class ViewportComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private viewport: ViewportService,
+		private viewportData: ViewportDataService,
 		private cdr: ChangeDetectorRef,
 	) { }
 
@@ -46,7 +47,11 @@ export class ViewportComponent implements OnInit, OnDestroy {
 			tap(() => this.cdr.markForCheck()),
 		);
 
-		[sizeType$, size$]
+		const viewportData$ = this.viewportData.get$(this.dataConfig, ViewportDataMatchStrategy.smaller).pipe(
+			tap(x => console.log("Viewport - data changed", x)),
+		);
+
+		[sizeType$, size$, viewportData$]
 			.forEach((x: Observable<unknown>) => x.subscribe());
 	}
 
