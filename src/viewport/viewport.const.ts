@@ -1,4 +1,5 @@
 import { Dictionary } from "../internal/internal.model";
+import { ViewportDataMatchStrategy } from "./viewport-data/viewport-data-matcher";
 import { UxViewportOptions } from "./viewport.model";
 
 /** Default viewport breakpoints. */
@@ -15,5 +16,6 @@ export const UX_VIEWPORT_DEFAULT_BREAKPOINTS: Dictionary<number> = {
 
 export const UX_VIEWPORT_DEFAULT_CONFIG: UxViewportOptions = {
 	resizePollingSpeed: 33,
-	breakpoints: UX_VIEWPORT_DEFAULT_BREAKPOINTS
+	breakpoints: UX_VIEWPORT_DEFAULT_BREAKPOINTS,
+	defaultDataMatchStrategy: ViewportDataMatchStrategy.smaller,
 };
