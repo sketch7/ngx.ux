@@ -1,20 +1,27 @@
-import { NgModule, ModuleWithProviders, InjectionToken } from "@angular/core";
+import { NgModule, ModuleWithProviders, InjectionToken, Optional } from "@angular/core";
 
 import { SsvViewportMatcherDirective } from "./viewport/index";
 import { UxOptions, UX_DEFAULT_CONFIG, UX_CONFIG } from "./config";
 import { WINDOW } from "./platform/window";
 import { PartialDeep } from "./internal/internal.model";
+import { ViewportDataPipe } from "./viewport/viewport-data/viewport-data.pipe";
 
 /** @internal */
-export const _MODULE_CONFIG = new InjectionToken<UxOptions>("_ux-config");
+export const MODULE_CONFIG_DATA = new InjectionToken<UxOptions>("@ssv/ngx.ux/configData");
 
+const components = [
+	SsvViewportMatcherDirective,
+	ViewportDataPipe,
+];
+
+// todo: create module for Viewport
 @NgModule({
-	declarations: [SsvViewportMatcherDirective],
+	declarations: [components],
 	providers: [
-		{ provide: UX_CONFIG, useValue: UX_DEFAULT_CONFIG },
+		{ provide: UX_CONFIG, useFactory: _moduleConfigFactory, deps: [[MODULE_CONFIG_DATA, new Optional()]] },
 		{ provide: WINDOW, useFactory: _window },
 	],
-	exports: [SsvViewportMatcherDirective],
+	exports: [...components],
 })
 export class SsvUxModule {
 
@@ -22,12 +29,7 @@ export class SsvUxModule {
 		return {
 			ngModule: SsvUxModule,
 			providers: [
-				{
-					provide: UX_CONFIG,
-					useFactory: _moduleConfigFactory,
-					deps: [_MODULE_CONFIG],
-				},
-				{ provide: _MODULE_CONFIG, useValue: config },
+				{ provide: MODULE_CONFIG_DATA, useValue: config },
 			],
 		};
 	}
@@ -36,7 +38,10 @@ export class SsvUxModule {
 
 /** @internal */
 export function _moduleConfigFactory(config: UxOptions | (() => UxOptions)): UxOptions {
-	const uxOptions = (typeof config === "function" ? config() : config) || UX_DEFAULT_CONFIG;
+	if(!config) {
+		return UX_DEFAULT_CONFIG;
+	}
+	const uxOptions = typeof config === "function" ? config() : config;
 	const viewport = {
 		...UX_DEFAULT_CONFIG.viewport,
 		...uxOptions.viewport

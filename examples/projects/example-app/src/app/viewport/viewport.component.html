@@ -28,9 +28,6 @@
 <div class="container">
 	<fieldset>
 		<legend>Viewport Matcher Container</legend>
-		<div class="btn-group"
-			role="group">
-		</div>
 		<div *ssvViewportMatcher="'large'"
 			class="matcher-dummy-container">
 			Dummy container #1 <strong class="matcher-dummy-container__target">only (large)</strong>
@@ -75,4 +72,20 @@
 			</div>
 		</ng-template> -->
 	</fieldset>
+
+	<div class="viewport__data-container">
+		<div>
+			<small>
+				<span class="type variable">data</span>
+				<span class="type boolean value">{{dataConfig | json}}</span>
+			</small>
+		</div>
+		<div>
+			<small>
+				<span class="type variable">value</span>
+				<span
+					class="type boolean value">{{ dataConfig | ssvViewportData: "closestSmallerFirst" }}</span>
+			</small>
+		</div>
+	</div>
 </div>

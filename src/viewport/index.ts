@@ -1,3 +1,5 @@
+export * from "./viewport-data/index";
+
 export * from "./viewport-matcher.directive";
 export * from "./viewport-server-size.service";
 export * from "./viewport.model";
@@ -9,4 +11,3 @@ export {
 	generateViewportSizeType,
 } from "./viewport.util";
 export { UX_VIEWPORT_DEFAULT_BREAKPOINTS } from "./viewport.const";
-
