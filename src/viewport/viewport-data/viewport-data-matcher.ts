@@ -9,11 +9,11 @@ export enum ViewportDataMatchStrategy {
 	/** Indicates that size should match exact or default. */
 	exact,
 
-	/** Indicates that size matches when exact match, first match larger (up) or default. */
-	larger,
-
 	/** Indicates that size matches when exact match, first match smaller (down) or default. */
 	smaller,
+
+	/** Indicates that size matches when exact match, first match larger (up) or default. */
+	larger,
 
 	/** Indicates that size matches when exact match, or it tries both smaller/larger (smaller is preferred) until match or default. */
 	closestSmallerFirst,

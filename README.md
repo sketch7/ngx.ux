@@ -29,6 +29,9 @@ Choose the version corresponding to your Angular version:
  | 10      | 2.x+    |
  | 4 to 9  | 1.x+    |
 
+## Features
+- Viewport (see below)
+  - [Viewport Data](./src/viewport/viewport-data/README.md)
 
 # Usage
 

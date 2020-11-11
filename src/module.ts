@@ -38,7 +38,10 @@ export class SsvUxModule {
 
 /** @internal */
 export function _moduleConfigFactory(config: UxOptions | (() => UxOptions)): UxOptions {
-	const uxOptions = (typeof config === "function" ? config() : config) || UX_DEFAULT_CONFIG;
+	if(!config) {
+		return UX_DEFAULT_CONFIG;
+	}
+	const uxOptions = typeof config === "function" ? config() : config;
 	const viewport = {
 		...UX_DEFAULT_CONFIG.viewport,
 		...uxOptions.viewport

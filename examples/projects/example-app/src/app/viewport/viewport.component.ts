@@ -7,7 +7,14 @@ import {
 } from "@angular/core";
 import { Observable, Subject } from "rxjs";
 import { tap } from "rxjs/operators";
-import { ViewportSizeTypeInfo, ViewportService, ViewportSize, ViewportDataConfig, ViewportDataService, ViewportDataMatchStrategy } from "@ssv/ngx.ux";
+import {
+	ViewportSizeTypeInfo,
+	ViewportService,
+	ViewportSize,
+	ViewportDataConfig,
+	ViewportDataService,
+	ViewportDataMatchStrategy
+} from "@ssv/ngx.ux";
 
 @Component({
 	selector: "app-viewport",
