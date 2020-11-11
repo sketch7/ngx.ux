@@ -1,5 +1,5 @@
 import { Dictionary } from "../internal/internal.model";
-import { ViewportDataMatchStrategy } from "./viewport-data";
+import { ViewportDataMatchStrategy } from "./viewport-data/viewport-data-matcher";
 import { UxViewportOptions } from "./viewport.model";
 
 /** Default viewport breakpoints. */
