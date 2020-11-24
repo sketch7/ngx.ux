@@ -82,7 +82,7 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 	constructor(
 		private viewport: ViewportService,
 		private renderer: Renderer2,
-		private _viewContainer: ViewContainerRef,
+		private viewContainer: ViewContainerRef,
 		private cdr: ChangeDetectorRef,
 		templateRef: TemplateRef<SsvViewportMatcherContext>,
 	) {
@@ -142,11 +142,11 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 	private _updateView(sizeInfo: ViewportSizeTypeInfo) {
 		if (isViewportConditionMatch(sizeInfo, this._context, this.viewport.sizeTypeMap)) {
 			if (!this._thenViewRef) {
-				this._viewContainer.clear();
+				this.viewContainer.clear();
 				this._elseViewRef = null;
 
 				if (this._thenTemplateRef) {
-					this._thenViewRef = this._viewContainer.createEmbeddedView(
+					this._thenViewRef = this.viewContainer.createEmbeddedView(
 						this._thenTemplateRef,
 						this._context,
 					);
@@ -154,11 +154,11 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 			}
 		} else {
 			if (!this._elseViewRef) {
-				this._viewContainer.clear();
+				this.viewContainer.clear();
 				this._thenViewRef = null;
 
 				if (this._elseTemplateRef) {
-					this._elseViewRef = this._viewContainer.createEmbeddedView(
+					this._elseViewRef = this.viewContainer.createEmbeddedView(
 						this._elseTemplateRef,
 						this._context,
 					);

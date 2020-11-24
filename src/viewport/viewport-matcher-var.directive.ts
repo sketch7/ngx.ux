@@ -57,7 +57,7 @@ export class SsvViewportMatcherVarDirective implements OnInit, OnDestroy {
 	constructor(
 		private viewport: ViewportService,
 		private cdr: ChangeDetectorRef,
-		private _viewContainer: ViewContainerRef,
+		private viewContainer: ViewContainerRef,
 		private templateRef: TemplateRef<SsvViewportMatcherVarContext>,
 	) {
 	}
@@ -79,9 +79,9 @@ export class SsvViewportMatcherVarDirective implements OnInit, OnDestroy {
 	}
 
 	updateView(): void {
-		this._viewContainer.clear();
+		this.viewContainer.clear();
 		// todo: markForCheck view?
-		const view = this._viewContainer.createEmbeddedView(this.templateRef, this._context);
+		const view = this.viewContainer.createEmbeddedView(this.templateRef, this._context);
 	}
 
 }
