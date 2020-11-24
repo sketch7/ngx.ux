@@ -45,6 +45,40 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 	private cssClass$$ = Subscription.EMPTY;
 	private readonly _update$ = new Subject<SsvViewportMatcherContext>();
 
+	@Input() set ssvViewportMatcher(value: string | string[] | ViewportSizeMatcherExpression) {
+		if (isViewportSizeMatcherExpression(value)) {
+			this._context.expression = value;
+		} else if (isViewportSizeMatcherTupleExpression(value)) {
+			const [op, size] = value;
+			this._context.expression = {
+				operation: op,
+				size
+			};
+		} else {
+			this._context.sizeType = value;
+		}
+
+		if (this.sizeInfo) {
+			this._update$.next(this._context);
+		}
+	}
+
+	@Input() set ssvViewportMatcherExclude(value: string | string[]) {
+		this._context.sizeTypeExclude = value;
+
+		if (this.sizeInfo) {
+			this._update$.next(this._context);
+		}
+	}
+
+	@Input() set ssvViewportMatcherElse(templateRef: TemplateRef<SsvViewportMatcherContext> | null) {
+		this._elseTemplateRef = templateRef;
+		this._elseViewRef = null; // clear previous view if any.
+		if (this.sizeInfo) {
+			this._update$.next(this._context);
+		}
+	}
+
 	constructor(
 		private viewport: ViewportService,
 		private renderer: Renderer2,
@@ -103,40 +137,6 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 		this.cssClass$$.unsubscribe();
 		this.sizeType$$.unsubscribe();
 		this._update$.complete();
-	}
-
-	@Input() set ssvViewportMatcher(value: string | string[] | ViewportSizeMatcherExpression) {
-		if (isViewportSizeMatcherExpression(value)) {
-			this._context.expression = value;
-		} else if (isViewportSizeMatcherTupleExpression(value)) {
-			const [op, size] = value;
-			this._context.expression = {
-				operation: op,
-				size
-			};
-		} else {
-			this._context.sizeType = value;
-		}
-
-		if (this.sizeInfo) {
-			this._update$.next(this._context);
-		}
-	}
-
-	@Input() set ssvViewportMatcherExclude(value: string | string[]) {
-		this._context.sizeTypeExclude = value;
-
-		if (this.sizeInfo) {
-			this._update$.next(this._context);
-		}
-	}
-
-	@Input() set ssvViewportMatcherElse(templateRef: TemplateRef<SsvViewportMatcherContext> | null) {
-		this._elseTemplateRef = templateRef;
-		this._elseViewRef = null; // clear previous view if any.
-		if (this.sizeInfo) {
-			this._update$.next(this._context);
-		}
 	}
 
 	private _updateView(sizeInfo: ViewportSizeTypeInfo) {

@@ -1,5 +1,6 @@
 export * from "./viewport-data/index";
 
+export { SsvViewportMatcherVarDirective } from "./viewport-matcher-var.directive";
 export * from "./viewport-matcher.directive";
 export * from "./viewport-server-size.service";
 export { ComparisonOperation, DeviceType, UxViewportOptions, ViewportSize, ViewportSizeType, ViewportSizeTypeInfo } from "./viewport.model";
