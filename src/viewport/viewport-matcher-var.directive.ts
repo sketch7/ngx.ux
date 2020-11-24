@@ -52,7 +52,7 @@ export class SsvViewportMatcherVarDirective implements OnInit, OnDestroy {
 		private viewport: ViewportService,
 		private cdr: ChangeDetectorRef,
 		private _viewContainer: ViewContainerRef,
-		private templateRef: TemplateRef<SsvViewportMatcherContext>,
+		private templateRef: TemplateRef<any>,
 	) {
 	}
 
@@ -64,7 +64,7 @@ export class SsvViewportMatcherVarDirective implements OnInit, OnDestroy {
 			tap(x => console.warn(">>>> isMatch", x)),
 			tap(() => this.cdr.markForCheck()),
 			tap(x => console.warn(">>>> updateView", x)),
-			tap(() => this.updateView()),
+			tap(x => this.updateView(x)),
 			takeUntil(this._destroy$),
 		).subscribe();
 	}
@@ -74,9 +74,11 @@ export class SsvViewportMatcherVarDirective implements OnInit, OnDestroy {
 		this._destroy$.complete();
 	}
 
-	updateView(): void {
+	updateView(conditionResult: boolean): void {
 		this._viewContainer.clear();
-		this._viewContainer.createEmbeddedView(this.templateRef, this._context);
+		this._viewContainer.createEmbeddedView(this.templateRef, {
+			$implicit: conditionResult,
+		});
 	}
 
 }
