@@ -16,55 +16,59 @@ import {
 	isViewportSizeMatcherTupleExpression,
 	isViewportConditionMatch
 } from "./viewport.util";
-import { ViewportSizeTypeInfo } from "./viewport.model";
 import { SsvViewportMatcherContext } from "./viewport-matcher.directive";
 
+const NAME_CAMEL = "ssvViewportMatcherVar"; // todo: ssvViewportMatchVar?
+
+export class SsvViewportMatcherVarContext {
+
+	constructor(public $implicit = false) { }
+
+}
+
 @Directive({
-	selector: "[ssvViewportMatcherVar]",
-	exportAs: "ssvViewportMatcherVar",
+	selector: `[${NAME_CAMEL}]`,
+	exportAs: NAME_CAMEL,
 })
 export class SsvViewportMatcherVarDirective implements OnInit, OnDestroy {
 
-	sizeInfo: ViewportSizeTypeInfo | undefined;
-
-	private _context: SsvViewportMatcherContext = new SsvViewportMatcherContext();
+	// todo: remove context and store expression
+	private _expression: SsvViewportMatcherContext = new SsvViewportMatcherContext();
+	private _context = new SsvViewportMatcherVarContext();
 	private readonly _destroy$ = new Subject<void>();
 
-	@Input("ssvViewportMatcherVarWhen") set condition(value: string | string[]) {
+	@Input(`${NAME_CAMEL}When`) set condition(value: string | string[]) {
 		if (isViewportSizeMatcherExpression(value)) {
-			this._context.expression = value;
+			this._expression.expression = value;
 		} else if (isViewportSizeMatcherTupleExpression(value)) {
 			const [op, size] = value;
-			this._context.expression = {
+			this._expression.expression = {
 				operation: op,
 				size
 			};
 		} else {
-			this._context.sizeType = value;
+			this._expression.sizeType = value;
 		}
 
-		// if (this.sizeInfo) {
+		// todo: handle condition change + retrigger (combine)
 		// 	this._update$.next(this._context);
-		// }
 	}
 
 	constructor(
 		private viewport: ViewportService,
 		private cdr: ChangeDetectorRef,
 		private _viewContainer: ViewContainerRef,
-		private templateRef: TemplateRef<any>,
+		private templateRef: TemplateRef<SsvViewportMatcherVarContext>,
 	) {
 	}
 
 	ngOnInit(): void {
-		// console.log("ssvViewportMatcher init");
-
+		this.updateView();
 		this.viewport.sizeType$.pipe(
-			map(x => isViewportConditionMatch(x, this._context, this.viewport.sizeTypeMap)),
+			map(x => isViewportConditionMatch(x, this._expression, this.viewport.sizeTypeMap)),
 			tap(x => console.warn(">>>> isMatch", x)),
+			tap(x => this._context.$implicit = x),
 			tap(() => this.cdr.markForCheck()),
-			tap(x => console.warn(">>>> updateView", x)),
-			tap(x => this.updateView(x)),
 			takeUntil(this._destroy$),
 		).subscribe();
 	}
@@ -74,11 +78,10 @@ export class SsvViewportMatcherVarDirective implements OnInit, OnDestroy {
 		this._destroy$.complete();
 	}
 
-	updateView(conditionResult: boolean): void {
+	updateView(): void {
 		this._viewContainer.clear();
-		this._viewContainer.createEmbeddedView(this.templateRef, {
-			$implicit: conditionResult,
-		});
+		// todo: markForCheck view?
+		const view = this._viewContainer.createEmbeddedView(this.templateRef, this._context);
 	}
 
 }
