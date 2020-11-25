@@ -7,7 +7,7 @@ import {
 	TemplateRef,
 	ViewContainerRef,
 } from "@angular/core";
-import { Subject } from "rxjs";
+import { combineLatest, ReplaySubject, Subject } from "rxjs";
 import { tap, map, takeUntil } from "rxjs/operators";
 
 import { ViewportService } from "./viewport.service";
@@ -37,6 +37,7 @@ export class SsvViewportMatcherVarDirective implements OnInit, OnDestroy {
 	private _matchConditions: ViewportMatchConditions = {};
 	private _context = new SsvViewportMatcherVarContext();
 	private readonly _destroy$ = new Subject<void>();
+	private readonly _update$ = new ReplaySubject<void>(1);
 
 	@Input(`${NAME_CAMEL}When`) set condition(value: string | string[]) {
 		if (isViewportSizeMatcherExpression(value)) {
@@ -51,8 +52,7 @@ export class SsvViewportMatcherVarDirective implements OnInit, OnDestroy {
 			this._matchConditions.sizeType = value;
 		}
 
-		// todo: handle condition change + retrigger (combine)
-		// 	this._update$.next(this._context);
+		this._update$.next();
 	}
 
 	constructor(
@@ -65,8 +65,9 @@ export class SsvViewportMatcherVarDirective implements OnInit, OnDestroy {
 
 	ngOnInit(): void {
 		this.updateView();
-		this.viewport.sizeType$.pipe(
-			map(x => isViewportConditionMatch(x, this._matchConditions, this.viewport.sizeTypeMap)),
+		combineLatest([this.viewport.sizeType$, this._update$]).pipe(
+			// tap(x => console.warn(">>>> combine change", x)),
+			map(([sizeType]) => isViewportConditionMatch(sizeType, this._matchConditions, this.viewport.sizeTypeMap)),
 			tap(x => console.warn(">>>> isMatch", x)),
 			tap(x => this._context.$implicit = x),
 			tap(() => this.cdr.markForCheck()),
