@@ -3,9 +3,9 @@ import {
 	OnDestroy,
 	Directive,
 	Input,
-	ChangeDetectorRef,
 	TemplateRef,
 	ViewContainerRef,
+	EmbeddedViewRef,
 } from "@angular/core";
 import { combineLatest, ReplaySubject, Subject } from "rxjs";
 import { tap, map, takeUntil } from "rxjs/operators";
@@ -30,7 +30,6 @@ export class SsvViewportMatcherVarContext {
 
 @Directive({
 	selector: `[${NAME_CAMEL}]`,
-	exportAs: NAME_CAMEL,
 })
 export class SsvViewportMatcherVarDirective implements OnInit, OnDestroy {
 
@@ -38,6 +37,7 @@ export class SsvViewportMatcherVarDirective implements OnInit, OnDestroy {
 	private _context = new SsvViewportMatcherVarContext();
 	private readonly _destroy$ = new Subject<void>();
 	private readonly _update$ = new ReplaySubject<void>(1);
+	private _viewRef!: EmbeddedViewRef<SsvViewportMatcherVarContext>;
 
 	@Input(`${NAME_CAMEL}When`) set condition(value: string | string[]) {
 		if (isViewportSizeMatcherExpression(value)) {
@@ -57,7 +57,6 @@ export class SsvViewportMatcherVarDirective implements OnInit, OnDestroy {
 
 	constructor(
 		private viewport: ViewportService,
-		private cdr: ChangeDetectorRef,
 		private viewContainer: ViewContainerRef,
 		private templateRef: TemplateRef<SsvViewportMatcherVarContext>,
 	) {
@@ -68,7 +67,7 @@ export class SsvViewportMatcherVarDirective implements OnInit, OnDestroy {
 		combineLatest([this.viewport.sizeType$, this._update$]).pipe(
 			map(([sizeType]) => isViewportConditionMatch(sizeType, this._matchConditions, this.viewport.sizeTypeMap)),
 			tap(x => this._context.$implicit = x),
-			tap(() => this.cdr.markForCheck()),
+			tap(() => this._viewRef.markForCheck()),
 			takeUntil(this._destroy$),
 		).subscribe();
 	}
@@ -80,8 +79,7 @@ export class SsvViewportMatcherVarDirective implements OnInit, OnDestroy {
 
 	updateView(): void {
 		this.viewContainer.clear();
-		// view.markForCheck todo: markForCheck view?
-		this.viewContainer.createEmbeddedView(this.templateRef, this._context);
+		this._viewRef = this.viewContainer.createEmbeddedView(this.templateRef, this._context);
 	}
 
 }
