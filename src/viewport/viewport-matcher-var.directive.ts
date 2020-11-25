@@ -18,7 +18,7 @@ import {
 } from "./viewport.util";
 import { ViewportMatchConditions } from "./viewport.model";
 
-const NAME_CAMEL = "ssvViewportMatcherVar"; // todo: ssvViewportMatchVar?
+const NAME_CAMEL = "ssvViewportMatcherVar";
 
 export class SsvViewportMatcherVarContext {
 
@@ -66,9 +66,7 @@ export class SsvViewportMatcherVarDirective implements OnInit, OnDestroy {
 	ngOnInit(): void {
 		this.updateView();
 		combineLatest([this.viewport.sizeType$, this._update$]).pipe(
-			// tap(x => console.warn(">>>> combine change", x)),
 			map(([sizeType]) => isViewportConditionMatch(sizeType, this._matchConditions, this.viewport.sizeTypeMap)),
-			tap(x => console.warn(">>>> isMatch", x)),
 			tap(x => this._context.$implicit = x),
 			tap(() => this.cdr.markForCheck()),
 			takeUntil(this._destroy$),
@@ -82,9 +80,8 @@ export class SsvViewportMatcherVarDirective implements OnInit, OnDestroy {
 
 	updateView(): void {
 		this.viewContainer.clear();
-		// todo: markForCheck view?
-		// view.markForCheck
-		const view = this.viewContainer.createEmbeddedView(this.templateRef, this._context);
+		// view.markForCheck todo: markForCheck view?
+		this.viewContainer.createEmbeddedView(this.templateRef, this._context);
 	}
 
 }
