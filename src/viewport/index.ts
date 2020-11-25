@@ -1,9 +1,10 @@
 export * from "./viewport-data/index";
 
-export * from "./viewport-matcher.directive";
-export * from "./viewport-server-size.service";
-export * from "./viewport.model";
-export * from "./viewport.service";
+export { SsvViewportMatcherVarDirective, SsvViewportMatcherVarContext } from "./viewport-matcher-var.directive";
+export { SsvViewportMatcherDirective, SsvViewportMatcherContext } from "./viewport-matcher.directive";
+export { UX_VIEWPORT_SSR_DEVICE, ViewportServerSizeService } from "./viewport-server-size.service";
+export { ComparisonOperation, DeviceType, UxViewportOptions, ViewportSize, ViewportSizeType, ViewportSizeTypeInfo } from "./viewport.model";
+export { ViewportService } from "./viewport.service";
 export {
 	isViewportSizeMatcherExpression,
 	isViewportSizeMatcherTupleExpression,

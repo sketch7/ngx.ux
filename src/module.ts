@@ -1,6 +1,6 @@
 import { NgModule, ModuleWithProviders, InjectionToken, Optional } from "@angular/core";
 
-import { SsvViewportMatcherDirective } from "./viewport/index";
+import { SsvViewportMatcherDirective, SsvViewportMatcherVarDirective } from "./viewport/index";
 import { UxOptions, UX_DEFAULT_CONFIG, UX_CONFIG } from "./config";
 import { WINDOW } from "./platform/window";
 import { PartialDeep } from "./internal/internal.model";
@@ -11,6 +11,7 @@ export const MODULE_CONFIG_DATA = new InjectionToken<UxOptions>("@ssv/ngx.ux/con
 
 const components = [
 	SsvViewportMatcherDirective,
+	SsvViewportMatcherVarDirective,
 	ViewportDataPipe,
 ];
 
