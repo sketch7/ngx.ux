@@ -16,13 +16,15 @@ import {
 	isViewportSizeMatcherTupleExpression,
 	isViewportConditionMatch
 } from "./viewport.util";
-import { SsvViewportMatcherContext } from "./viewport-matcher.directive";
+import { ViewportMatchConditions } from "./viewport.model";
 
 const NAME_CAMEL = "ssvViewportMatcherVar"; // todo: ssvViewportMatchVar?
 
 export class SsvViewportMatcherVarContext {
 
-	constructor(public $implicit = false) { }
+	constructor(
+		public $implicit = false,
+	) { }
 
 }
 
@@ -32,22 +34,21 @@ export class SsvViewportMatcherVarContext {
 })
 export class SsvViewportMatcherVarDirective implements OnInit, OnDestroy {
 
-	// todo: remove context and store expression
-	private _expression: SsvViewportMatcherContext = new SsvViewportMatcherContext();
+	private _matchConditions: ViewportMatchConditions = {};
 	private _context = new SsvViewportMatcherVarContext();
 	private readonly _destroy$ = new Subject<void>();
 
 	@Input(`${NAME_CAMEL}When`) set condition(value: string | string[]) {
 		if (isViewportSizeMatcherExpression(value)) {
-			this._expression.expression = value;
+			this._matchConditions.expression = value;
 		} else if (isViewportSizeMatcherTupleExpression(value)) {
 			const [op, size] = value;
-			this._expression.expression = {
+			this._matchConditions.expression = {
 				operation: op,
 				size
 			};
 		} else {
-			this._expression.sizeType = value;
+			this._matchConditions.sizeType = value;
 		}
 
 		// todo: handle condition change + retrigger (combine)
@@ -65,7 +66,7 @@ export class SsvViewportMatcherVarDirective implements OnInit, OnDestroy {
 	ngOnInit(): void {
 		this.updateView();
 		this.viewport.sizeType$.pipe(
-			map(x => isViewportConditionMatch(x, this._expression, this.viewport.sizeTypeMap)),
+			map(x => isViewportConditionMatch(x, this._matchConditions, this.viewport.sizeTypeMap)),
 			tap(x => console.warn(">>>> isMatch", x)),
 			tap(x => this._context.$implicit = x),
 			tap(() => this.cdr.markForCheck()),
@@ -81,6 +82,7 @@ export class SsvViewportMatcherVarDirective implements OnInit, OnDestroy {
 	updateView(): void {
 		this.viewContainer.clear();
 		// todo: markForCheck view?
+		// view.markForCheck
 		const view = this.viewContainer.createEmbeddedView(this.templateRef, this._context);
 	}
 
