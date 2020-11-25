@@ -139,11 +139,6 @@ Structural directive which provides the condition var whether it matches or not 
 <div *ssvViewportMatcherVar="let isMediumDown when ['<=', 'medium']">
   isMediumDown={{isMediumDown}}
 </div>
-
-<!-- includes/or -->
-<div *ssvViewportMatcherVar="let isLargeOrSmall when ['small', 'large']">
-  isLargeOrSmall={{isLargeOrSmall}}
-</div>
 ```
 
 ### Viewport Service
