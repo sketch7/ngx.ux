@@ -45,10 +45,44 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 	private cssClass$$ = Subscription.EMPTY;
 	private readonly _update$ = new Subject<SsvViewportMatcherContext>();
 
+	@Input() set ssvViewportMatcher(value: string | string[] | ViewportSizeMatcherExpression) {
+		if (isViewportSizeMatcherExpression(value)) {
+			this._context.expression = value;
+		} else if (isViewportSizeMatcherTupleExpression(value)) {
+			const [op, size] = value;
+			this._context.expression = {
+				operation: op,
+				size
+			};
+		} else {
+			this._context.sizeType = value;
+		}
+
+		if (this.sizeInfo) {
+			this._update$.next(this._context);
+		}
+	}
+
+	@Input() set ssvViewportMatcherExclude(value: string | string[]) {
+		this._context.sizeTypeExclude = value;
+
+		if (this.sizeInfo) {
+			this._update$.next(this._context);
+		}
+	}
+
+	@Input() set ssvViewportMatcherElse(templateRef: TemplateRef<SsvViewportMatcherContext> | null) {
+		this._elseTemplateRef = templateRef;
+		this._elseViewRef = null; // clear previous view if any.
+		if (this.sizeInfo) {
+			this._update$.next(this._context);
+		}
+	}
+
 	constructor(
 		private viewport: ViewportService,
 		private renderer: Renderer2,
-		private _viewContainer: ViewContainerRef,
+		private viewContainer: ViewContainerRef,
 		private cdr: ChangeDetectorRef,
 		templateRef: TemplateRef<SsvViewportMatcherContext>,
 	) {
@@ -105,48 +139,14 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 		this._update$.complete();
 	}
 
-	@Input() set ssvViewportMatcher(value: string | string[] | ViewportSizeMatcherExpression) {
-		if (isViewportSizeMatcherExpression(value)) {
-			this._context.expression = value;
-		} else if (isViewportSizeMatcherTupleExpression(value)) {
-			const [op, size] = value;
-			this._context.expression = {
-				operation: op,
-				size
-			};
-		} else {
-			this._context.sizeType = value;
-		}
-
-		if (this.sizeInfo) {
-			this._update$.next(this._context);
-		}
-	}
-
-	@Input() set ssvViewportMatcherExclude(value: string | string[]) {
-		this._context.sizeTypeExclude = value;
-
-		if (this.sizeInfo) {
-			this._update$.next(this._context);
-		}
-	}
-
-	@Input() set ssvViewportMatcherElse(templateRef: TemplateRef<SsvViewportMatcherContext> | null) {
-		this._elseTemplateRef = templateRef;
-		this._elseViewRef = null; // clear previous view if any.
-		if (this.sizeInfo) {
-			this._update$.next(this._context);
-		}
-	}
-
 	private _updateView(sizeInfo: ViewportSizeTypeInfo) {
 		if (isViewportConditionMatch(sizeInfo, this._context, this.viewport.sizeTypeMap)) {
 			if (!this._thenViewRef) {
-				this._viewContainer.clear();
+				this.viewContainer.clear();
 				this._elseViewRef = null;
 
 				if (this._thenTemplateRef) {
-					this._thenViewRef = this._viewContainer.createEmbeddedView(
+					this._thenViewRef = this.viewContainer.createEmbeddedView(
 						this._thenTemplateRef,
 						this._context,
 					);
@@ -154,11 +154,11 @@ export class SsvViewportMatcherDirective implements OnInit, OnDestroy {
 			}
 		} else {
 			if (!this._elseViewRef) {
-				this._viewContainer.clear();
+				this.viewContainer.clear();
 				this._thenViewRef = null;
 
 				if (this._elseTemplateRef) {
-					this._elseViewRef = this._viewContainer.createEmbeddedView(
+					this._elseViewRef = this.viewContainer.createEmbeddedView(
 						this._elseTemplateRef,
 						this._context,
 					);

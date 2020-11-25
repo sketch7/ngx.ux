@@ -1,12 +1,29 @@
 @import "vars";
 
 $var-boolean-value-color: $azure-radiance;
+$var-object-value-color: $azure-radiance;
+$var-string-value-color: $antique-brass;
 $var-prop-color: #9cdcfe;
 $var-code-font: "consolas";
 
 .viewport {
 	&__data-container {
 		width: 320px;
+	}
+
+	&__field-container {
+		// width: 200px;
+		padding: 0.5em 0.25em;
+	}
+
+	&__field-header {
+		font-weight: 600;
+		text-transform: uppercase;
+	}
+
+	&__field {
+		font-size: 0.85em;
+		padding: 0.5em;
 	}
 }
 
@@ -27,6 +44,16 @@ $var-code-font: "consolas";
 	&.boolean {
 		&.value {
 			color: $var-boolean-value-color;
+		}
+	}
+	&.object {
+		&.value {
+			color: $var-object-value-color;
+		}
+	}
+	&.string {
+		&.value {
+			color: $var-string-value-color;
 		}
 	}
 }

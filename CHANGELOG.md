@@ -11,6 +11,12 @@
 - **viewport:** change `ViewportSizeType` and `UX_VIEWPORT_DEFAULT_BREAKPOINTS` has been changed (see readme)
 - **viewport:** remove `ViewportService.calculateItemsPerRow` function
 
+## [1.4.0](https://github.com/sketch7/ngx.ux/compare/1.3.0...1.4.0) (2020-11-25)
+
+### Features
+
+- **viewport:** implement `ssvViewportMatcherVar` directive
+
 ## [1.3.0](https://github.com/sketch7/ngx.ux/compare/1.2.2...1.3.0) (2020-11-11)
 
 ### Features

@@ -125,6 +125,21 @@ Structural directive which loads components based on a viewport sizing condition
 </ng-template>
 ```
 
+### Viewport Matcher Var (directive)
+Structural directive which provides the condition var whether it matches or not (params are similar to `ssvViewportMatcher`).
+
+```html
+<!-- simple -->
+<div *ssvViewportMatcherVar="let isLarge when 'large'">
+  isLarge={{isLarge}}
+</div>
+
+<!-- expression based - tuple (shorthand) *recommended usage* -->
+<div *ssvViewportMatcherVar="let isMediumDown when ['<=', 'medium']">
+  isMediumDown={{isMediumDown}}
+</div>
+```
+
 ### Viewport Service
 
 ```ts
