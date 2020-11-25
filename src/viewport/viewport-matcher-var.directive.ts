@@ -77,7 +77,7 @@ export class SsvViewportMatcherVarDirective implements OnInit, OnDestroy {
 		this._destroy$.complete();
 	}
 
-	updateView(): void {
+	private updateView(): void {
 		this.viewContainer.clear();
 		this._viewRef = this.viewContainer.createEmbeddedView(this.templateRef, this._context);
 	}
