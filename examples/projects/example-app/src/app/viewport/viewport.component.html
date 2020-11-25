@@ -2,32 +2,24 @@
 <p>Experimental area for viewport
 </p>
 <div class="container">
-	<fieldset>
-		<legend>Size info</legend>
-		<div class="form-group">
-			<div>
-				<small>
-					<span class="type variable">Size Info</span>
-					<span class="type boolean value">{{sizeInfo | json}}</span>
-				</small>
-			</div>
+	<fieldset class="viewport__field-container">
+		<legend class="viewport__field-header">Size info</legend>
+		<div class="viewport__field">
+			<span class="type variable">Size Info</span>
+			<span class="type object value">{{sizeInfo | json}}</span>
 		</div>
 	</fieldset>
-	<fieldset>
-		<legend>Size</legend>
-		<div class="form-group">
-			<div>
-				<small>
-					<span class="type variable">Size</span>
-					<span class="type boolean value">{{size | json}}</span>
-				</small>
-			</div>
+	<fieldset class="viewport__field-container">
+		<legend class="viewport__field-header">Size</legend>
+		<div class="viewport__field">
+			<span class="type variable">Size</span>
+			<span class="type object value">{{size | json}}</span>
 		</div>
 	</fieldset>
 </div>
 <div class="container">
 	<fieldset>
-		<legend>Viewport Matcher Container</legend>
+		<legend class="viewport__field-header">Viewport Matcher Container</legend>
 		<div *ssvViewportMatcher="'large'"
 			class="matcher-dummy-container">
 			Dummy container #1 <strong class="matcher-dummy-container__target">only (large)</strong>
@@ -73,21 +65,31 @@
 		</ng-template> -->
 	</fieldset>
 
-	<div class="viewport__data-container">
-		<div>
-			<small>
-				<span class="type variable">data</span>
-				<span class="type boolean value">{{dataConfig | json}}</span>
-			</small>
+	<fieldset class="viewport__data-container viewport__field-container">
+		<legend class="viewport__field-header">Viewport Data</legend>
+		<div class="viewport__field">
+			<span class="type variable">data</span>
+			<span class="type object value">{{dataConfig | json}}</span>
 		</div>
-		<div>
-			<small>
-				<span class="type variable">value</span>
-				<span
-					class="type boolean value">{{ dataConfig | ssvViewportData: "closestSmallerFirst" }}</span>
-			</small>
+		<div class="viewport__field">
+			<span class="type variable">value</span>
+			<span
+				class="type string value">{{ dataConfig | ssvViewportData: "closestSmallerFirst" }}</span>
 		</div>
-	</div>
-</div>
+	</fieldset>
 
-<div *ssvViewportMatcherVar="let isXsDown when ['<=', 'small']">Var isXsDown={{isXsDown}}</div> 
+	<fieldset class="viewport__var-container viewport__field-container">
+		<legend class="viewport__field-header">Viewport Matcher Var</legend>
+		<div class="viewport__field"
+			*ssvViewportMatcherVar="let isMediumDown when ['<=', 'medium']">
+			<span class="type variable">['<=', 'medium' ]</span>
+					<span
+					class="type boolean value">{{isMediumDown}}</span>
+		</div>
+		<div class="viewport__field"
+			*ssvViewportMatcherVar="let isMediumDown when 'large'">
+			<span class="type variable">'large'</span>
+			<span class="type boolean value">{{isMediumDown}}</span>
+		</div>
+	</fieldset>
+</div>
