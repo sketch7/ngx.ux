@@ -16,7 +16,7 @@ import {
 	isViewportSizeMatcherTupleExpression,
 	isViewportConditionMatch
 } from "./viewport.util";
-import { ViewportMatchConditions } from "./viewport.model";
+import { ViewportMatchConditions, ViewportSizeMatcherExpression } from "./viewport.model";
 
 const NAME_CAMEL = "ssvViewportMatcherVar";
 
@@ -39,7 +39,7 @@ export class SsvViewportMatcherVarDirective implements OnInit, OnDestroy {
 	private readonly _update$ = new ReplaySubject<void>(1);
 	private _viewRef!: EmbeddedViewRef<SsvViewportMatcherVarContext>;
 
-	@Input(`${NAME_CAMEL}When`) set condition(value: string | string[]) {
+	@Input(`${NAME_CAMEL}When`) set condition(value: string | string[] | ViewportSizeMatcherExpression) {
 		if (isViewportSizeMatcherExpression(value)) {
 			this._matchConditions.expression = value;
 		} else if (isViewportSizeMatcherTupleExpression(value)) {
