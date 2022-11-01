@@ -137,7 +137,9 @@ describe("Viewport utils", () => {
 				const dataSet = [
 					{ width: 10, expectedSize: "xsmall" },
 					{ width: 450, expectedSize: "xsmall" },
-					{ width: 1280, expectedSize: "hd" },
+					{ width: 993, expectedSize: "large" },
+					{ width: 1199, expectedSize: "large" },
+					{ width: 1200, expectedSize: "large" },
 					{ width: 1280, expectedSize: "hd" },
 					{ width: 1281, expectedSize: "fullHd" },
 					{ width: 1920, expectedSize: "fullHd" },
