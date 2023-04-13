@@ -5,10 +5,5 @@ export { SsvViewportMatcherDirective, SsvViewportMatcherContext } from "./viewpo
 export { UX_VIEWPORT_SSR_DEVICE, ViewportServerSizeService } from "./viewport-server-size.service";
 export { ComparisonOperation, DeviceType, UxViewportOptions, ViewportSize, ViewportSizeType, ViewportSizeTypeInfo } from "./viewport.model";
 export { ViewportService } from "./viewport.service";
-export {
-	isViewportSizeMatcherExpression,
-	isViewportSizeMatcherTupleExpression,
-	COMPARISON_OPERATION_FUNC_MAPPING,
-	generateViewportSizeType,
-} from "./viewport.util";
+export { generateViewportSizeType } from "./viewport.util";
 export { UX_VIEWPORT_DEFAULT_BREAKPOINTS } from "./viewport.const";
