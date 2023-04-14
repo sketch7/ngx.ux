@@ -29,8 +29,8 @@ export class ViewportDataService {
 	}
 
 	/** Get data for match as observable. */
-	get$<T>(dataConfig: ViewportDataConfig<T>, strategy?: ViewportDataMatchStrategy): Observable<T | undefined> {
-		return this.viewport.sizeType$.pipe(
+	get$<T>(dataConfig: ViewportDataConfig<T>, strategy?: ViewportDataMatchStrategy, throttle = true): Observable<T | undefined> {
+		return (throttle ? this.viewport.sizeType$ : this.viewport.sizeTypeSnap$).pipe(
 			map(sizeType => this.get<T>(dataConfig, strategy, sizeType)),
 			distinctUntilChanged(),
 		);
