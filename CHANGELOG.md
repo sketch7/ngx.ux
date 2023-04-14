@@ -11,6 +11,13 @@
 - **viewport:** change `ViewportSizeType` and `UX_VIEWPORT_DEFAULT_BREAKPOINTS` has been changed (see readme)
 - **viewport:** remove `ViewportService.calculateItemsPerRow` function
 
+## [1.4.1](https://github.com/sketch7/ngx.ux/compare/1.4.0...1.4.1) (2023-04-13)
+
+### Features
+
+- **viewport:** `ViewportService` - add `resizeSnap$`, `sizeTypeSnap$`, `sizeSnap$` which are unthrottled
+- **viewport:** `ViewportDataService` `get$` add option to `throttle`
+
 ## [1.4.0](https://github.com/sketch7/ngx.ux/compare/1.3.0...1.4.0) (2020-11-25)
 
 ### Features
