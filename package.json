@@ -25,7 +25,10 @@
     "tdd": "jest --watch",
     "test-debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand --env jest-environment-node-debug",
     "test-devt": "devtool ./node_modules/jest/bin/jest.js --runInBand --env jest-environment-node-debug",
-    "publish:rel": "npm publish dist --access=public"
+    "__CI__": "",
+    "pre-release-build": "echo TODO: version placeholder as gitaction or script",
+    "_pre-release-build": "gulp prebuild:rel",
+    "publish": "npm publish dist --access=public"
   },
   "author": "Stephen Lautier <stephen.lautier@outlook.com>",
   "license": "MIT",
