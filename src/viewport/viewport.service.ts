@@ -98,24 +98,6 @@ export class ViewportService {
 		this.sizeTypeSnap$ = sizeTypeFn(this.sizeSnap$);
 	}
 
-	/**
-	 * Calculates amount of items that fits into container's width.
-	 * @param containerWidth
-	 * @param itemWidth
-	 * @returns
-	 */
-	calculateItemsPerRow(containerWidth: number, itemWidth: number): number {
-		if (containerWidth === 0) {
-			return 0;
-		}
-		if (!containerWidth && !this.windowRef.hasNative) {
-			// todo: find a way to get container width for ssr
-			containerWidth = this.viewportServerSize.get().width;
-		}
-
-		return containerWidth / itemWidth;
-	}
-
 	/** Returns the current viewport size */
 	private getViewportSize(): ViewportSize {
 		if (!this.windowRef.hasNative) {

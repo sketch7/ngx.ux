@@ -69,13 +69,13 @@ These are the defaults, but they are configurable.
 
 | Size Type | Size Range |
 | --------- | ---------- |
-| xsmall    | <=449      |
-| small     | 450-766    |
-| medium    | 767-991    |
-| large     | 992-1199   |
-| xlarge    | 1200-1499  |
-| xxlarge   | 1500-1919  |
-| xxlarge1  | >=1920     |
+| xsmall    | <=450      |
+| small     | 451-767    |
+| medium    | 768-992    |
+| large     | 993-1200   |
+| xlarge    | 1201-1500  |
+| xxlarge   | 1501-1920  |
+| xxlarge1  | >=1921     |
 
 
 ### Viewport Matcher Attribute (directive)
@@ -137,6 +137,11 @@ Structural directive which provides the condition var whether it matches or not 
 <!-- expression based - tuple (shorthand) *recommended usage* -->
 <div *ssvViewportMatcherVar="let isMediumDown when ['<=', 'medium']">
   isMediumDown={{isMediumDown}}
+</div>
+
+<!-- includes/or -->
+<div *ssvViewportMatcherVar="let isLargeOrSmall when ['small', 'large']">
+  isLargeOrSmall={{isLargeOrSmall}}
 </div>
 ```
 

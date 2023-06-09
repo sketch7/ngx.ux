@@ -73,8 +73,9 @@
 		</div>
 		<div class="viewport__field">
 			<span class="type variable">value</span>
-			<span
-				class="type string value">{{ dataConfig | ssvViewportData: "closestSmallerFirst" }}</span>
+			<span class="type string value">
+				{{ dataConfig | ssvViewportData: "closestSmallerFirst"}}
+			</span>
 		</div>
 	</fieldset>
 
@@ -83,13 +84,17 @@
 		<div class="viewport__field"
 			*ssvViewportMatcherVar="let isMediumDown when ['<=', 'medium']">
 			<span class="type variable">['<=', 'medium' ]</span>
-					<span
-					class="type boolean value">{{isMediumDown}}</span>
+					<span class="type boolean value">{{isMediumDown}}</span>
 		</div>
 		<div class="viewport__field"
 			*ssvViewportMatcherVar="let isLarge when 'large'">
 			<span class="type variable">'large'</span>
 			<span class="type boolean value">{{isLarge}}</span>
+		</div>
+		<div class="viewport__field"
+			*ssvViewportMatcherVar="let isLargeOrSmall when ['small', 'large']">
+			<span class="type variable">['small', 'large']</span>
+			<span class="type boolean value">{{isLargeOrSmall}}</span>
 		</div>
 	</fieldset>
 </div>
