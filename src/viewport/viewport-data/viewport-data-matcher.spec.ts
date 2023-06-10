@@ -1,5 +1,3 @@
-import _ from "lodash";
-
 import { EnumDictionary } from "../../internal/internal.model";
 import { generateViewportSizeTypeInfoList, generateViewportSizeTypeInfoRefs, } from "../viewport.util";
 import { ViewportSizeTypeInfo } from "../viewport.model";

@@ -5,7 +5,7 @@
 [npm]: https://www.npmjs.com
 
 # @ssv/ngx.ux
-[![CircleCI](https://circleci.com/gh/sketch7/ngx.ux.svg?style=shield)](https://circleci.com/gh/sketch7/ngx.ux)
+[![CI](https://github.com/sketch7/ngx.ux/actions/workflows/ci.yml/badge.svg)](https://github.com/sketch7/ngx.ux/actions/workflows/ci.yml)
 [![npm version](https://badge.fury.io/js/%40ssv%2Fngx.ux.svg)](https://badge.fury.io/js/%40ssv%2Fngx.ux)
 
 UX essentials for building apps, utilities which enables you writing richer apps easier.
@@ -26,7 +26,7 @@ Choose the version corresponding to your Angular version:
 
  | Angular | library |
  | ------- | ------- |
- | 10      | 2.x+    |
+ | 15      | 2.x+    |
  | 4 to 9  | 1.x+    |
 
 ## Features
