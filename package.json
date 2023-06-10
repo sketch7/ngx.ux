@@ -28,7 +28,7 @@
     "__CI__": "",
     "pre-release-build": "echo TODO: version placeholder as gitaction or script",
     "_pre-release-build": "gulp prebuild:rel",
-    "release": "npm publish dist --access=public"
+    "release": "npm publish ./dist --access=public"
   },
   "author": "Stephen Lautier <stephen.lautier@outlook.com>",
   "license": "MIT",
