@@ -1,4 +1,4 @@
-## [2.0.0](https://github.com/sketch7/ngx.ux/compare/1.2.2...2.0.0) (2020-xx-xx)
+## [2.1.0](https://github.com/sketch7/ngx.ux/compare/1.4.1...2.1.0) (2023-xx-xx)
 
 ### Features
 
