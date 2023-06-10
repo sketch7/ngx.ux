@@ -16,7 +16,7 @@
 ### Features
 
 - **viewport:** `ViewportService` - add `resizeSnap$`, `sizeTypeSnap$`, `sizeSnap$` which are unthrottled
-- **viewport:** `ViewportDataService ` `get$` add option to `throttle`
+- **viewport:** `ViewportDataService` `get$` add option to `throttle`
 
 ## [1.4.0](https://github.com/sketch7/ngx.ux/compare/1.3.0...1.4.0) (2020-11-25)
 

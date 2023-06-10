@@ -72,11 +72,10 @@ These are the defaults, but they are configurable.
 | xsmall    | <=450      |
 | small     | 451-767    |
 | medium    | 768-992    |
-| large     | 993-1280   |
-| fhd       | 1281-1920  |
-| qhd       | 1921-2560  |
-| uhd4k     | 2561-3840  |
-| uhd8k     | >=3841     |
+| large     | 993-1200   |
+| xlarge    | 1201-1500  |
+| xxlarge   | 1501-1920  |
+| xxlarge1  | >=1921     |
 
 
 ### Viewport Matcher Attribute (directive)
