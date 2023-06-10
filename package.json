@@ -28,7 +28,7 @@
     "__CI__": "",
     "pre-release-build": "echo TODO: version placeholder as gitaction or script",
     "_pre-release-build": "gulp prebuild:rel",
-    "publish": "npm publish dist --access=public"
+    "release": "npm publish dist --access=public"
   },
   "author": "Stephen Lautier <stephen.lautier@outlook.com>",
   "license": "MIT",
@@ -52,7 +52,7 @@
     "@angular/core": "^10.2.0",
     "@angular/platform-browser": "^10.2.0",
     "@angular/platform-browser-dynamic": "^10.2.0",
-    "@ssv/tools": "~0.10.0",
+    "@ssv/tools": "~0.10.1-dev.20",
     "@types/jest": "^26.0.15",
     "@types/lodash": "^4.14.134",
     "gulp": "^4.0.2",
