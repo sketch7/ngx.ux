@@ -2,7 +2,7 @@
 
 ### Features
 
-- **deps:** update dependencies to support Angular v10
+- **deps:** update dependencies to support Angular v15
 - **deps:** add dependency on `tslib: ^2.0.0`
 
 ### BREAKING CHANGES
