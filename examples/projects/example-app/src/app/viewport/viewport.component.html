@@ -24,11 +24,11 @@
 			class="matcher-dummy-container">
 			Dummy container #1 <strong class="matcher-dummy-container__target">only (large)</strong>
 		</div>
-		<div *ssvViewportMatcher="['large', 'fhd']"
+		<div *ssvViewportMatcher="['large', 'xlarge']"
 			class="matcher-dummy-container">
 			Dummy container #2 <br />
 			<strong class="matcher-dummy-container__target">
-				only (large, fhd)
+				only (large, xlarge)
 			</strong>
 		</div>
 		<div *ssvViewportMatcher="''; exclude ['xsmall', 'small']"
@@ -40,12 +40,12 @@
 			<div *ssvViewportMatcher="{size: 'fhd', operation: '<='}; else elseB"
 				class="matcher-dummy-container">
 				Dummy container #4
-				<strong class="matcher-dummy-container__target">(<= fhd>)</strong>
+				<strong class="matcher-dummy-container__target">(<= xlarge>)</strong>
 			</div>
 			<ng-template #elseB>
 				<div class="matcher-dummy-container">
 					Dummy container #5
-					<strong class="matcher-dummy-container__target">(<= fhd
+					<strong class="matcher-dummy-container__target">(<= xlarge
 							[else]>)</strong>
 				</div>
 			</ng-template>
@@ -53,7 +53,7 @@
 
 		<div *ssvViewportMatcher="['>=', 'fhd']"
 			class="matcher-dummy-container">
-			Dummy container #6 <strong class="matcher-dummy-container__target">(>= fhd>)</strong>
+			Dummy container #6 <strong class="matcher-dummy-container__target">(>= xlarge>)</strong>
 			<small>tuple syntax *recommended*</small>
 		</div>
 
@@ -73,8 +73,9 @@
 		</div>
 		<div class="viewport__field">
 			<span class="type variable">value</span>
-			<span
-				class="type string value">{{ dataConfig | ssvViewportData: "closestSmallerFirst" }}</span>
+			<span class="type string value">
+				{{ dataConfig | ssvViewportData: "closestSmallerFirst"}}
+			</span>
 		</div>
 	</fieldset>
 
@@ -83,8 +84,7 @@
 		<div class="viewport__field"
 			*ssvViewportMatcherVar="let isMediumDown when ['<=', 'medium']">
 			<span class="type variable">['<=', 'medium' ]</span>
-					<span
-					class="type boolean value">{{isMediumDown}}</span>
+					<span class="type boolean value">{{isMediumDown}}</span>
 		</div>
 		<div class="viewport__field"
 			*ssvViewportMatcherVar="let isLarge when 'large'">
