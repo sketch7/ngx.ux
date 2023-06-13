@@ -1,4 +1,14 @@
-## [2.1.0](https://github.com/sketch7/ngx.ux/compare/1.4.1...2.1.0) (2023-xx-xx)
+## [2.1.1](https://github.com/sketch7/ngx.ux/compare/2.1.0...2.1.1) (2023-06-13)
+
+### Features
+
+- **viewport:** add `ComparisonOperationLiteral` 
+
+### Bug Fixes
+
+- **viewport:** add `ssvViewportMatcherVar` allow usage as `{size: 'fhd', operation: '<='}` with template type validation
+
+## [2.1.0](https://github.com/sketch7/ngx.ux/compare/1.4.1...2.1.0) (2023-06-13)
 
 ### Features
 

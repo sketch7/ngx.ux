@@ -295,3 +295,10 @@ npm run tdd
 
 
 Check out the [release workflow guide][releaseWorkflowWiki] in order to guide you creating a release and publishing it.
+
+### Regen Examples
+- `ng new examples --skip-install --create-application=false`
+- `cd examples`
+- `ng g example-app --routing --style=scss`
+- `ng lint`
+- `ng add @angular/material`

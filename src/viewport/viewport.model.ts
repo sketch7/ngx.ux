@@ -24,6 +24,10 @@ export enum ComparisonOperation {
 	greaterOrEqualThan = ">=",
 }
 
+export type ComparisonOperationKeyType = keyof typeof ComparisonOperation;
+export type ComparisonOperationValueType = "=" | "<>" | "<" | "<=" | ">" | ">="; // todo: find a better way to do this
+export type ComparisonOperationLiteral = ComparisonOperationKeyType | ComparisonOperationValueType;
+
 export enum DeviceType {
 	desktop = "desktop",
 	mobile = "mobile",
@@ -62,5 +66,5 @@ export interface ViewportMatchConditions {
 
 export interface ViewportSizeMatcherExpression {
 	size: string;
-	operation: ComparisonOperation;
+	operation: ComparisonOperationLiteral;
 }
