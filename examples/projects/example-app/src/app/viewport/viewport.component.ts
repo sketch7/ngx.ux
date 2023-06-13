@@ -31,7 +31,7 @@ export class ViewportComponent implements OnInit, OnDestroy {
 		default: "default",
 		small: "small",
 		large: "large",
-		fhd: "laaarger (fhd)",
+		xlarge: "laaarger (xlarge)",
 	};
 
 	private readonly _destroy$ = new Subject<void>();
