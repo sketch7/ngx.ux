@@ -11,7 +11,7 @@ dataConfig: ViewportDataConfig<string> = {
   default: "default",
   small: "small",
   large: "large",
-  fhd: "laaarger (fhd)",
+  xlarge: "laaarger (xlarge)",
 };
 ```
 
