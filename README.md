@@ -26,7 +26,7 @@ Choose the version corresponding to your Angular version:
 
  | Angular | library |
  | ------- | ------- |
- | 15      | 2.x+    |
+ | 10+     | 2.x+    |
  | 4 to 9  | 1.x+    |
 
 ## Features
@@ -240,9 +240,9 @@ import { SsvUxModule, UX_VIEWPORT_DEFAULT_BREAKPOINTS } from "@ssv/ngx.ux";
 ### Setup Machine for Development
 Install/setup the following:
 
-- NodeJS v10+
+- NodeJS v18.16.0+
 - Visual Studio Code or similar code editor
-- TypeScript 3.1+
+- TypeScript 5.0+
 - Git + SourceTree, SmartGit or similar (optional)
 - Ensure to install **global NPM modules** using the following:
 
