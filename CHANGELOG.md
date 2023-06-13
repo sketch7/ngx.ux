@@ -2,7 +2,8 @@
 
 ### Features
 
-- **viewport:** add `ComparisonOperationLiteral` 
+- **viewport:** add `ComparisonOperationLiteral`
+- **deps:** change peerDependency for rxjs to `>=6.0.0`
 
 ### Bug Fixes
 
