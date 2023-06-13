@@ -6,7 +6,7 @@
 
 ### Bug Fixes
 
-- **viewport:** add `ssvViewportMatcherVar` allow usage as `{size: 'large', operation: '<='}` with template type validation
+- **viewport:** `ssvViewportMatcherVar` allow usage as `{size: 'large', operation: '<='}` with template type validation
 
 ## [2.1.0](https://github.com/sketch7/ngx.ux/compare/1.4.1...2.1.0) (2023-06-13)
 
