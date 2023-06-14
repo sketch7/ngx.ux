@@ -1,3 +1,9 @@
+## [2.1.2](https://github.com/sketch7/ngx.ux/compare/2.1.1...2.1.2) (2023-06-15)
+
+### Bug Fixes
+
+- **version:** update `VERSION` correctly
+
 ## [2.1.1](https://github.com/sketch7/ngx.ux/compare/2.1.0...2.1.1) (2023-06-13)
 
 ### Features
