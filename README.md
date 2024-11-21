@@ -8,6 +8,8 @@
 [![CI](https://github.com/sketch7/ngx.ux/actions/workflows/ci.yml/badge.svg)](https://github.com/sketch7/ngx.ux/actions/workflows/ci.yml)
 [![npm version](https://badge.fury.io/js/%40ssv%2Fngx.ux.svg)](https://badge.fury.io/js/%40ssv%2Fngx.ux)
 
+> ## repo moved to https://github.com/sketch7/ssv.ngx
+
 UX essentials for building apps, utilities which enables you writing richer apps easier.
 
 **Quick links**
